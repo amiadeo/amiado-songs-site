@@ -2723,9 +2723,10 @@ function openPlaylistDropdown(songId, anchorEl) {
 
   document.body.appendChild(dropdown);
 
-  // Position below button
+  // Position below button — clamp so it stays within viewport
+  const dropdownW = 200;
   const top = rect.bottom + window.scrollY + 6;
-  const right = window.innerWidth - rect.right;
+  const right = Math.max(8, Math.min(window.innerWidth - rect.right, window.innerWidth - dropdownW - 8));
   dropdown.style.top = top + 'px';
   dropdown.style.right = right + 'px';
 

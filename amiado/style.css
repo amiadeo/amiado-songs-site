@@ -2777,6 +2777,7 @@ body {
   /* Song detail */
   .song-hero { height: 52vh; min-height: 300px; }
   .song-hero-meta { padding: 12px 16px 28px; }
+  .song-hero-nav-btn { padding: 10px 14px; min-height: 44px; font-size: 0.72rem; }
   .song-hero-title { font-size: clamp(1.8rem, 6vw, 3rem); }
   .song-content { padding: 28px 16px 70px; }
   .song-body { gap: 16px; }
