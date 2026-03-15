@@ -1672,6 +1672,7 @@ function renderHomePage() {
 
         <!-- Main content -->
         <div class="entry-content">
+          <img src="aologo.svg" alt="amiado" class="entry-hero-logo" id="entryHeroLogo">
           <span class="entry-eyebrow" id="entryEyebrow">Singer &nbsp;·&nbsp; Songwriter &nbsp;·&nbsp; Ramat-Gan</span>
           <h1 class="entry-name" id="entryName">Amiado</h1>
           <div class="entry-divider" id="entryDivider"></div>
@@ -1757,6 +1758,7 @@ function runBioAnimation() {
 
 function runHeroAnimation() {
   const bg       = document.getElementById('entryBg');
+  const heroLogo = document.getElementById('entryHeroLogo');
   const eyebrow  = document.getElementById('entryEyebrow');
   const name     = document.getElementById('entryName');
   const divider  = document.getElementById('entryDivider');
@@ -1771,6 +1773,7 @@ function runHeroAnimation() {
   if (bg) requestAnimationFrame(() => bg.classList.add('loaded'));
 
   // Staggered content reveal
+  setTimeout(() => heroLogo && heroLogo.classList.add('vis'),  100);
   setTimeout(() => eyebrow  && eyebrow.classList.add('vis'),  300);
   setTimeout(() => name     && name.classList.add('vis'),     600);
   setTimeout(() => divider  && divider.classList.add('vis'), 1200);
