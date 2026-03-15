@@ -1285,6 +1285,8 @@ function playSong(idx) {
 }
 
 function updatePlayerUI(song) {
+  playerEl.classList.remove('hidden');
+
   const titleEl = document.getElementById('playerTitle');
   titleEl.textContent = song.title;
   titleEl.style.cursor = 'pointer';

@@ -2322,6 +2322,7 @@ body {
   .songs-section { padding: 0 20px 60px; }
 
   .track-actions { opacity: 1; }
+  .song-grid-fav-btn { opacity: 1; }
 
   .song-hero { height: 58vh; }
   .song-hero-meta { padding: 16px 24px 36px; }
@@ -2762,6 +2763,7 @@ body {
   .songs-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 6px; }
   .song-grid-card { height: 220px; }
   .song-grid-fav-btn { opacity: 1; }
+  .song-grid-card-panel { transform: translateY(0); }
   .song-grid-card-panel-title { white-space: normal; line-height: 1.35; font-size: 0.88rem; }
   .track-item { gap: 12px; padding: 20px 0; }
   .track-num { width: 36px; font-size: 1rem; }
@@ -2807,12 +2809,15 @@ body {
   .fav-page-title { font-size: clamp(1.8rem, 7vw, 3rem); }
   .fav-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
   .fav-card { height: 180px; }
+  .fav-card-panel { transform: translateY(0); }
   .pl-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
   .pl-card { height: 160px; }
   .pl-card-name { font-size: 0.78rem; }
 
-  /* Player — moves to top on mobile */
-  .player:not(.hidden) { bottom: auto; top: 0; border-top: none; border-bottom: 1px solid var(--border-s); }
+  /* Player — moves to just below nav on mobile */
+  .player:not(.hidden) { bottom: auto; top: var(--nav-h); border-top: none; border-bottom: 1px solid var(--border-s); }
+  body:has(#player:not(.hidden)) #app { padding-top: calc(var(--nav-h) + var(--player-h)); }
+  body:has(#player:not(.hidden)) { padding-bottom: 0; }
   .player-inner { padding: 0 10px; gap: 8px; grid-template-columns: 1fr auto; }
   .player-progress-wrap { display: none; }
   .player-cover-sm { width: 36px; height: 36px; }
