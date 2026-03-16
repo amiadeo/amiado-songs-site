@@ -237,7 +237,7 @@ const SONGS = [
     }
   },
   {
-    id: 'lo-amiti', title: 'לא אמתי', language: 'he',
+    id: 'lo-amiti', title: 'לא אמיתי', language: 'he',
     audio: { type: 'file', src: 'songs/lo-amiti/audio.mp3' },
     links: { suno: 'https://suno.com/s/CzIEo9m0U4664YmT' },
     sunoEmbedId: '5ab3aad7-3868-42ef-bda8-93b6e9402682',
@@ -258,7 +258,7 @@ const SONGS = [
         'רסיסים על הרצפה שלך'
       ]},
       { section: 'בית 2', lines: [
-        'החורף קאן',
+        'החורף כאן',
         'מתרגלים לזה',
         'האש כבתה מזמן',
         'ורק אני עוד כאן',
@@ -1213,10 +1213,10 @@ function playSong(idx) {
   updatePlayerUI(song);
 
   // If song has a YouTube embed, inject iframe with autoplay
-  if (song.youtubeEmbedId) {
+  if (song.youtubeVideoId) {
     const ph = document.getElementById('yt-ph-' + song.id);
     const existingIframe = document.getElementById('yt-iframe-' + song.id);
-    const embedUrl = `https://www.youtube.com/embed/${song.youtubeEmbedId}?autoplay=1`;
+    const embedUrl = `https://www.youtube.com/embed/${song.youtubeVideoId}?autoplay=1&enablejsapi=1`;
     if (existingIframe) {
       existingIframe.src = embedUrl;
     } else if (ph) {
@@ -1337,6 +1337,22 @@ audio.addEventListener('ended', () => {
   } else {
     updatePlayPauseIcon();
   }
+});
+
+// YouTube iframe postMessage — auto-play next when video ends
+window.addEventListener('message', e => {
+  if (typeof e.data !== 'string') return;
+  try {
+    const data = JSON.parse(e.data);
+    if (data.event === 'onStateChange' && data.info === 0) {
+      if (state.currentIdx < SONGS.length - 1) {
+        playSong(state.currentIdx + 1);
+      } else {
+        state.playing = false;
+        updatePlayPauseIcon();
+      }
+    }
+  } catch {}
 });
 
 audio.addEventListener('play',  () => { state.playing = true;  updatePlayPauseIcon(); });
@@ -1579,7 +1595,7 @@ function renderHomePage() {
       ? song.analysis.abstract.replace(/\s+/g,' ').trim().slice(0, 85) + '…'
       : '';
     return `
-    <div class="song-grid-card" data-id="${song.id}" data-title="${song.title}">
+    <div class="song-grid-card" data-id="${song.id}" data-title="${song.title}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}">
       <div class="song-grid-card-cover">
         <a href="#/song/${song.id}" class="song-grid-card-img-link">${getCover(song.id)}</a>
       </div>
@@ -1621,7 +1637,7 @@ function renderHomePage() {
     ].filter(Boolean).join('');
 
     return `
-    <li class="track-item" data-id="${song.id}" data-title="${song.title}">
+    <li class="track-item" data-id="${song.id}" data-title="${song.title}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}">
       <span class="track-num">${num}</span>
       <a href="#/song/${song.id}" class="track-title-link">
         <div class="track-title-row">
@@ -1650,6 +1666,7 @@ function renderHomePage() {
           </svg>
         </a>
       </div>
+      <a href="#/song/${song.id}" class="track-cover" tabindex="-1">${getCover(song.id)}</a>
     </li>`;
   }).join('');
 
@@ -1705,7 +1722,11 @@ function renderHomePage() {
       <div id="songsChapter">
         <header class="songs-chapter-heading">
           <div class="songs-chapter-label-row">
-            <span class="songs-chapter-label" id="songsChapterLabel">רשימת השירים &nbsp;·&nbsp; ${isGrid ? 'תצוגת תמונות' : 'תצוגת רשימה'}</span>
+            <div class="songs-tabs" id="songsTabs">
+              <button class="songs-tab active" data-tab="he">שירים בעברית</button>
+              <button class="songs-tab" data-tab="en">שירים באנגלית</button>
+              <button class="songs-tab" data-tab="cover">קאברים</button>
+            </div>
             <div class="songs-chapter-controls">
               <button class="songs-view-btn${!isGrid ? ' active' : ''}" id="songsViewList" title="תצוגת רשימה">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1739,6 +1760,11 @@ function renderHomePage() {
         <section class="songs-section">
           <ol class="songs-tracklist${isGrid ? ' hidden' : ''}" id="songsTracklist">${tracks}</ol>
           <div class="songs-grid${!isGrid ? ' hidden' : ''}" id="songsGrid">${gridCards}</div>
+          <div class="songs-empty-state hidden" id="songsEmptyState">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            <div class="songs-empty-title">מגיע בקרוב</div>
+            <div class="songs-empty-sub">עובדים על זה — השירים יתווספו בקרוב</div>
+          </div>
         </section>
       </div>
 
@@ -1818,6 +1844,7 @@ function renderSongPage(id) {
   // Embeds
   const sunoEmbedHTML = buildSunoEmbed(song);
   const ytEmbedHTML = buildYoutubeEmbed(song);
+  const hasPlayable = !!(song.sunoEmbedId || song.youtubeVideoId || (song.audio && song.audio.src));
 
   const analysisLabels = {
     abstract: 'תמצית',
@@ -1882,11 +1909,11 @@ function renderSongPage(id) {
           <div class="song-hero-top">
             ${bc(bcItems)}
             <div class="song-hero-nav">
-              ${prevNavSong ? `<a href="#/song/${prevNavSong.id}" class="song-hero-nav-btn">
+              ${prevNavSong ? `<a href="#/song/${prevNavSong.id}" class="song-hero-nav-btn" data-nav="prev">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
                 השיר הקודם
               </a>` : ''}
-              ${nextNavSong ? `<a href="#/song/${nextNavSong.id}" class="song-hero-nav-btn">
+              ${nextNavSong ? `<a href="#/song/${nextNavSong.id}" class="song-hero-nav-btn" data-nav="next">
                 השיר הבא
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
               </a>` : ''}
@@ -1913,14 +1940,19 @@ function renderSongPage(id) {
             ${lyricsHTML}
           </div>
           <aside class="song-sidebar">
-            ${sunoEmbedHTML || ytEmbedHTML || `
+            ${sunoEmbedHTML || ytEmbedHTML || (hasPlayable ? `
             <div class="sidebar-player">
               <div class="sidebar-player-title">האזנה</div>
               <button class="sidebar-play-btn" data-play-idx="${idx}">
                 <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5v11L12 7z"/></svg>
                 נגן שיר
               </button>
-            </div>`}
+            </div>` : `
+            <div class="sidebar-coming-soon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <div class="coming-soon-text">השיר יעלה בקרוב</div>
+              <div class="coming-soon-sub">ההפקה בעיצומה</div>
+            </div>`)}
             <div class="chords-box">
               <div class="chords-title">אקורדים</div>
               <div class="chords-list">${chordsHTML}</div>
@@ -1956,19 +1988,13 @@ function buildSunoEmbed(song) {
 
 function buildYoutubeEmbed(song) {
   if (!song.youtubeVideoId) return null;
-  const vid = song.youtubeVideoId;
-  const ytUrl = (song.links && song.links.youtube) || `https://youtu.be/${vid}`;
   return `
     <div class="yt-embed-wrap">
       <div class="sidebar-player-title">צפייה ב-YouTube</div>
-      <a class="yt-thumb-card" href="${ytUrl}" target="_blank" rel="noopener" title="פתח ב-YouTube">
-        <img class="yt-thumb-img" src="https://img.youtube.com/vi/${vid}/mqdefault.jpg" alt="${song.title}" loading="lazy">
-        <div class="yt-thumb-overlay">
-          <div class="yt-thumb-play">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2 12 2 12 2s-4.8 0-7.3.2c-.6 0-1.9.1-3 1.3C.8 4.2.5 6.2.5 6.2S.2 8.5.2 10.8v2.1c0 2.3.3 4.6.3 4.6s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.8 12 22 12 22s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.2.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.6v-2.1C23.8 8.5 23.5 6.2 23.5 6.2zM9.7 15.5V8.4l6.6 3.6-6.6 3.5z"/></svg>
-          </div>
-        </div>
-      </a>
+      <div class="yt-placeholder" id="yt-ph-${song.id}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2 12 2 12 2s-4.8 0-7.3.2c-.6 0-1.9.1-3 1.3C.8 4.2.5 6.2.5 6.2S.2 8.5.2 10.8v2.1c0 2.3.3 4.6.3 4.6s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.8 12 22 12 22s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.2.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.6v-2.1C23.8 8.5 23.5 6.2 23.5 6.2zM9.7 15.5V8.4l6.6 3.6-6.6 3.5z"/></svg>
+        <span>לחץ <strong>נגן</strong> להפעלה</span>
+      </div>
     </div>`;
 }
 
@@ -2595,12 +2621,29 @@ function renderWritingPage(id) {
   const w = WRITINGS.find(x => x.id === id);
   if (!w) return `<div class="page-enter writing-page"><p>כתב לא נמצא.</p></div>`;
 
+  const widx = WRITINGS.indexOf(w);
+  const prevWriting = widx > 0 ? WRITINGS[widx - 1] : null;
+  const nextWriting = widx < WRITINGS.length - 1 ? WRITINGS[widx + 1] : null;
+
+  const writingNavHTML = (prevWriting || nextWriting) ? `
+    <div class="writing-hero-nav">
+      ${prevWriting ? `<a href="#/writing/${prevWriting.id}" class="writing-nav-btn" data-nav="prev">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        הכתבה הקודמת
+      </a>` : ''}
+      ${nextWriting ? `<a href="#/writing/${nextWriting.id}" class="writing-nav-btn" data-nav="next">
+        הכתבה הבאה
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </a>` : ''}
+    </div>` : '';
+
   const heroHTML = w.image
     ? `<div class="writing-hero">
         <img src="${w.image}" alt="${w.title}" class="writing-hero-img">
         <div class="writing-hero-overlay"></div>
         <div class="writing-hero-meta">
           ${bc([{label:'שירים',href:'#/'},{label:'כתבים',href:'#/writings'},{label:w.title,href:`#/writing/${w.id}`}])}
+          ${writingNavHTML}
           <h1 class="writing-hero-title">${w.title}</h1>
         </div>
       </div>`
@@ -2608,6 +2651,7 @@ function renderWritingPage(id) {
         <div class="writing-hero-overlay"></div>
         <div class="writing-hero-meta">
           ${bc([{label:'שירים',href:'#/'},{label:'כתבים',href:'#/writings'},{label:w.title,href:`#/writing/${w.id}`}])}
+          ${writingNavHTML}
           <h1 class="writing-hero-title">${w.title}</h1>
         </div>
       </div>`;
@@ -2627,8 +2671,13 @@ function renderWritingPage(id) {
       ).join('')}</div>`;
   }
 
-  // Next writings gallery (up to 3 others, excluding current)
-  const others = WRITINGS.filter(x => x.id !== w.id).slice(0, 3);
+  // Next writings gallery — show adjacent articles first, then fill up to 3
+  const adjacentIds = new Set([prevWriting?.id, nextWriting?.id].filter(Boolean));
+  const others = [
+    ...(prevWriting ? [prevWriting] : []),
+    ...(nextWriting ? [nextWriting] : []),
+    ...WRITINGS.filter(x => x.id !== w.id && !adjacentIds.has(x.id))
+  ].slice(0, 3);
   const galleryCards = others.map(o => {
     const oImg = o.image
       ? `<img src="${o.image}" alt="${o.title}" style="width:100%;height:100%;object-fit:cover;display:block">`
@@ -2794,6 +2843,33 @@ function bindPageEvents() {
     });
   });
 
+  // Song page — swipe left/right to navigate between songs
+  const songPage = document.querySelector('.song-page');
+  if (songPage) {
+    let swipeTouchStartX = 0;
+    let swipeTouchStartY = 0;
+    songPage.addEventListener('touchstart', e => {
+      swipeTouchStartX = e.touches[0].clientX;
+      swipeTouchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    songPage.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - swipeTouchStartX;
+      const dy = e.changedTouches[0].clientY - swipeTouchStartY;
+      if (Math.abs(dx) > 52 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        // RTL: swipe left (dx < 0) = next song; swipe right (dx > 0) = prev song
+        const target = dx < 0
+          ? document.querySelector('.song-hero-nav-btn[data-nav="next"]')
+          : document.querySelector('.song-hero-nav-btn[data-nav="prev"]');
+        if (target) {
+          const songId = target.getAttribute('href').replace('#/song/', '');
+          const idx = SONGS.findIndex(s => s.id === songId);
+          if (idx >= 0) pendingAutoplaySongIdx = idx;
+          navigateFade(target.getAttribute('href'));
+        }
+      }
+    }, { passive: true });
+  }
+
   // Play buttons on song cards (click on card navigates, double-click plays)
   document.querySelectorAll('[data-play-idx]').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -2943,7 +3019,6 @@ function bindPageEvents() {
   const songsViewGrid = document.getElementById('songsViewGrid');
   const songsTracklist = document.getElementById('songsTracklist');
   const songsGridEl = document.getElementById('songsGrid');
-  const chapterLabel = document.getElementById('songsChapterLabel');
   function applySongsView(view) {
     if (!songsTracklist || !songsGridEl) return;
     if (view === 'grid') {
@@ -2951,17 +3026,35 @@ function bindPageEvents() {
       songsGridEl.classList.remove('hidden');
       if (songsViewList) songsViewList.classList.remove('active');
       if (songsViewGrid) songsViewGrid.classList.add('active');
-      if (chapterLabel) chapterLabel.innerHTML = 'רשימת השירים &nbsp;·&nbsp; תצוגת תמונות';
     } else {
       songsTracklist.classList.remove('hidden');
       songsGridEl.classList.add('hidden');
       if (songsViewList) songsViewList.classList.add('active');
       if (songsViewGrid) songsViewGrid.classList.remove('active');
-      if (chapterLabel) chapterLabel.innerHTML = 'רשימת השירים &nbsp;·&nbsp; תצוגת רשימה';
     }
   }
   if (songsViewList) songsViewList.addEventListener('click', () => { localStorage.setItem('amiado_songs_view', 'list'); applySongsView('list'); });
   if (songsViewGrid) songsViewGrid.addEventListener('click', () => { localStorage.setItem('amiado_songs_view', 'grid'); applySongsView('grid'); });
+
+  // Home page — Category tabs
+  const tabBtns = document.querySelectorAll('.songs-tab');
+  const songsEmptyState = document.getElementById('songsEmptyState');
+  const savedTab = localStorage.getItem('amiado_songs_tab') || 'he';
+  function applySongsTab(tab) {
+    tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+    const items = document.querySelectorAll('#songsTracklist .track-item');
+    const cards = document.querySelectorAll('#songsGrid .song-grid-card');
+    let visibleCount = 0;
+    const matches = el => {
+      if (tab === 'cover') return el.dataset.cover === '1';
+      return el.dataset.lang === tab && el.dataset.cover !== '1';
+    };
+    items.forEach(el => { const m = matches(el); el.style.display = m ? '' : 'none'; if (m) visibleCount++; });
+    cards.forEach(el => { el.style.display = matches(el) ? '' : 'none'; });
+    if (songsEmptyState) songsEmptyState.classList.toggle('hidden', visibleCount > 0);
+  }
+  tabBtns.forEach(b => b.addEventListener('click', () => { localStorage.setItem('amiado_songs_tab', b.dataset.tab); applySongsTab(b.dataset.tab); }));
+  applySongsTab(savedTab);
 
   // Home page — Grid card click → navigate to song
   document.querySelectorAll('.song-grid-card[data-id]').forEach(card => {
