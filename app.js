@@ -1205,48 +1205,6 @@ const state = {
 let pendingAutoplaySongIdx = -1;
 let navContext = null; // { type: 'favorites'|'playlist', ids: [songId,...], plId? }
 
-// ── Entry screen music preview ──
-let entryPreviewAudio = null;
-let entryPreviewMuted = false;
-
-function startEntryPreview() {
-  const candidates = SONGS.filter(s => s.audio && s.audio.src);
-  if (!candidates.length) return;
-  const song = candidates[Math.floor(Math.random() * candidates.length)];
-  entryPreviewAudio = new Audio(song.audio.src);
-  entryPreviewAudio.volume = 0.28;
-  entryPreviewAudio.loop = true;
-  entryPreviewAudio.play().then(() => {
-    // Autoplay succeeded — show mute button
-    const muteBtn = document.getElementById('entryMuteBtn');
-    if (muteBtn) muteBtn.classList.add('vis');
-  }).catch(() => {
-    // Autoplay blocked — show "tap to play" hint
-    entryPreviewAudio = null;
-    const muteBtn = document.getElementById('entryMuteBtn');
-    if (muteBtn) { muteBtn.classList.add('vis'); muteBtn.classList.add('blocked'); }
-  });
-}
-
-function stopEntryPreview() {
-  if (entryPreviewAudio) {
-    entryPreviewAudio.pause();
-    entryPreviewAudio = null;
-  }
-}
-
-function toggleEntryMute() {
-  const muteBtn = document.getElementById('entryMuteBtn');
-  if (!entryPreviewAudio) {
-    // Was blocked — try to start now (needs user gesture)
-    startEntryPreview();
-    if (muteBtn) muteBtn.classList.remove('blocked');
-    return;
-  }
-  entryPreviewMuted = !entryPreviewMuted;
-  entryPreviewAudio.volume = entryPreviewMuted ? 0 : 0.28;
-  if (muteBtn) muteBtn.classList.toggle('muted', entryPreviewMuted);
-}
 
 function playSong(idx) {
   const song = SONGS[idx];
