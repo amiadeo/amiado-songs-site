@@ -2010,13 +2010,17 @@ function buildSunoEmbed(song) {
 
 function buildYoutubeEmbed(song) {
   if (!song.youtubeVideoId) return null;
+  const vid = song.youtubeVideoId;
+  const href = song.links?.youtube || `https://www.youtube.com/watch?v=${vid}`;
   return `
     <div class="yt-embed-wrap">
       <div class="sidebar-player-title">צפייה ב-YouTube</div>
-      <div class="yt-placeholder" id="yt-ph-${song.id}">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2 12 2 12 2s-4.8 0-7.3.2c-.6 0-1.9.1-3 1.3C.8 4.2.5 6.2.5 6.2S.2 8.5.2 10.8v2.1c0 2.3.3 4.6.3 4.6s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.8 12 22 12 22s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.2.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.6v-2.1C23.8 8.5 23.5 6.2 23.5 6.2zM9.7 15.5V8.4l6.6 3.6-6.6 3.5z"/></svg>
-        <span>לחץ <strong>נגן</strong> להפעלה</span>
-      </div>
+      <a class="yt-thumbnail-link" href="${href}" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/${vid}/mqdefault.jpg" alt="${song.title}" loading="lazy">
+        <div class="yt-thumbnail-play">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2 12 2 12 2s-4.8 0-7.3.2c-.6 0-1.9.1-3 1.3C.8 4.2.5 6.2.5 6.2S.2 8.5.2 10.8v2.1c0 2.3.3 4.6.3 4.6s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.8 12 22 12 22s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.2.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.6v-2.1C23.8 8.5 23.5 6.2 23.5 6.2zM9.7 15.5V8.4l6.6 3.6-6.6 3.5z"/></svg>
+        </div>
+      </a>
     </div>`;
 }
 
@@ -2888,6 +2892,28 @@ function bindPageEvents() {
           if (idx >= 0) pendingAutoplaySongIdx = idx;
           navigateFade(target.getAttribute('href'));
         }
+      }
+    }, { passive: true });
+  }
+
+  // Writing page — swipe left/right to navigate between writings
+  const writingPage = document.querySelector('.writing-page');
+  if (writingPage) {
+    let wSwipeStartX = 0;
+    let wSwipeStartY = 0;
+    writingPage.addEventListener('touchstart', e => {
+      wSwipeStartX = e.touches[0].clientX;
+      wSwipeStartY = e.touches[0].clientY;
+    }, { passive: true });
+    writingPage.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - wSwipeStartX;
+      const dy = e.changedTouches[0].clientY - wSwipeStartY;
+      if (Math.abs(dx) > 52 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        // RTL: swipe right (dx > 0) = next; swipe left (dx < 0) = prev
+        const target = dx > 0
+          ? document.querySelector('.writing-nav-btn[data-nav="next"]')
+          : document.querySelector('.writing-nav-btn[data-nav="prev"]');
+        if (target) navigateFade(target.getAttribute('href'));
       }
     }, { passive: true });
   }

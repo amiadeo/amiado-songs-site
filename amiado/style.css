@@ -1096,25 +1096,24 @@ body {
   padding: 16px;
   margin-bottom: 24px;
 }
-.yt-iframe { display: block; width: 100%; border-radius: 6px; margin-top: 10px; aspect-ratio: 16/9; }
-.yt-placeholder {
-  margin-top: 10px; height: 80px;
-  border: 1px dashed var(--border); border-radius: 6px;
+.yt-thumbnail-link {
+  display: block; margin-top: 10px; border-radius: 6px;
+  overflow: hidden; position: relative; text-decoration: none;
+}
+.yt-thumbnail-link img {
+  display: block; width: 100%; aspect-ratio: 16/9;
+  object-fit: cover; border-radius: 6px;
+  transition: opacity 0.2s;
+}
+.yt-thumbnail-link:hover img { opacity: 0.85; }
+.yt-thumbnail-play {
+  position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; color: var(--text-dim); font-size: 0.85rem;
-  cursor: pointer; transition: border-color 0.2s;
+  background: rgba(0,0,0,0.25);
+  transition: background 0.2s;
 }
-.yt-placeholder:hover { border-color: #ff4444; color: var(--text-main); }
-.yt-placeholder svg { fill: #ff4444; flex-shrink: 0; }
-.yt-placeholder strong { color: #ff4444; }
-.yt-embed-fallback {
-  display: flex; align-items: center; gap: 8px; justify-content: center;
-  margin-top: 10px; padding: 14px; border-radius: 6px;
-  background: rgba(255,0,0,0.08); border: 1px solid rgba(255,0,0,0.25);
-  color: #ff6666; text-decoration: none; font-size: 0.85rem; transition: background 0.2s;
-}
-.yt-embed-fallback:hover { background: rgba(255,0,0,0.15); }
-.yt-embed-fallback svg { fill: #ff4444; flex-shrink: 0; }
+.yt-thumbnail-link:hover .yt-thumbnail-play { background: rgba(0,0,0,0.4); }
+.yt-thumbnail-play svg { filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6)); }
 
 /* ══════════════════════════════════════════
    SONG DETAIL PAGE
@@ -2941,10 +2940,7 @@ body {
   .pl-card { height: 160px; }
   .pl-card-name { font-size: 0.78rem; }
 
-  /* Player — moves to just below nav on mobile */
-  .player:not(.hidden) { bottom: auto; top: var(--nav-h); border-top: none; border-bottom: 1px solid var(--border-s); }
-  body:has(#player:not(.hidden)) #app { padding-top: calc(var(--nav-h) + var(--player-h)); }
-  body:has(#player:not(.hidden)) { padding-bottom: 0; }
+  /* Player — stays at bottom on mobile */
   .player-inner { padding: 0 10px; gap: 8px; grid-template-columns: 1fr auto; }
   .player-progress-wrap { display: none; }
   .player-cover-sm { width: 36px; height: 36px; }
