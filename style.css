@@ -2883,6 +2883,9 @@ body {
   .songs-chapter-heading { padding: 36px 12px 0; }
   .songs-search-wrap { padding: 12px 12px 0; }
   .songs-chapter-label { font-size: 0.5rem; letter-spacing: 0.22em; }
+  .songs-chapter-label-row { flex-wrap: wrap; gap: 10px; }
+  .songs-tabs { width: 100%; }
+  .songs-tab { padding: 6px 12px; font-size: 0.75rem; flex: 1; text-align: center; }
   .songs-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 6px; }
   .song-grid-card { height: 220px; }
   .song-grid-fav-btn { opacity: 1; }

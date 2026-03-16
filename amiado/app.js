@@ -2878,8 +2878,8 @@ function bindPageEvents() {
       const dx = e.changedTouches[0].clientX - swipeTouchStartX;
       const dy = e.changedTouches[0].clientY - swipeTouchStartY;
       if (Math.abs(dx) > 52 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-        // RTL: swipe left (dx < 0) = next song; swipe right (dx > 0) = prev song
-        const target = dx < 0
+        // RTL: swipe right (dx > 0) = next song; swipe left (dx < 0) = prev song
+        const target = dx > 0
           ? document.querySelector('.song-hero-nav-btn[data-nav="next"]')
           : document.querySelector('.song-hero-nav-btn[data-nav="prev"]');
         if (target) {
