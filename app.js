@@ -1353,6 +1353,20 @@ window.addEventListener('message', e => {
         updatePlayPauseIcon();
       }
     }
+    // Error 150/151/153 = embedding disabled — replace with a watch link
+    if (data.event === 'onError') {
+      const song = SONGS[state.currentIdx];
+      if (song && song.youtubeVideoId) {
+        const iframe = document.getElementById('yt-iframe-' + song.id);
+        if (iframe) {
+          const wrap = iframe.parentElement;
+          wrap.innerHTML = `<a class="yt-embed-fallback" href="https://www.youtube.com/watch?v=${song.youtubeVideoId}" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2 12 2 12 2s-4.8 0-7.3.2c-.6 0-1.9.1-3 1.3C.8 4.2.5 6.2.5 6.2S.2 8.5.2 10.8v2.1c0 2.3.3 4.6.3 4.6s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.8 12 22 12 22s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.2.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.6v-2.1C23.8 8.5 23.5 6.2 23.5 6.2zM9.7 15.5V8.4l6.6 3.6-6.6 3.5z"/></svg>
+            <span>צפו ב-YouTube</span>
+          </a>`;
+        }
+      }
+    }
   } catch {}
 });
 

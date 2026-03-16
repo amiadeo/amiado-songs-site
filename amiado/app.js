@@ -1205,48 +1205,6 @@ const state = {
 let pendingAutoplaySongIdx = -1;
 let navContext = null; // { type: 'favorites'|'playlist', ids: [songId,...], plId? }
 
-// ── Entry screen music preview ──
-let entryPreviewAudio = null;
-let entryPreviewMuted = false;
-
-function startEntryPreview() {
-  const candidates = SONGS.filter(s => s.audio && s.audio.src);
-  if (!candidates.length) return;
-  const song = candidates[Math.floor(Math.random() * candidates.length)];
-  entryPreviewAudio = new Audio(song.audio.src);
-  entryPreviewAudio.volume = 0.28;
-  entryPreviewAudio.loop = true;
-  entryPreviewAudio.play().then(() => {
-    // Autoplay succeeded — show mute button
-    const muteBtn = document.getElementById('entryMuteBtn');
-    if (muteBtn) muteBtn.classList.add('vis');
-  }).catch(() => {
-    // Autoplay blocked — show "tap to play" hint
-    entryPreviewAudio = null;
-    const muteBtn = document.getElementById('entryMuteBtn');
-    if (muteBtn) { muteBtn.classList.add('vis'); muteBtn.classList.add('blocked'); }
-  });
-}
-
-function stopEntryPreview() {
-  if (entryPreviewAudio) {
-    entryPreviewAudio.pause();
-    entryPreviewAudio = null;
-  }
-}
-
-function toggleEntryMute() {
-  const muteBtn = document.getElementById('entryMuteBtn');
-  if (!entryPreviewAudio) {
-    // Was blocked — try to start now (needs user gesture)
-    startEntryPreview();
-    if (muteBtn) muteBtn.classList.remove('blocked');
-    return;
-  }
-  entryPreviewMuted = !entryPreviewMuted;
-  entryPreviewAudio.volume = entryPreviewMuted ? 0 : 0.28;
-  if (muteBtn) muteBtn.classList.toggle('muted', entryPreviewMuted);
-}
 
 function playSong(idx) {
   const song = SONGS[idx];
@@ -1395,6 +1353,20 @@ window.addEventListener('message', e => {
         updatePlayPauseIcon();
       }
     }
+    // Error 150/151/153 = embedding disabled — replace with a watch link
+    if (data.event === 'onError') {
+      const song = SONGS[state.currentIdx];
+      if (song && song.youtubeVideoId) {
+        const iframe = document.getElementById('yt-iframe-' + song.id);
+        if (iframe) {
+          const wrap = iframe.parentElement;
+          wrap.innerHTML = `<a class="yt-embed-fallback" href="https://www.youtube.com/watch?v=${song.youtubeVideoId}" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2 12 2 12 2s-4.8 0-7.3.2c-.6 0-1.9.1-3 1.3C.8 4.2.5 6.2.5 6.2S.2 8.5.2 10.8v2.1c0 2.3.3 4.6.3 4.6s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.8 12 22 12 22s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.2.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.6v-2.1C23.8 8.5 23.5 6.2 23.5 6.2zM9.7 15.5V8.4l6.6 3.6-6.6 3.5z"/></svg>
+            <span>צפו ב-YouTube</span>
+          </a>`;
+        }
+      }
+    }
   } catch {}
 });
 
@@ -1436,9 +1408,6 @@ function fmtTime(s) {
 function route() {
   const hash = window.location.hash || '#/';
   const app = document.getElementById('app');
-
-  // Stop entry preview if navigating away from home
-  if (hash !== '#/' && hash !== '') stopEntryPreview();
 
   // Update nav active state
   document.querySelectorAll('.nav-link').forEach(link => {
@@ -1482,7 +1451,6 @@ function route() {
     document.title = 'Amiado';
     document.querySelector('[data-route="home"]')?.classList.add('active');
     app.innerHTML = renderHomePage();
-    stopEntryPreview();
     setTimeout(() => {
       document.getElementById('songsChapter')?.scrollIntoView({ behavior: 'smooth' });
     }, 80);
@@ -1759,15 +1727,10 @@ function renderHomePage() {
               <span>YouTube</span>
             </a>
           </div>
-          <button class="entry-enter-btn" id="entryBtn" onclick="stopEntryPreview(); document.getElementById('songsChapter').scrollIntoView({behavior:'smooth'})">
+          <button class="entry-enter-btn" id="entryBtn" onclick="document.getElementById('songsChapter').scrollIntoView({behavior:'smooth'})">
             <span>בואו נתחיל את המסע</span>
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M3 7l3 3 3-3"/></svg>
           </button>
-        <button class="entry-mute-btn" id="entryMuteBtn" onclick="toggleEntryMute()" title="השתק / הפעל מוזיקה">
-          <svg class="icon-sound" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-          <svg class="icon-mute" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-          <span class="entry-mute-label">מוזיקה</span>
-        </button>
         </div>
 
         <!-- Scroll indicator -->
@@ -1858,9 +1821,6 @@ function runHeroAnimation() {
 
   // Trigger background Ken Burns zoom-out
   if (bg) requestAnimationFrame(() => bg.classList.add('loaded'));
-
-  // Start music preview
-  startEntryPreview();
 
   // Staggered content reveal
   setTimeout(() => heroLogo && heroLogo.classList.add('vis'),  100);

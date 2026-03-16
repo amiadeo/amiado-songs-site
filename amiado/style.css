@@ -404,36 +404,6 @@ body {
 .entry-enter-btn svg { transition: transform 0.3s ease; }
 .entry-enter-btn:hover svg { transform: translateY(4px); }
 
-/* Entry mute button */
-.entry-mute-btn {
-  position: absolute;
-  bottom: 28px;
-  inset-inline-end: 28px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(13,17,23,0.45);
-  border: 1px solid rgba(232,227,216,0.18);
-  border-radius: 20px;
-  padding: 8px 14px;
-  color: rgba(232,227,216,0.6);
-  font-family: var(--font-he);
-  font-size: 0.72rem;
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s, border-color 0.2s, color 0.2s;
-  backdrop-filter: blur(8px);
-  z-index: 10;
-}
-.entry-mute-btn.vis { opacity: 1; pointer-events: auto; }
-.entry-mute-btn:hover { border-color: rgba(232,227,216,0.45); color: rgba(232,227,216,0.9); }
-.entry-mute-btn .icon-mute { display: none; }
-.entry-mute-btn.muted .icon-sound { display: none; }
-.entry-mute-btn.muted .icon-mute { display: block; }
-.entry-mute-btn.blocked .entry-mute-label::before { content: 'לחץ להפעלה'; }
-.entry-mute-btn.blocked .entry-mute-label { font-size: 0; }
-.entry-mute-btn.blocked .entry-mute-label::before { font-size: 0.72rem; }
 
 /* Scroll line at bottom */
 .entry-scroll {
@@ -1137,6 +1107,14 @@ body {
 .yt-placeholder:hover { border-color: #ff4444; color: var(--text-main); }
 .yt-placeholder svg { fill: #ff4444; flex-shrink: 0; }
 .yt-placeholder strong { color: #ff4444; }
+.yt-embed-fallback {
+  display: flex; align-items: center; gap: 8px; justify-content: center;
+  margin-top: 10px; padding: 14px; border-radius: 6px;
+  background: rgba(255,0,0,0.08); border: 1px solid rgba(255,0,0,0.25);
+  color: #ff6666; text-decoration: none; font-size: 0.85rem; transition: background 0.2s;
+}
+.yt-embed-fallback:hover { background: rgba(255,0,0,0.15); }
+.yt-embed-fallback svg { fill: #ff4444; flex-shrink: 0; }
 
 /* ══════════════════════════════════════════
    SONG DETAIL PAGE
