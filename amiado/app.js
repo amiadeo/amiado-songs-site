@@ -1651,8 +1651,8 @@ function getWeeklySong() {
   const now = new Date();
   const startOfYear = new Date(now.getFullYear(), 0, 1);
   const weekNum = Math.floor((now - startOfYear) / (7 * 24 * 60 * 60 * 1000));
-  const withAudio = SONGS.filter(s => s.audio && s.audio.src);
-  return withAudio[weekNum % withAudio.length];
+  const playable = SONGS.filter(s => s.sunoEmbedId);
+  return playable[weekNum % playable.length];
 }
 function getWeeklyWriting() {
   const now = new Date();
