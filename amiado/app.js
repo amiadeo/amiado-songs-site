@@ -1651,7 +1651,14 @@ function getWeeklySong() {
   const now = new Date();
   const startOfYear = new Date(now.getFullYear(), 0, 1);
   const weekNum = Math.floor((now - startOfYear) / (7 * 24 * 60 * 60 * 1000));
-  return SONGS[weekNum % SONGS.length];
+  const withAudio = SONGS.filter(s => s.audio && s.audio.src);
+  return withAudio[weekNum % withAudio.length];
+}
+function getWeeklyWriting() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);
+  const weekNum = Math.floor((now - startOfYear) / (7 * 24 * 60 * 60 * 1000));
+  return WRITINGS[(weekNum + 3) % WRITINGS.length];
 }
 
 function renderHomePage() {
@@ -1730,11 +1737,12 @@ function renderHomePage() {
         <button class="track-play-btn" data-play-idx="${i}" title="נגן">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1v10l9-5z"/></svg>
         </button>
-        <a href="#/song/${song.id}" class="track-open-btn" title="פתח שיר">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M5 2H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V7M8 1h3m0 0v3m0-3L5 7"/>
+        <button class="track-open-btn track-share-btn" data-song-id="${song.id}" data-song-title="${song.title}" title="שתף שיר">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
           </svg>
-        </a>
+        </button>
       </div>
       <a href="#/song/${song.id}" class="track-cover" tabindex="-1">${getCover(song.id)}</a>
     </li>`;
@@ -1788,28 +1796,43 @@ function renderHomePage() {
         </div>
       </section>
 
-      <!-- ── Song of the week ── -->
+      <!-- ── Song/Writing of the week ── -->
       ${(() => {
-        const w = getWeeklySong();
-        const wIdx = SONGS.indexOf(w);
+        const song = getWeeklySong();
+        const songIdx = SONGS.indexOf(song);
+        const writing = getWeeklyWriting();
         return `
         <section class="sotw-section">
-          <a href="#/song/${w.id}" class="sotw-card">
-            <div class="sotw-cover">${getCover(w.id)}</div>
-            <div class="sotw-overlay"></div>
-            <div class="sotw-content">
-              <span class="sotw-label">שיר השבוע</span>
-              <h2 class="sotw-title">${w.title}</h2>
-              ${w.analysis?.abstract ? `<p class="sotw-desc">${w.analysis.abstract.slice(0, 100)}…</p>` : ''}
-              <div class="sotw-actions">
-                <button class="sotw-play-btn" data-play-idx="${wIdx}" data-song-id="${w.id}">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11L12 7z"/></svg>
-                  נגן עכשיו
-                </button>
-                <span class="sotw-link-hint">לדף השיר ←</span>
+          <div class="sotw-row">
+            <a href="#/song/${song.id}" class="sotw-card">
+              <div class="sotw-cover">${getCover(song.id)}</div>
+              <div class="sotw-overlay"></div>
+              <div class="sotw-content">
+                <span class="sotw-label">שיר השבוע</span>
+                <h2 class="sotw-title">${song.title}</h2>
+                ${song.analysis?.abstract ? `<p class="sotw-desc">${song.analysis.abstract.slice(0, 100)}…</p>` : ''}
+                <div class="sotw-actions">
+                  <button class="sotw-play-btn" data-play-idx="${songIdx}" data-song-id="${song.id}">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11L12 7z"/></svg>
+                    נגן עכשיו
+                  </button>
+                  <span class="sotw-link-hint">לדף השיר ←</span>
+                </div>
               </div>
-            </div>
-          </a>
+            </a>
+            <a href="#/writing/${writing.id}" class="sotw-card sotw-card--writing">
+              ${writing.image ? `<div class="sotw-cover"><img src="${writing.image}" alt="${writing.title}" loading="lazy"></div>` : '<div class="sotw-cover sotw-cover--plain"></div>'}
+              <div class="sotw-overlay sotw-overlay--writing"></div>
+              <div class="sotw-content">
+                <span class="sotw-label">כתב השבוע</span>
+                <h2 class="sotw-title">${writing.title}</h2>
+                ${writing.excerpt ? `<p class="sotw-desc">${writing.excerpt.slice(0, 100)}…</p>` : ''}
+                <div class="sotw-actions">
+                  <span class="sotw-link-hint">לקריאה ←</span>
+                </div>
+              </div>
+            </a>
+          </div>
         </section>`;
       })()}
 
@@ -3136,6 +3159,25 @@ function bindPageEvents() {
         await navigator.clipboard.writeText(url);
         const orig = btn.innerHTML;
         btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> הועתק`;
+        setTimeout(() => { btn.innerHTML = orig; }, 2000);
+      }
+    });
+  });
+
+  // Song list — track share button
+  document.querySelectorAll('.track-share-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const songId    = btn.dataset.songId;
+      const songTitle = btn.dataset.songTitle;
+      const url       = `${location.origin}${location.pathname}#/song/${songId}`;
+      if (navigator.share) {
+        try { await navigator.share({ title: songTitle, text: `${songTitle} — Amiado`, url }); } catch {}
+      } else {
+        await navigator.clipboard.writeText(url);
+        const orig = btn.innerHTML;
+        btn.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`;
         setTimeout(() => { btn.innerHTML = orig; }, 2000);
       }
     });

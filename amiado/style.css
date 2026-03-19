@@ -512,6 +512,11 @@ body {
 .sotw-section {
   padding: 0 40px 0;
 }
+.sotw-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
 .sotw-card {
   display: block;
   position: relative;
@@ -609,9 +614,16 @@ body {
   transition: color 0.2s;
 }
 .sotw-card:hover .sotw-link-hint { color: rgba(255,255,255,0.7); }
+.sotw-cover--plain {
+  background: linear-gradient(135deg, #1a1208 0%, #2c1f0a 50%, #1a1208 100%);
+}
+.sotw-overlay--writing {
+  background: linear-gradient(to left, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.82) 100%);
+}
 
 @media (max-width: 768px) {
   .sotw-section { padding: 0 20px; }
+  .sotw-row { grid-template-columns: 1fr; }
   .sotw-card { height: 180px; }
   .sotw-content { padding: 20px; }
   .sotw-desc { display: none; }
@@ -1096,6 +1108,7 @@ body {
 .track-play-btn:hover { background: rgba(201,168,76,0.25); border-color: var(--gold); }
 .track-open-btn { color: var(--text-dim); }
 .track-open-btn:hover { color: var(--gold); border-color: var(--gold); }
+.track-share-btn { background: none; }
 
 /* Fav + Add buttons */
 .track-fav-btn,
