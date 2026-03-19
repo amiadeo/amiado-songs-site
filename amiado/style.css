@@ -1412,6 +1412,28 @@ body {
   transform: translateY(-1px);
   box-shadow: 0 4px 20px rgba(201,168,76,0.35);
 }
+
+.btn-share-song {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  color: rgba(255,255,255,0.75);
+  font-family: var(--font-en);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.btn-share-song:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201,168,76,0.08);
+}
 .btn-play-song svg { fill: #0d1117; }
 
 /* ── Song body: lyrics + chords ── */
