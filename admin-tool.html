@@ -372,6 +372,62 @@
 
   .analysis-fields.open { display: flex; }
 
+  /* ── CATEGORY BUTTONS ── */
+  .category-btns {
+    display: flex;
+    gap: 8px;
+  }
+  .cat-btn {
+    flex: 1;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: var(--radius);
+    padding: 10px;
+    font-family: var(--sans);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .cat-btn:hover { border-color: var(--gold-dim); color: var(--text); }
+  .cat-btn.active { background: var(--gold-glow); border-color: var(--gold); color: var(--gold); }
+
+  /* ── SEND BUTTON ── */
+  .btn-send {
+    width: 100%;
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    border-radius: var(--radius);
+    padding: 14px 32px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 400;
+    transition: background 0.2s, border-color 0.2s;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .btn-send:hover { background: var(--gold-glow); border-color: var(--gold); }
+  .btn-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .server-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-align: center;
+    margin-top: 8px;
+    min-height: 16px;
+  }
+  .server-status.ok    { color: #4caf72; }
+  .server-status.err   { color: #e05050; }
+  .server-status.info  { color: var(--text-muted); }
+
   /* ── GENERATE BUTTON ── */
   .generate-wrap {
     position: sticky;
@@ -528,15 +584,16 @@
       <div class="field-note">נוצר אוטומטית מהכותרת — ניתן לערוך ידנית</div>
     </div>
 
-    <div class="fields-row">
-      <div class="field">
-        <label>שפה</label>
-        <select id="language">
-          <option value="he">עברית</option>
-          <option value="en">English</option>
-          <option value="es">Español</option>
-        </select>
+    <div class="field">
+      <label>קטגוריה <span class="label-note">// לאיזה טאב השיר שייך</span></label>
+      <div class="category-btns" id="categoryBtns">
+        <button type="button" class="cat-btn active" data-cat="he" onclick="setCategory('he')">עברית</button>
+        <button type="button" class="cat-btn" data-cat="en" onclick="setCategory('en')">אנגלית</button>
+        <button type="button" class="cat-btn" data-cat="cover" onclick="setCategory('cover')">קאבר</button>
       </div>
+    </div>
+
+    <div class="fields-row">
       <div class="field">
         <label>מספר תמונה <span class="label-note">// songs{n}.jpeg</span></label>
         <input type="number" id="coverNum" min="1" max="60" placeholder="35" oninput="updateCoverPreview()">
@@ -631,6 +688,12 @@
       </button>
     </div>
     <pre class="output-code" id="outputCode"></pre>
+
+    <button class="btn-send" id="sendBtn" onclick="sendToFile()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      שלח ישירות ל-app.js
+    </button>
+    <div class="server-status info" id="serverStatus">מחפש שרת מקומי...</div>
   </div>
 
 </div>
@@ -638,6 +701,14 @@
 <div class="toast" id="toast">הועתק ללוח ✓</div>
 
 <script>
+// ── CATEGORY ──
+let currentCategory = 'he'; // he | en | cover
+
+function setCategory(cat) {
+  currentCategory = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+}
+
 // ── DEFAULT SECTIONS ──
 const defaultSections = ['בית 1', 'פזמון', 'בית 2', 'סיום'];
 let sectionCount = 0;
@@ -735,7 +806,6 @@ function toggleAnalysis() {
 function generate() {
   const title = document.getElementById('title').value.trim();
   const id = document.getElementById('songId').value.trim();
-  const language = document.getElementById('language').value;
   const hasAudio = document.getElementById('hasAudio').checked;
   const coverNum = document.getElementById('coverNum').value.trim();
   const sunoLink = document.getElementById('sunoLink').value.trim();
@@ -769,9 +839,14 @@ function generate() {
     if (name && lines.length) lyrics.push({ section: name, lines });
   });
 
+  // Resolve language + cover from category
+  const language = currentCategory === 'en' ? 'en' : 'he';
+  const isCover  = currentCategory === 'cover';
+
   // Build object
   let out = `  {\n`;
   out += `    id: '${id}', title: '${title}', language: '${language}',\n`;
+  if (isCover) out += `    cover: true,\n`;
 
   if (hasAudio) {
     out += `    audio: { type: 'file', src: 'songs/${id}/audio.mp3' },\n`;
@@ -849,8 +924,62 @@ function showToast() {
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
+// ── SEND TO FILE ──
+async function sendToFile() {
+  const code = document.getElementById('outputCode').textContent;
+  if (!code) return;
+  const btn = document.getElementById('sendBtn');
+  const status = document.getElementById('serverStatus');
+  btn.disabled = true;
+  status.className = 'server-status info';
+  status.textContent = 'שולח...';
+  try {
+    const res = await fetch('http://localhost:3333/add-song', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      status.className = 'server-status ok';
+      status.textContent = '✓ השיר נוסף בהצלחה ל-app.js — עשה git push להעלאה';
+    } else {
+      throw new Error(data.error || 'שגיאה לא ידועה');
+    }
+  } catch (e) {
+    status.className = 'server-status err';
+    status.textContent = e.message.includes('fetch') ? '✗ שרת לא פועל — הפעל: node admin-server.js' : `✗ שגיאה: ${e.message}`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ── SERVER STATUS CHECK ──
+async function checkServer() {
+  const status = document.getElementById('serverStatus');
+  try {
+    const res = await fetch('http://localhost:3333/ping', { signal: AbortSignal.timeout(1500) });
+    const data = await res.json();
+    if (data.ok) {
+      status.className = 'server-status ok';
+      status.textContent = '✓ שרת פועל — מוכן לשליחה';
+    }
+  } catch {
+    status.className = 'server-status err';
+    status.textContent = '✗ שרת לא פועל — הפעל: node admin-server.js';
+  }
+}
+
 // ── INIT ──
 defaultSections.forEach(s => addSection(s));
+// Check server when output appears (observe DOM)
+const _obs = new MutationObserver(() => {
+  if (document.getElementById('outputWrap')?.classList.contains('show')) {
+    checkServer();
+    _obs.disconnect();
+  }
+});
+_obs.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
 </script>
 </body>
 </html>
