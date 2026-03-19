@@ -508,6 +508,118 @@ body {
   white-space: nowrap;
 }
 
+/* ── Song of the Week ── */
+.sotw-section {
+  padding: 0 40px 0;
+}
+.sotw-card {
+  display: block;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 220px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.sotw-card:hover .sotw-cover img { transform: scale(1.04); }
+.sotw-cover {
+  position: absolute;
+  inset: 0;
+}
+.sotw-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  display: block;
+}
+.sotw-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to left, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 55%, rgba(0,0,0,0.85) 100%);
+}
+.sotw-content {
+  position: relative;
+  z-index: 1;
+  padding: 28px 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+.sotw-label {
+  font-family: var(--font-en);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 4px 10px;
+  border-radius: 20px;
+  width: fit-content;
+}
+.sotw-title {
+  font-family: var(--font-d);
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.sotw-desc {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.55);
+  max-width: 480px;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.sotw-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+.sotw-play-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: #0d0d0d;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 18px;
+  font-family: var(--font-en);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+.sotw-play-btn:hover { opacity: 0.85; }
+.sotw-link-hint {
+  font-family: var(--font-en);
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.sotw-card:hover .sotw-link-hint { color: rgba(255,255,255,0.7); }
+
+@media (max-width: 768px) {
+  .sotw-section { padding: 0 20px; }
+  .sotw-card { height: 180px; }
+  .sotw-content { padding: 20px; }
+  .sotw-desc { display: none; }
+}
+@media (max-width: 480px) {
+  .sotw-section { padding: 0 12px; }
+}
+
 /* ── Songs chapter ── */
 .songs-chapter-heading {
   padding: 80px 40px 0;

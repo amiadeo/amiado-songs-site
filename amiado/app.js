@@ -1204,6 +1204,40 @@ const state = {
 
 let pendingAutoplaySongIdx = -1;
 let navContext = null; // { type: 'favorites'|'playlist', ids: [songId,...], plId? }
+let _heroShown = false;
+
+function showHeroNow() {
+  ['entryHeroLogo','entryEyebrow','entryName','entryDivider',
+   'entrySocials','entryBtn','entryScroll','cornerTL','cornerBR','sp1','sp2'].forEach(id => {
+    document.getElementById(id)?.classList.add('vis');
+  });
+  const bg = document.getElementById('entryBg');
+  if (bg) bg.classList.add('loaded');
+}
+
+function getNextSongIdx() {
+  if (navContext && navContext.ids && navContext.ids.length > 1) {
+    const currentId = SONGS[state.currentIdx]?.id;
+    const pos = navContext.ids.indexOf(currentId);
+    if (pos !== -1 && pos < navContext.ids.length - 1) {
+      return SONGS.findIndex(s => s.id === navContext.ids[pos + 1]);
+    }
+    return -1;
+  }
+  return state.currentIdx < SONGS.length - 1 ? state.currentIdx + 1 : -1;
+}
+
+function getPrevSongIdx() {
+  if (navContext && navContext.ids && navContext.ids.length > 1) {
+    const currentId = SONGS[state.currentIdx]?.id;
+    const pos = navContext.ids.indexOf(currentId);
+    if (pos > 0) {
+      return SONGS.findIndex(s => s.id === navContext.ids[pos - 1]);
+    }
+    return -1;
+  }
+  return state.currentIdx > 0 ? state.currentIdx - 1 : -1;
+}
 
 
 function playSong(idx) {
@@ -1324,17 +1358,20 @@ document.getElementById('playBtn').addEventListener('click', () => {
 });
 
 document.getElementById('prevBtn').addEventListener('click', () => {
-  if (state.currentIdx > 0) playSong(state.currentIdx - 1);
+  const idx = getPrevSongIdx();
+  if (idx !== -1) playSong(idx);
 });
 
 document.getElementById('nextBtn').addEventListener('click', () => {
-  if (state.currentIdx < SONGS.length - 1) playSong(state.currentIdx + 1);
+  const idx = getNextSongIdx();
+  if (idx !== -1) playSong(idx);
 });
 
 audio.addEventListener('ended', () => {
   state.playing = false;
-  if (state.currentIdx < SONGS.length - 1) {
-    playSong(state.currentIdx + 1);
+  const idx = getNextSongIdx();
+  if (idx !== -1) {
+    playSong(idx);
   } else {
     updatePlayPauseIcon();
   }
@@ -1346,8 +1383,9 @@ window.addEventListener('message', e => {
   try {
     const data = JSON.parse(e.data);
     if (data.event === 'onStateChange' && data.info === 0) {
-      if (state.currentIdx < SONGS.length - 1) {
-        playSong(state.currentIdx + 1);
+      const idx = getNextSongIdx();
+      if (idx !== -1) {
+        playSong(idx);
       } else {
         state.playing = false;
         updatePlayPauseIcon();
@@ -1451,6 +1489,8 @@ function route() {
     document.title = 'Amiado';
     document.querySelector('[data-route="home"]')?.classList.add('active');
     app.innerHTML = renderHomePage();
+    if (!_heroShown) { _heroShown = true; setTimeout(runHeroAnimation, 50); }
+    else setTimeout(showHeroNow, 0);
     setTimeout(() => {
       document.getElementById('songsChapter')?.scrollIntoView({ behavior: 'smooth' });
     }, 80);
@@ -1458,7 +1498,8 @@ function route() {
     document.title = 'Amiado';
     document.querySelector('[data-route="home"]')?.classList.add('active');
     app.innerHTML = renderHomePage();
-    setTimeout(runHeroAnimation, 50);
+    if (!_heroShown) { _heroShown = true; setTimeout(runHeroAnimation, 50); }
+    else setTimeout(showHeroNow, 0);
   }
 
   app.querySelector('.page-enter') && void app.offsetHeight; // trigger animation
@@ -1606,6 +1647,13 @@ function bc(items) {
 // ─────────────────────────────────────────
 // PAGE: HOME
 // ─────────────────────────────────────────
+function getWeeklySong() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);
+  const weekNum = Math.floor((now - startOfYear) / (7 * 24 * 60 * 60 * 1000));
+  return SONGS[weekNum % SONGS.length];
+}
+
 function renderHomePage() {
   const favs = getFavorites();
   const savedView = localStorage.getItem('amiado_songs_view') || 'list';
@@ -1740,6 +1788,31 @@ function renderHomePage() {
         </div>
       </section>
 
+      <!-- ── Song of the week ── -->
+      ${(() => {
+        const w = getWeeklySong();
+        const wIdx = SONGS.indexOf(w);
+        return `
+        <section class="sotw-section">
+          <a href="#/song/${w.id}" class="sotw-card">
+            <div class="sotw-cover">${getCover(w.id)}</div>
+            <div class="sotw-overlay"></div>
+            <div class="sotw-content">
+              <span class="sotw-label">שיר השבוע</span>
+              <h2 class="sotw-title">${w.title}</h2>
+              ${w.analysis?.abstract ? `<p class="sotw-desc">${w.analysis.abstract.slice(0, 100)}…</p>` : ''}
+              <div class="sotw-actions">
+                <button class="sotw-play-btn" data-play-idx="${wIdx}" data-song-id="${w.id}">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11L12 7z"/></svg>
+                  נגן עכשיו
+                </button>
+                <span class="sotw-link-hint">לדף השיר ←</span>
+              </div>
+            </div>
+          </a>
+        </section>`;
+      })()}
+
       <!-- ── Songs chapter ── -->
       <div id="songsChapter">
         <header class="songs-chapter-heading">
@@ -1857,10 +1930,6 @@ function renderSongPage(id) {
     </div>
   `).join('');
 
-  const chordsHTML = song.chords.length
-    ? song.chords.map(c => `<span class="chord-tag">${c}</span>`).join('')
-    : `<span class="chords-empty">אקורדים יתווספו בקרוב</span>`;
-
   const linksHTML = buildLinksHTML(song);
 
   // Embeds
@@ -1975,10 +2044,6 @@ function renderSongPage(id) {
               <div class="coming-soon-text">השיר יעלה בקרוב</div>
               <div class="coming-soon-sub">ההפקה בעיצומה</div>
             </div>`)}
-            <div class="chords-box">
-              <div class="chords-title">אקורדים</div>
-              <div class="chords-list">${chordsHTML}</div>
-            </div>
           </aside>
         </div>
 
@@ -3038,6 +3103,18 @@ function bindPageEvents() {
       });
       const countEl = document.getElementById('songsSearchCount');
       if (countEl) countEl.textContent = q ? `${visible} שירים` : '';
+    });
+  }
+
+  // Song of the week — play button
+  const sotwBtn = document.querySelector('.sotw-play-btn');
+  if (sotwBtn) {
+    sotwBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const idx = parseInt(sotwBtn.dataset.playIdx, 10);
+      navContext = { type: 'playlist', ids: SONGS.map(s => s.id), plId: null };
+      playSong(idx);
     });
   }
 

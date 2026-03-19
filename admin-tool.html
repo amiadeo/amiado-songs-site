@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amiado Admin — הוספת שיר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Heebo:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #181818;
+    --border: #252525;
+    --border-hover: #333;
+    --gold: #c9a84c;
+    --gold-dim: #8a6e2e;
+    --gold-glow: rgba(201,168,76,0.12);
+    --text: #e8e0d0;
+    --text-dim: #7a7060;
+    --text-muted: #4a4540;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Heebo', sans-serif;
+    --radius: 6px;
+    --input-bg: #131313;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+
+  .header-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .header-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 32px 120px;
+  }
+
+  .page-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .page-subtitle {
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 48px;
+    letter-spacing: -0.02em;
+  }
+
+  /* ── SECTIONS ── */
+  .form-section {
+    margin-bottom: 40px;
+    padding: 28px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    position: relative;
+  }
+
+  .form-section::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 3px;
+    height: 40px;
+    background: var(--gold);
+    border-radius: 0 var(--radius) 0 0;
+    opacity: 0.4;
+  }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── FORM FIELDS ── */
+  .field {
+    margin-bottom: 20px;
+  }
+
+  .field:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 7px;
+    letter-spacing: 0.05em;
+  }
+
+  .label-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-right: 6px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="url"],
+  select,
+  textarea {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 14px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  input[type="url"]:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--gold-dim);
+    box-shadow: 0 0 0 3px var(--gold-glow);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.7;
+    font-size: 13px;
+  }
+
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237a7060' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 12px center;
+    padding-left: 32px;
+  }
+
+  /* ID field with preview */
+  .id-wrap {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .id-preview {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gold-dim);
+    padding: 10px 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    white-space: nowrap;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.05em;
+  }
+
+  /* Checkbox */
+  .checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .checkbox-field input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--gold);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .checkbox-field span {
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .field-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    letter-spacing: 0.03em;
+  }
+
+  .field-note.gold { color: var(--gold-dim); }
+
+  /* Two columns */
+  .fields-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ── LYRICS BUILDER ── */
+  .lyrics-sections { display: flex; flex-direction: column; gap: 14px; }
+
+  .lyric-section {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .lyric-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lyric-section-header input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--gold);
+  }
+
+  .lyric-section-header input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  .lyric-section-body { padding: 12px 14px; }
+
+  .lyric-section-body textarea {
+    background: transparent;
+    border-color: transparent;
+    min-height: 80px;
+    padding: 0;
+    font-size: 13px;
+  }
+
+  .lyric-section-body textarea:focus {
+    border-color: transparent;
+    box-shadow: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+  }
+
+  .btn-remove-section {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 2px 6px;
+    font-size: 16px;
+    line-height: 1;
+    border-radius: 3px;
+    transition: color 0.15s, background 0.15s;
+    flex-shrink: 0;
+  }
+
+  .btn-remove-section:hover { color: #e05050; background: rgba(224,80,80,0.1); }
+
+  .btn-add-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px dashed var(--border);
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    font-family: var(--sans);
+    font-size: 12px;
+    width: 100%;
+    justify-content: center;
+    transition: border-color 0.2s, color 0.2s;
+    margin-top: 8px;
+  }
+
+  .btn-add-section:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+  /* ── ANALYSIS TOGGLE ── */
+  .analysis-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-dim);
+    user-select: none;
+    margin-bottom: 0;
+  }
+
+  .analysis-toggle input { accent-color: var(--gold); cursor: pointer; }
+
+  .analysis-fields {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .analysis-fields.open { display: flex; }
+
+  /* ── GENERATE BUTTON ── */
+  .generate-wrap {
+    position: sticky;
+    bottom: 0;
+    padding: 20px 0;
+    background: linear-gradient(to top, var(--bg) 60%, transparent);
+    z-index: 50;
+  }
+
+  .btn-generate {
+    width: 100%;
+    background: var(--gold);
+    color: #0a0a0a;
+    border: none;
+    border-radius: var(--radius);
+    padding: 16px 32px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+
+  .btn-generate:hover { opacity: 0.9; }
+  .btn-generate:active { transform: scale(0.99); }
+
+  /* ── OUTPUT ── */
+  .output-wrap {
+    display: none;
+    margin-top: 40px;
+  }
+
+  .output-wrap.show { display: block; }
+
+  .output-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .output-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .btn-copy {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius);
+    padding: 7px 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-copy:hover { border-color: var(--gold-dim); color: var(--gold); }
+  .btn-copy.copied { border-color: #4caf72; color: #4caf72; }
+
+  .output-code {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.8;
+    color: #b8c8a0;
+    white-space: pre;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #1a2a1a;
+    border: 1px solid #4caf72;
+    color: #4caf72;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 10px 20px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+  @media (max-width: 600px) {
+    header { padding: 20px 20px; }
+    .container { padding: 32px 16px 100px; }
+    .fields-row { grid-template-columns: 1fr; }
+    .id-wrap { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">Amiado</div>
+  <div class="header-badge">LOCAL ADMIN TOOL</div>
+</header>
+
+<div class="container">
+
+  <p class="page-title">כלי ניהול</p>
+  <h1 class="page-subtitle">הוספת שיר חדש</h1>
+
+  <!-- BASIC INFO -->
+  <div class="form-section">
+    <div class="section-title">פרטים בסיסיים</div>
+
+    <div class="field">
+      <label>כותרת השיר</label>
+      <input type="text" id="title" placeholder="שם השיר בעברית" oninput="onTitleInput()" dir="rtl">
+    </div>
+
+    <div class="field">
+      <label>ID <span class="label-note">// מזהה ייחודי לשיר</span></label>
+      <div class="id-wrap">
+        <input type="text" id="songId" placeholder="generated-id" dir="ltr" oninput="updateIdPreview()">
+        <div class="id-preview" id="idPreview">—</div>
+      </div>
+      <div class="field-note">נוצר אוטומטית מהכותרת — ניתן לערוך ידנית</div>
+    </div>
+
+    <div class="fields-row">
+      <div class="field">
+        <label>שפה</label>
+        <select id="language">
+          <option value="he">עברית</option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>מספר תמונה <span class="label-note">// songs{n}.jpeg</span></label>
+        <input type="number" id="coverNum" min="1" max="60" placeholder="35" oninput="updateCoverPreview()">
+        <div class="field-note gold" id="coverPreview"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKS -->
+  <div class="form-section">
+    <div class="section-title">קישורים ומדיה</div>
+
+    <div class="field">
+      <label>Suno link</label>
+      <input type="url" id="sunoLink" placeholder="https://suno.com/s/..." dir="ltr" oninput="extractSunoId()">
+      <div class="field-note gold" id="sunoPreview"></div>
+    </div>
+
+    <div class="field">
+      <label>YouTube link</label>
+      <input type="url" id="youtubeLink" placeholder="https://youtube.com/watch?v=..." dir="ltr" oninput="extractYoutubeId()">
+      <div class="field-note gold" id="ytPreview"></div>
+    </div>
+
+    <div class="field">
+      <label>Spotify link</label>
+      <input type="url" id="spotifyLink" placeholder="https://open.spotify.com/track/..." dir="ltr">
+    </div>
+
+    <div class="field">
+      <label class="checkbox-field">
+        <input type="checkbox" id="hasAudio" onchange="updateAudioPreview()">
+        <span>יש קובץ אודיו מקומי (audio.mp3)</span>
+      </label>
+      <div class="field-note gold" id="audioPreview" style="margin-top:8px;"></div>
+    </div>
+  </div>
+
+  <!-- LYRICS -->
+  <div class="form-section">
+    <div class="section-title">מילים</div>
+
+    <div class="lyrics-sections" id="lyricsSections"></div>
+
+    <button class="btn-add-section" onclick="addSection()">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg>
+      הוסף קטע
+    </button>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="form-section">
+    <div class="section-title">ניתוח ספרותי</div>
+
+    <label class="analysis-toggle">
+      <input type="checkbox" id="includeAnalysis" onchange="toggleAnalysis()">
+      <span>כלול ניתוח ספרותי בשיר זה</span>
+    </label>
+
+    <div class="analysis-fields" id="analysisFields">
+      <div class="field">
+        <label>תקציר</label>
+        <textarea id="analysisAbstract" placeholder="תיאור כללי של השיר ומשמעותו..." dir="rtl"></textarea>
+      </div>
+      <div class="field">
+        <label>ניתוח מבני</label>
+        <textarea id="analysisStructural" placeholder="בנייה, חזרות, מבנה פסוקים..." dir="rtl"></textarea>
+      </div>
+      <div class="field">
+        <label>ניתוח פסיכולוגי</label>
+        <textarea id="analysisPsychological" placeholder="מה מתרחש ברמה הרגשית-פסיכולוגית..." dir="rtl"></textarea>
+      </div>
+      <div class="field">
+        <label>ניתוח אקדמי / ספרותי</label>
+        <textarea id="analysisAcademic" placeholder="פרשנות ספרותית, מוטיבים, אינטרטקסטואליות..." dir="rtl"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERATE -->
+  <div class="generate-wrap">
+    <button class="btn-generate" onclick="generate()">צור קוד ←</button>
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="output-wrap" id="outputWrap">
+    <div class="output-header">
+      <div class="output-label">קוד מוכן להדבקה ב-app.js</div>
+      <button class="btn-copy" id="copyBtn" onclick="copyCode()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        העתק
+      </button>
+    </div>
+    <pre class="output-code" id="outputCode"></pre>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">הועתק ללוח ✓</div>
+
+<script>
+// ── DEFAULT SECTIONS ──
+const defaultSections = ['בית 1', 'פזמון', 'בית 2', 'סיום'];
+let sectionCount = 0;
+
+function addSection(name = '') {
+  const id = `sec-${sectionCount++}`;
+  const defaultName = name || (sectionCount <= defaultSections.length ? defaultSections[sectionCount - 1] : `קטע ${sectionCount}`);
+  const wrap = document.getElementById('lyricsSections');
+  const el = document.createElement('div');
+  el.className = 'lyric-section';
+  el.dataset.id = id;
+  el.innerHTML = `
+    <div class="lyric-section-header">
+      <input type="text" value="${defaultName}" placeholder="שם הקטע" dir="rtl" class="section-name">
+      <button class="btn-remove-section" onclick="removeSection('${id}')" title="הסר קטע">×</button>
+    </div>
+    <div class="lyric-section-body">
+      <textarea placeholder="שורה אחת בכל שורה..." dir="rtl" class="section-lines"></textarea>
+    </div>
+  `;
+  wrap.appendChild(el);
+}
+
+function removeSection(id) {
+  const el = document.querySelector(`.lyric-section[data-id="${id}"]`);
+  if (el) el.remove();
+}
+
+// ── ID GENERATION ──
+function hebrewToSlug(str) {
+  return str
+    .replace(/[\u0590-\u05FF]/g, '') // remove Hebrew chars
+    .replace(/[^a-zA-Z0-9\s-]/g, '') // keep latin, nums, spaces, hyphens
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .toLowerCase() || 'song-id';
+}
+
+function onTitleInput() {
+  const title = document.getElementById('title').value;
+  const slug = hebrewToSlug(title) || '';
+  document.getElementById('songId').value = slug;
+  updateIdPreview();
+  updateAudioPreview();
+  updateCoverPreview();
+}
+
+function updateIdPreview() {
+  const id = document.getElementById('songId').value.trim();
+  document.getElementById('idPreview').textContent = id || '—';
+  updateAudioPreview();
+}
+
+// ── COVER PREVIEW ──
+function updateCoverPreview() {
+  const n = document.getElementById('coverNum').value;
+  document.getElementById('coverPreview').textContent = n ? `→ songs${n}.jpeg` : '';
+}
+
+// ── AUDIO PREVIEW ──
+function updateAudioPreview() {
+  const checked = document.getElementById('hasAudio').checked;
+  const id = document.getElementById('songId').value.trim() || '{id}';
+  document.getElementById('audioPreview').textContent = checked ? `→ songs/${id}/audio.mp3` : '';
+}
+
+// ── SUNO ID EXTRACTION ──
+function extractSunoId() {
+  const url = document.getElementById('sunoLink').value.trim();
+  let id = '';
+  const m1 = url.match(/suno\.com\/embed\/([a-f0-9-]{36})/);
+  const m2 = url.match(/suno\.com\/s\/([a-zA-Z0-9]+)/);
+  if (m1) id = m1[1];
+  else if (m2) id = m2[1];
+  document.getElementById('sunoPreview').textContent = id ? `→ sunoEmbedId: "${id}"` : '';
+}
+
+// ── YOUTUBE ID EXTRACTION ──
+function extractYoutubeId() {
+  const url = document.getElementById('youtubeLink').value.trim();
+  let id = '';
+  const m1 = url.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+  if (m1) id = m1[1];
+  document.getElementById('ytPreview').textContent = id ? `→ youtubeVideoId: "${id}"` : '';
+}
+
+// ── ANALYSIS TOGGLE ──
+function toggleAnalysis() {
+  const open = document.getElementById('includeAnalysis').checked;
+  document.getElementById('analysisFields').classList.toggle('open', open);
+}
+
+// ── GENERATE ──
+function generate() {
+  const title = document.getElementById('title').value.trim();
+  const id = document.getElementById('songId').value.trim();
+  const language = document.getElementById('language').value;
+  const hasAudio = document.getElementById('hasAudio').checked;
+  const coverNum = document.getElementById('coverNum').value.trim();
+  const sunoLink = document.getElementById('sunoLink').value.trim();
+  const youtubeLink = document.getElementById('youtubeLink').value.trim();
+  const spotifyLink = document.getElementById('spotifyLink').value.trim();
+  const includeAnalysis = document.getElementById('includeAnalysis').checked;
+
+  if (!title || !id) {
+    alert('חובה: כותרת ו-ID');
+    return;
+  }
+
+  // Extract IDs
+  let sunoEmbedId = '';
+  const sm1 = sunoLink.match(/suno\.com\/embed\/([a-f0-9-]{36})/);
+  const sm2 = sunoLink.match(/suno\.com\/s\/([a-zA-Z0-9]+)/);
+  if (sm1) sunoEmbedId = sm1[1];
+  else if (sm2) sunoEmbedId = sm2[1];
+
+  let youtubeVideoId = '';
+  const ym = youtubeLink.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+  if (ym) youtubeVideoId = ym[1];
+
+  // Build lyrics
+  const sections = document.querySelectorAll('.lyric-section');
+  const lyrics = [];
+  sections.forEach(sec => {
+    const name = sec.querySelector('.section-name').value.trim();
+    const raw = sec.querySelector('.section-lines').value;
+    const lines = raw.split('\n').map(l => l.trim()).filter(l => l);
+    if (name && lines.length) lyrics.push({ section: name, lines });
+  });
+
+  // Build object
+  let out = `  {\n`;
+  out += `    id: '${id}', title: '${title}', language: '${language}',\n`;
+
+  if (hasAudio) {
+    out += `    audio: { type: 'file', src: 'songs/${id}/audio.mp3' },\n`;
+  }
+
+  // links
+  const linkParts = [];
+  if (spotifyLink) linkParts.push(`spotify: '${spotifyLink}'`);
+  if (sunoLink) linkParts.push(`suno: '${sunoLink}'`);
+  if (youtubeLink) linkParts.push(`youtube: '${youtubeLink}'`);
+  if (linkParts.length) {
+    out += `    links: { ${linkParts.join(', ')} },\n`;
+  }
+
+  if (sunoEmbedId) out += `    sunoEmbedId: '${sunoEmbedId}',\n`;
+  if (youtubeVideoId) out += `    youtubeVideoId: '${youtubeVideoId}',\n`;
+  if (coverNum) out += `    coverNum: ${coverNum},\n`;
+
+  out += `    chords: [],\n`;
+
+  // lyrics
+  if (lyrics.length) {
+    out += `    lyrics: [\n`;
+    lyrics.forEach(({ section, lines }) => {
+      const linesStr = lines.map(l => `        '${l.replace(/'/g, "\\'")}'`).join(',\n');
+      out += `      { section: '${section}', lines: [\n${linesStr}\n      ]},\n`;
+    });
+    out += `    ],\n`;
+  } else {
+    out += `    lyrics: [],\n`;
+  }
+
+  // analysis
+  if (includeAnalysis) {
+    const ab = document.getElementById('analysisAbstract').value.trim();
+    const st = document.getElementById('analysisStructural').value.trim();
+    const ps = document.getElementById('analysisPsychological').value.trim();
+    const ac = document.getElementById('analysisAcademic').value.trim();
+    if (ab || st || ps || ac) {
+      out += `    analysis: {\n`;
+      if (ab) out += `      abstract: '${ab.replace(/'/g, "\\'")}',\n`;
+      if (st) out += `      structural: '${st.replace(/'/g, "\\'")}',\n`;
+      if (ps) out += `      psychological: '${ps.replace(/'/g, "\\'")}',\n`;
+      if (ac) out += `      academic: '${ac.replace(/'/g, "\\'")}'\n`;
+      out += `    }\n`;
+    }
+  }
+
+  out += `  },`;
+
+  document.getElementById('outputCode').textContent = out;
+  const wrap = document.getElementById('outputWrap');
+  wrap.classList.add('show');
+  setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+// ── COPY ──
+function copyCode() {
+  const code = document.getElementById('outputCode').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg> הועתק`;
+    showToast();
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> העתק`;
+    }, 2500);
+  });
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── INIT ──
+defaultSections.forEach(s => addSection(s));
+</script>
+</body>
+</html>

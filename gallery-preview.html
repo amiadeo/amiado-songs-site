@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>גלריה — גרסה משולבת</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0d1117;
+  color: #e8e3d8;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  padding: 80px 24px;
+}
+
+.gallery-wrap {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* ── section label ── */
+.gallery-eyebrow {
+  font-size: 0.58rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.65);
+  margin-bottom: 36px;
+  text-align: center;
+  opacity: 0;
+  animation: fadeIn 1s 0.2s forwards;
+}
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* ══════════════════════════════
+   GRID LAYOUT
+══════════════════════════════ */
+.grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  grid-template-rows: 260px 200px 240px;
+  gap: 8px;
+}
+
+/* cell base */
+.cell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #161b22;
+  cursor: pointer;
+}
+
+/* clip-path reveal animation */
+.cell {
+  clip-path: inset(100% 0 0 0);
+  transition:
+    clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s;
+}
+.cell.revealed { clip-path: inset(0% 0 0 0); }
+
+/* stagger */
+.cell:nth-child(1)  { transition-delay: 0s; }
+.cell:nth-child(2)  { transition-delay: 0.1s; }
+.cell:nth-child(3)  { transition-delay: 0.18s; }
+.cell:nth-child(4)  { transition-delay: 0.26s; }
+.cell:nth-child(5)  { transition-delay: 0.08s; }
+.cell:nth-child(6)  { transition-delay: 0.32s; }
+.cell:nth-child(7)  { transition-delay: 0.14s; }
+.cell:nth-child(8)  { transition-delay: 0.38s; }
+
+/* Ken Burns on hover */
+.cell img {
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s;
+  will-change: transform;
+}
+.cell:hover img {
+  transform: scale(1.07) translate(-1%, -1%);
+  filter: brightness(1.06);
+}
+
+/* grid placement */
+.c1 { grid-column: 1; grid-row: 1 / 3; }           /* hero tall */
+.c2 { grid-column: 2; grid-row: 1; }
+.c3 { grid-column: 3; grid-row: 1; }
+.c4 { grid-column: 2 / 4; grid-row: 2; }            /* wide */
+.c5 { grid-column: 1; grid-row: 3; }
+.c6 { grid-column: 2; grid-row: 3; }
+.c7 { grid-column: 3; grid-row: 3; }                /* video */
+
+/* ── text cell ── */
+.text-cell {
+  grid-column: 1 / 3;
+  background: transparent;
+  border: 1px solid rgba(232,227,216,0.1);
+  border-radius: 6px;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  cursor: default;
+  /* override ken burns */
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.text-cell:hover img { transform: none; }
+.text-cell h3 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #e8e3d8;
+}
+.text-cell p {
+  font-size: 0.78rem;
+  color: rgba(232,227,216,0.4);
+  line-height: 1.75;
+  max-width: 340px;
+}
+
+/* ── video cell ── */
+.video-cell img {
+  transition: transform 6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s;
+}
+.video-cell:hover img {
+  transform: scale(1.07);
+  filter: brightness(1.06);
+}
+.play-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.18);
+  transition: background 0.3s;
+}
+.video-cell:hover .play-overlay { background: rgba(0,0,0,0.38); }
+.play-ring {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.8);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+  background: rgba(255,255,255,0.1);
+  transition: transform 0.25s, background 0.25s, border-color 0.25s;
+}
+.video-cell:hover .play-ring {
+  transform: scale(1.12);
+  background: rgba(255,0,0,0.75);
+  border-color: transparent;
+}
+.play-ring svg { margin-right: -2px; }
+
+/* ── mobile ── */
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  .c1 { grid-column: 1 / 3; grid-row: auto; height: 240px; }
+  .c2, .c3, .c5, .c6, .c7 { grid-column: auto; grid-row: auto; height: 160px; }
+  .c4 { grid-column: 1 / 3; grid-row: auto; height: 160px; }
+  .text-cell { grid-column: 1 / 3; grid-row: auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="gallery-wrap">
+  <p class="gallery-eyebrow">תמונות ורגעים</p>
+
+  <div class="grid" id="gallery">
+
+    <!-- hero גדול -->
+    <div class="cell c1">
+      <img src="img4.jpg" alt="">
+    </div>
+
+    <!-- שורה ראשונה ימין -->
+    <div class="cell c2">
+      <img src="img1.jpg" alt="">
+    </div>
+    <div class="cell c3">
+      <img src="img3.jpeg" alt="">
+    </div>
+
+    <!-- רחב -->
+    <div class="cell c4">
+      <img src="img2.jpg" alt="">
+    </div>
+
+    <!-- שורה שלישית -->
+    <div class="cell c5">
+      <img src="img3.jpeg" alt="">
+    </div>
+
+    <!-- תא טקסט -->
+    <div class="cell text-cell c6" style="grid-column:2;grid-row:3;">
+      <h3>מילים<br>וצלילים</h3>
+      <p>סינגר-סונגרייטר מרמת-גן.<br>כותב ומלחין בעברית ובאנגלית.</p>
+    </div>
+
+    <!-- וידאו -->
+    <div class="cell video-cell c7" onclick="window.open('https://youtu.be/35zFmxPcgdc','_blank')">
+      <img src="https://img.youtube.com/vi/35zFmxPcgdc/mqdefault.jpg" alt="גיבור על">
+      <div class="play-overlay">
+        <div class="play-ring">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Trigger reveal when cells enter viewport
+  const cells = document.querySelectorAll('.cell');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('revealed');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  cells.forEach(c => io.observe(c));
+</script>
+</body>
+</html>
