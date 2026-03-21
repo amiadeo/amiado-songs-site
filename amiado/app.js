@@ -2331,10 +2331,6 @@ function renderSongPage(id) {
 
   const linksHTML = buildLinksHTML(song);
 
-  // Embeds
-  const sunoEmbedHTML = buildSunoEmbed(song);
-  const ytEmbedHTML = buildYoutubeEmbed(song);
-  const hasPlayable = !!(song.sunoEmbedId || song.youtubeVideoId || (song.audio && song.audio.src));
 
   const analysisLabels = {
     abstract: 'תמצית',
@@ -2500,19 +2496,7 @@ function renderSongPage(id) {
             ${lyricsHTML}
           </div>
           <aside class="song-sidebar">
-            ${sunoEmbedHTML || ytEmbedHTML || (hasPlayable ? `
-            <div class="sidebar-player">
-              <div class="sidebar-player-title">האזנה</div>
-              <button class="sidebar-play-btn" data-play-idx="${idx}">
-                <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5v11L12 7z"/></svg>
-                נגן שיר
-              </button>
-            </div>` : `
-            <div class="sidebar-coming-soon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-              <div class="coming-soon-text">השיר יעלה בקרוב</div>
-              <div class="coming-soon-sub">ההפקה בעיצומה</div>
-            </div>`)}
+            ${buildAudioPanel(song, idx)}
           ${buildChordsBox(song)}
           </aside>
         </div>
@@ -2552,6 +2536,74 @@ function buildChordsBox(song) {
   return '<details class="chords-box"><summary class="chords-title">אקורדים' + meta +
     '<span class="chords-arrow">▾</span></summary>' +
     '<div class="chords-sections">' + sectionsHTML + '</div></details>';
+}
+
+function buildAudioPanel(song, idx) {
+  const hasFile  = !!(song.audio?.src);
+  const hasSuno  = !!(song.sunoEmbedId);
+  const hasYT    = !!(song.youtubeVideoId);
+
+  // Dual source — file + Suno
+  if (hasFile && hasSuno) {
+    return `
+    <div class="audio-switcher">
+      <div class="ast-tabs">
+        <button class="ast-tab active" data-ast="mine">
+          <svg width="11" height="11" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11L12 7z"/></svg>
+          ביצוע שלי
+        </button>
+        <button class="ast-tab" data-ast="suno">
+          <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 1 0 0 16A8 8 0 0 0 10 2zM8 7l6 3-6 3V7z"/></svg>
+          ביצוע Suno
+        </button>
+      </div>
+      <div class="ast-panel" data-ast-panel="mine">
+        <div class="sidebar-player">
+          <button class="sidebar-play-btn" data-play-idx="${idx}">
+            <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5v11L12 7z"/></svg>
+            נגן
+          </button>
+        </div>
+      </div>
+      <div class="ast-panel ast-hidden" data-ast-panel="suno">
+        ${buildSunoEmbedInner(song)}
+      </div>
+    </div>`;
+  }
+
+  // Single source — Suno only
+  if (hasSuno) return buildSunoEmbed(song);
+
+  // Single source — YouTube only
+  if (hasYT) return buildYoutubeEmbed(song);
+
+  // Single source — file only
+  if (hasFile) return `
+    <div class="sidebar-player">
+      <div class="sidebar-player-title">האזנה</div>
+      <button class="sidebar-play-btn" data-play-idx="${idx}">
+        <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5v11L12 7z"/></svg>
+        נגן שיר
+      </button>
+    </div>`;
+
+  // No source
+  return `
+    <div class="sidebar-coming-soon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      <div class="coming-soon-text">השיר יעלה בקרוב</div>
+      <div class="coming-soon-sub">ההפקה בעיצומה</div>
+    </div>`;
+}
+
+function buildSunoEmbedInner(song) {
+  return `
+    <div class="suno-embed-wrap">
+      <div class="suno-placeholder" id="suno-ph-${song.id}">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 2a8 8 0 1 0 0 16A8 8 0 0 0 10 2zM8 7l6 3-6 3V7z"/></svg>
+        <span>לחץ <strong>נגן</strong> להפעלה</span>
+      </div>
+    </div>`;
 }
 
 function buildSunoEmbed(song) {
@@ -3803,6 +3855,18 @@ function closePlaylistDropdown() {
 // EVENT BINDING (after each render)
 // ─────────────────────────────────────────
 function bindPageEvents() {
+  // Audio source switcher tabs (ביצוע שלי / ביצוע Suno)
+  document.querySelectorAll('.ast-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const switcher = tab.closest('.audio-switcher');
+      const target = tab.dataset.ast;
+      switcher.querySelectorAll('.ast-tab').forEach(t => t.classList.toggle('active', t === tab));
+      switcher.querySelectorAll('.ast-panel').forEach(p => {
+        p.classList.toggle('ast-hidden', p.dataset.astPanel !== target);
+      });
+    });
+  });
+
   // Autoplay pending song after navigation to its page
   if (pendingAutoplaySongIdx >= 0) {
     const idx = pendingAutoplaySongIdx;
