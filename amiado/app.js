@@ -1539,8 +1539,8 @@ function route() {
     app.innerHTML = renderBioPage();
     setTimeout(runBioAnimation, 50);
   } else if (hash === '#/book') {
-    document.title = 'Amiado — ספר השירים';
-    app.innerHTML = renderBookPage();
+    window.location.href = 'book.html';
+    return;
   } else if (hash.startsWith('#/writing/')) {
     const id = hash.slice(10);
     document.title = 'Amiado';
@@ -2523,6 +2523,10 @@ function renderSongPage(id) {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             <span>שתף</span>
           </button>
+          <button class="shma-btn btn-book-view" data-song-id="${song.id}" title="תצוגת ספר">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span>ספר</span>
+          </button>
           ${song.audio?.type === 'file' ? `<button class="shma-btn btn-karaoke-song" data-song-id="${song.id}" title="קריוקי">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
             <span>קריוקי</span>
@@ -2582,6 +2586,10 @@ function renderSongPage(id) {
               <button class="btn-share-song" data-song-id="${song.id}" data-song-title="${song.title}" title="שתף שיר">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                 שתף
+              </button>
+              <button class="btn-book-view" data-song-id="${song.id}" title="תצוגת ספר">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                ספר
               </button>
               ${linksHTML}
               ${song.audio?.type === 'file' ? `<button class="btn-karaoke-song" data-song-id="${song.id}" title="מצב קריוקי">
@@ -3527,7 +3535,12 @@ function renderBookPage() {
           <div class="book-qr-label">סרוק להאזנה</div>
         </div>
       </div>
-      ${song.analysis?.abstract ? `<div class="book-abstract">${song.analysis.abstract}</div>` : ''}
+      ${song.analysis ? `<div class="book-analysis">
+        ${[['abstract','תקציר'],['structural','מבנה'],['psychological','פסיכולוגי'],['academic','אקדמי']]
+          .filter(([k]) => song.analysis[k])
+          .map(([k,label]) => `<div class="book-analysis-block"><span class="book-analysis-label">${label} —</span> ${song.analysis[k]}</div>`)
+          .join('')}
+      </div>` : ''}
     </div>`;
   }).join('');
 
@@ -4413,6 +4426,17 @@ function bindPageEvents() {
     });
   });
 
+  // Song page — book view modal
+  document.querySelectorAll('.btn-book-view').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const song = SONGS.find(s => s.id === btn.dataset.songId);
+      if (!song) return;
+      openBookViewModal(song);
+    });
+  });
+
   // Home page — Play All (sets navContext to all songs in order)
   const homePlayAll = document.getElementById('homePlayAllBtn');
   if (homePlayAll) {
@@ -4922,4 +4946,93 @@ function initKaraoke() {
   document.querySelectorAll('.btn-karaoke-song').forEach(btn => {
     btn.addEventListener('click', startKaraoke);
   });
+}
+
+// ─────────────────────────────────────────
+// BOOK VIEW MODAL
+// ─────────────────────────────────────────
+function openBookViewModal(song) {
+  document.querySelector('.book-view-modal')?.remove();
+
+  const idx    = SONGS.indexOf(song);
+  const num    = String(idx + 1).padStart(2, '0');
+  const qrUrl  = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent('https://amiado.vercel.app/#/song/' + song.id)}&bgcolor=ffffff&color=1a1008&margin=6&qzone=1`;
+  const langLabel = song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית';
+
+  const lyricsHTML = (song.lyrics || []).map(sec => `
+    <div class="bvm-section">
+      <div class="bvm-section-name">${sec.section}</div>
+      ${sec.lines.map(l => `<div class="bvm-line">${l}</div>`).join('')}
+    </div>`).join('');
+
+  const analysisFields = [
+    { key: 'abstract',      label: 'תקציר' },
+    { key: 'structural',    label: 'מבנה' },
+    { key: 'psychological', label: 'פסיכולוגי' },
+    { key: 'academic',      label: 'אקדמי' },
+  ];
+  const analysisHTML = song.analysis
+    ? `<div class="bvm-analysis">
+        <div class="bvm-analysis-title">ניתוח ספרותי</div>
+        ${analysisFields.filter(f => song.analysis[f.key]).map(f => `
+          <div class="bvm-analysis-block">
+            <div class="bvm-analysis-label">${f.label}</div>
+            <div class="bvm-analysis-text">${song.analysis[f.key]}</div>
+          </div>`).join('')}
+      </div>` : '';
+
+  const modal = document.createElement('div');
+  modal.className = 'book-view-modal';
+  modal.innerHTML = `
+    <div class="bvm-backdrop"></div>
+    <div class="bvm-panel">
+      <div class="bvm-toolbar no-print">
+        <button class="bvm-print-btn" onclick="window.print()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          הדפס
+        </button>
+        <button class="bvm-close-btn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
+          סגור
+        </button>
+      </div>
+      <div class="bvm-content">
+        <div class="bvm-header">
+          <span class="bvm-num">${num}</span>
+          <div class="bvm-title-block">
+            <h1 class="bvm-title">${song.title}</h1>
+            <span class="bvm-lang">${langLabel}</span>
+          </div>
+        </div>
+        <div class="bvm-body">
+          <div class="bvm-lyrics">${lyricsHTML}</div>
+          <div class="bvm-qr-col">
+            <img class="bvm-qr" src="${qrUrl}" alt="QR">
+            <div class="bvm-qr-label">סרוק להאזנה</div>
+          </div>
+        </div>
+        ${analysisHTML}
+        <div class="bvm-footer-sig">amiado · עמיעד אידלמן אוברמן</div>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+
+  modal.querySelector('.bvm-close-btn').addEventListener('click', () => {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 300);
+  });
+  modal.querySelector('.bvm-backdrop').addEventListener('click', () => {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 300);
+  });
+
+  // Prevent body scroll
+  document.body.style.overflow = 'hidden';
+  modal.addEventListener('transitionend', () => {}, { once: true });
+  const origClose = modal.querySelector('.bvm-close-btn');
+  origClose._cleanup = () => { document.body.style.overflow = ''; };
+  modal.querySelector('.bvm-close-btn').addEventListener('click', () => { document.body.style.overflow = ''; }, { once: true });
+  modal.querySelector('.bvm-backdrop').addEventListener('click', () => { document.body.style.overflow = ''; }, { once: true });
 }
