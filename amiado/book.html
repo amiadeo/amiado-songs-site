@@ -2,684 +2,788 @@
 <html dir="rtl" lang="he">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>מגע במילים ומילים במגע איתי — עמיעד אידלמן אוברמן</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>ספר השירים הדיגיטלי — amiado</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Heebo:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Heebo:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <style>
-    /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── THEME VARIABLES ── */
     :root {
-      --bg:           #ede8df;
-      --page-bg:      #ffffff;
-      --page-shadow:  0 2px 24px rgba(0,0,0,0.09);
-      --text:         #1a1a1a;
-      --text-body:    #2a2a2a;
-      --text-dim:     #3a3a3a;
-      --border:       #e8dcc8;
-      --border-toc:   #ddd3be;
-      --analysis-bg:  #faf8f3;
-      --toc-name:     #2a2a2a;
-      --song-title:   #0d1117;
-      --btn-back:     #888;
+      --bg:          #e8e2d8;
+      --page-bg:     #fffff8;
+      --page-shadow: 0 4px 40px rgba(0,0,0,0.13);
+      --text:        #1a1a1a;
+      --text-body:   #2a2a2a;
+      --text-dim:    #444;
+      --border:      #e2d8c4;
+      --border-toc:  #d9cdb4;
+      --analysis-bg: #faf7f0;
+      --toc-name:    #2a2a2a;
+      --song-title:  #0d1117;
+      --gold:        #c9a84c;
+      --spine-bg:    #2a1f0e;
     }
-
     body.dark {
-      --bg:           #0d1117;
-      --page-bg:      #111620;
-      --page-shadow:  0 2px 32px rgba(0,0,0,0.5);
-      --text:         rgba(255,255,255,0.92);
-      --text-body:    rgba(255,255,255,0.82);
-      --text-dim:     rgba(255,255,255,0.65);
-      --border:       rgba(201,168,76,0.18);
-      --border-toc:   rgba(255,255,255,0.08);
-      --analysis-bg:  #181d2a;
-      --toc-name:     rgba(255,255,255,0.82);
-      --song-title:   rgba(255,255,255,0.95);
-      --btn-back:     rgba(255,255,255,0.35);
+      --bg:          #0e1117;
+      --page-bg:     #12161f;
+      --page-shadow: 0 4px 40px rgba(0,0,0,0.55);
+      --text:        rgba(255,255,255,0.92);
+      --text-body:   rgba(255,255,255,0.82);
+      --text-dim:    rgba(255,255,255,0.6);
+      --border:      rgba(201,168,76,0.18);
+      --border-toc:  rgba(255,255,255,0.08);
+      --analysis-bg: #1a1f2c;
+      --toc-name:    rgba(255,255,255,0.82);
+      --song-title:  rgba(255,255,255,0.95);
+      --spine-bg:    #0a0806;
     }
 
-    /* ── BASE ── */
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Frank Ruhl Libre', 'David Libre', 'Times New Roman', serif;
+      font-family: 'Frank Ruhl Libre', 'David Libre', serif;
       direction: rtl;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.8;
-      transition: background 0.35s ease, color 0.35s ease;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
     }
 
-    /* ── SCREEN CONTROLS ── */
-    .controls {
+    /* ── TOOLBAR ── */
+    .toolbar {
       position: fixed;
-      bottom: 2rem;
-      left: 2rem;
-      z-index: 100;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: rgba(20,15,8,0.92);
+      backdrop-filter: blur(12px);
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.6rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      height: 52px;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
     }
+    .toolbar-left { display: flex; align-items: center; gap: 0.8rem; }
+    .toolbar-right { display: flex; align-items: center; gap: 0.6rem; }
 
-    .btn-print {
-      background: #c9a84c;
-      color: #fff;
-      border: none;
-      padding: 0.9rem 2.2rem;
-      font-size: 1.05rem;
-      font-family: 'Heebo', sans-serif;
-      font-weight: 700;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(201,168,76,0.45);
-      transition: transform 0.15s, box-shadow 0.15s;
-      white-space: nowrap;
-    }
-    .btn-print:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 28px rgba(201,168,76,0.55);
-    }
-
-    .btn-theme {
+    .tb-btn {
       background: none;
-      border: 1px solid rgba(201,168,76,0.4);
-      color: #c9a84c;
-      padding: 0.5rem 1.1rem;
-      font-size: 0.82rem;
+      border: 1px solid rgba(201,168,76,0.35);
+      color: rgba(201,168,76,0.85);
       font-family: 'Heebo', sans-serif;
+      font-size: 0.8rem;
       font-weight: 500;
+      padding: 0.35rem 0.9rem;
       border-radius: 20px;
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
       white-space: nowrap;
-      letter-spacing: 0.04em;
     }
-    .btn-theme:hover { background: rgba(201,168,76,0.1); border-color: #c9a84c; }
+    .tb-btn:hover { background: rgba(201,168,76,0.12); border-color: var(--gold); color: var(--gold); }
+    .tb-btn.active { background: rgba(201,168,76,0.18); border-color: var(--gold); color: var(--gold); }
+    .tb-btn svg { flex-shrink: 0; }
 
-    .btn-back {
-      font-size: 0.82rem;
-      color: var(--btn-back);
-      font-family: 'Heebo', sans-serif;
+    .tb-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 0.12em;
       text-decoration: none;
-      padding: 0.25rem 0;
-      transition: color 0.2s;
+      margin-left: 0.4rem;
     }
-    .btn-back:hover { color: #c9a84c; }
 
-    /* ── BOOK WRAPPER ── */
-    .book {
-      max-width: 820px;
+    body { padding-top: 52px; }
+
+    /* ── SCROLL VIEW ── */
+    #scrollView {
+      max-width: 800px;
       margin: 0 auto;
-      padding: 2.5rem 1.5rem 8rem;
+      padding: 2rem 1.2rem 6rem;
     }
 
-    /* ── PAGE BASE ── */
     .page {
       background: var(--page-bg);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
       box-shadow: var(--page-shadow);
       position: relative;
       overflow: hidden;
-      transition: background 0.35s ease, box-shadow 0.35s ease;
+      transition: background 0.3s, box-shadow 0.3s;
+      border-radius: 2px;
     }
 
     /* ── COVER ── */
     .cover {
-      background: #0d1117;
-      min-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      text-align: center;
-      padding: 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cover-photo-wrap {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-    .cover-photo {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-    }
-    .cover-photo-gradient {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom,
-        rgba(13,17,23,0.72) 0%,
-        rgba(13,17,23,0.25) 30%,
-        rgba(13,17,23,0.25) 60%,
-        rgba(13,17,23,0.88) 100%
-      );
-    }
-
-    .cover-content {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      flex: 1;
-      width: 100%;
-      padding-bottom: 4rem;
-    }
-
-    .cover-logo {
-      width: 80px;
-      margin-bottom: 0;
-      filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
-    }
-
-    .cover-title {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.2rem;
-    }
-    .cover-title-main {
-      font-size: clamp(2.6rem, 6.5vw, 4rem);
-      font-weight: 700;
-      color: #c9a84c;
-      letter-spacing: 0.02em;
-      line-height: 1.1;
-    }
-    .cover-title-sub {
-      font-size: clamp(1.3rem, 3.2vw, 1.9rem);
-      font-weight: 300;
-      color: rgba(255,255,255,0.58);
-      letter-spacing: 0.07em;
-      line-height: 1.4;
-      font-style: italic;
-    }
-
-    .cover-top {
-      padding: 3.5rem 3rem 0;
-    }
-    .cover-bottom {
-      padding: 0 3rem 3.5rem;
-    }
-
-    .cover-ornament {
-      width: 60px;
-      height: 1.5px;
-      background: linear-gradient(90deg, transparent, #c9a84c, transparent);
-      margin: 2rem auto;
-    }
-    .cover-author {
-      font-size: 1rem;
-      color: rgba(255,255,255,0.48);
-      font-weight: 300;
-      font-family: 'Heebo', sans-serif;
-      letter-spacing: 0.08em;
-    }
-    .cover-year {
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.2);
-      font-family: 'Heebo', sans-serif;
-      letter-spacing: 0.22em;
-      margin-top: 0.7rem;
-    }
-
-    /* ── TABLE OF CONTENTS ── */
-    .toc-page {
-      padding: 4rem 5rem;
-    }
-
-    .toc-heading {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #c9a84c;
-      font-family: 'Heebo', sans-serif;
-      margin-bottom: 2.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1.5px solid var(--border);
-    }
-
-    .toc-list {
-      list-style: none;
-      columns: 2;
-      column-gap: 3rem;
-    }
-
-    .toc-item {
-      display: flex;
-      align-items: baseline;
-      gap: 0.6rem;
-      padding: 0.5rem 0;
-      border-bottom: 1px dotted var(--border-toc);
-      break-inside: avoid;
-    }
-
-    .toc-num {
-      font-family: 'Heebo', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #c9a84c;
-      min-width: 22px;
-      flex-shrink: 0;
-    }
-
-    .toc-name {
-      font-size: 1rem;
-      color: var(--toc-name);
-    }
-
-    /* ── SONG CHAPTER ── */
-    .song-page {
-      padding: 4rem 5rem;
-    }
-
-    .song-chapter-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 2rem;
-      margin-bottom: 2.5rem;
-      padding-bottom: 2rem;
-      border-bottom: 1.5px solid var(--border);
-    }
-
-    .song-meta {
-      flex: 1;
-    }
-
-    .song-num {
-      font-family: 'Heebo', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #c9a84c;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    .song-title-h {
-      font-size: clamp(2rem, 5vw, 2.8rem);
-      font-weight: 900;
-      color: var(--song-title);
-      line-height: 1.15;
-    }
-
-    .song-cover-img {
-      width: 130px;
-      height: 130px;
-      object-fit: cover;
-      border-radius: 6px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
-      flex-shrink: 0;
-    }
-
-    .song-cover-placeholder {
-      width: 130px;
-      height: 130px;
-      border-radius: 6px;
-      background: #0d1117;
+      background: #090907;
+      min-height: 85vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      padding: 3rem 2rem;
     }
-
-    .song-cover-placeholder svg {
-      width: 60px;
-      height: 60px;
-      opacity: 0.4;
+    .cover-frame-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
     }
-
-    /* ── LYRICS ── */
-    .lyrics-block {
-      margin-bottom: 2.5rem;
-    }
-
-    .lyrics-section-item {
-      margin-bottom: 1.8rem;
-    }
-
-    .section-label {
-      font-family: 'Heebo', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: #c9a84c;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    .lyric-line {
-      font-size: 1.08rem;
-      line-height: 2.1;
-      color: var(--text-body);
-      display: block;
-    }
-
-    /* ── ANALYSIS ── */
-    .analysis-block {
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 1.5px solid var(--border);
-    }
-
-    .analysis-block-heading {
-      font-family: 'Heebo', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #c9a84c;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-    }
-
-    .analysis-card {
-      margin-bottom: 1.4rem;
-      padding: 1.25rem 1.5rem 1.25rem 1.5rem;
-      background: var(--analysis-bg);
-      border-radius: 6px;
-      border-right: 3px solid #c9a84c;
-      page-break-inside: avoid;
-      break-inside: avoid;
-      transition: background 0.35s ease;
-    }
-
-    .analysis-card-title {
-      font-family: 'Heebo', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: #c9a84c;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 0.6rem;
-    }
-
-    .analysis-card-text {
-      font-size: 0.92rem;
-      line-height: 1.9;
-      color: var(--text-dim);
-    }
-
-    /* ── QR ── */
-    .song-qr-row {
+    .cover-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 14px;
-      margin-top: 2rem;
-      padding: 14px 16px;
-      background: var(--analysis-bg);
-      border-radius: 6px;
-      border: 1px solid var(--border);
     }
-    .song-qr-img {
-      width: 80px;
-      height: 80px;
-      flex-shrink: 0;
-      border-radius: 4px;
+    .cover-supra {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.5);
+      margin-bottom: 2.2rem;
     }
-    .song-qr-text { flex: 1; }
-    .song-qr-label {
+    .cover-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 5.5rem);
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      line-height: 1;
+      text-shadow: 0 0 80px rgba(201,168,76,0.15);
+    }
+    .cover-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      font-style: italic;
+      color: rgba(201,168,76,0.45);
+      margin-top: 1.4rem;
+      letter-spacing: 0.04em;
+    }
+    .cover-rule {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.6), transparent);
+      margin: 2rem auto;
+    }
+    .cover-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.28);
+    }
+    .cover-count {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.65rem;
+      color: rgba(201,168,76,0.18);
+      margin-top: 1.4rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    /* ── TOC ── */
+    .toc-page { padding: 3.5rem 3.5rem 3rem; }
+    .toc-heading {
       font-family: 'Heebo', sans-serif;
       font-size: 0.72rem;
       font-weight: 700;
-      color: #c9a84c;
-      letter-spacing: 0.12em;
+      color: var(--gold);
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      margin-bottom: 3px;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
     }
-    .song-qr-sub {
+    .toc-list { list-style: none; columns: 2; column-gap: 2.5rem; }
+    .toc-item {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      padding: 0.4rem 0; border-bottom: 1px dotted var(--border-toc); break-inside: avoid;
+    }
+    .toc-num {
+      font-family: 'Heebo', sans-serif; font-size: 0.72rem; font-weight: 700;
+      color: var(--gold); min-width: 20px; flex-shrink: 0;
+    }
+    .toc-name { font-size: 0.95rem; color: var(--toc-name); }
+
+    /* ── SONG PAGE ── */
+    .song-page { padding: 3.5rem 3.5rem 3rem; }
+    .song-chapter-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1.5rem;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .song-meta { flex: 1; }
+    .song-num {
+      font-family: 'Heebo', sans-serif; font-size: 0.68rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.35rem;
+    }
+    .song-title-h {
+      font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900; color: var(--song-title); line-height: 1.2;
+    }
+    .song-cover-img { width: 110px; height: 110px; object-fit: cover; border-radius: 5px; box-shadow: 0 3px 14px rgba(0,0,0,0.18); flex-shrink: 0; }
+    .song-cover-placeholder { width: 110px; height: 110px; border-radius: 5px; background: #0d1117; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .song-cover-placeholder svg { width: 50px; height: 50px; opacity: 0.35; }
+
+    /* Lyrics */
+    .lyrics-block { margin-bottom: 2rem; }
+    .lyrics-section-item { margin-bottom: 1.5rem; }
+    .section-label { font-family: 'Heebo', sans-serif; font-size: 0.65rem; font-weight: 700; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .lyric-line { font-size: 1.02rem; line-height: 2; color: var(--text-body); display: block; }
+
+    /* QR */
+    .song-qr-row { display: flex; align-items: center; gap: 12px; margin: 1.5rem 0; padding: 12px 14px; background: var(--analysis-bg); border-radius: 5px; border: 1px solid var(--border); }
+    .song-qr-img { width: 72px; height: 72px; flex-shrink: 0; border-radius: 3px; }
+    .song-qr-label { font-family: 'Heebo', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+    .song-qr-sub { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
+
+    /* Analysis */
+    .analysis-block { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1.5px solid var(--border); }
+    .analysis-block-heading { font-family: 'Heebo', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--gold); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 1.2rem; }
+    .analysis-card { margin-bottom: 1.2rem; padding: 1.1rem 1.2rem; background: var(--analysis-bg); border-radius: 5px; border-right: 3px solid var(--gold); page-break-inside: avoid; break-inside: avoid; }
+    .analysis-card-title { font-family: 'Heebo', sans-serif; font-size: 0.66rem; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .analysis-card-text { font-size: 0.88rem; line-height: 1.9; color: var(--text-dim); }
+
+    /* ══════════════════════════════════════
+       FLIP VIEWER
+    ══════════════════════════════════════ */
+    #flipView {
+      display: none;
+      position: fixed;
+      inset: 52px 0 0;
+      background: var(--spine-bg);
+      z-index: 100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      padding: 1.5rem 1rem;
+    }
+    #flipView.active { display: flex; }
+
+    /* The book stage */
+    .flip-stage {
+      position: relative;
+      width: min(480px, 90vw);
+      height: min(660px, calc(100vh - 160px));
+      perspective: 1800px;
+    }
+
+    /* Behind layer — shows the target page as static background */
+    .flip-behind {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      padding: 2.8rem 2.5rem 2rem;
+      background: var(--page-bg);
+      box-shadow: var(--page-shadow);
+      border-radius: 2px;
+    }
+
+    /* The animated leaf */
+    .flip-leaf {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      will-change: transform;
+      cursor: grab;
+    }
+    .flip-leaf-front, .flip-leaf-back {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      padding: 2.8rem 2.5rem 2rem;
+      background: var(--page-bg);
+      box-shadow: var(--page-shadow);
+      backface-visibility: hidden;
+      border-radius: 2px;
+    }
+    /* For RTL Hebrew book: hinge is on the RIGHT, back face mirrors around right axis */
+    .flip-leaf-back {
+      transform: rotateY(-180deg);
+    }
+
+    /* Page edge shadow to simulate depth */
+    .flip-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      box-shadow: inset -6px 0 18px rgba(0,0,0,0.12), inset 6px 0 6px rgba(0,0,0,0.05);
+      border-radius: 2px;
+    }
+
+    /* Flip navigation */
+    .flip-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+    }
+    .flip-arrow {
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .flip-arrow:hover:not(:disabled) { background: rgba(201,168,76,0.22); border-color: var(--gold); }
+    .flip-arrow:disabled { opacity: 0.2; cursor: not-allowed; }
+
+    .flip-counter {
+      font-family: 'Heebo', sans-serif;
       font-size: 0.8rem;
-      color: var(--text-dim);
-      line-height: 1.5;
+      color: rgba(201,168,76,0.55);
+      letter-spacing: 0.08em;
+      min-width: 90px;
+      text-align: center;
     }
+
+    /* Flip title hint */
+    .flip-title-hint {
+      font-family: 'Frank Ruhl Libre', serif;
+      font-size: 0.82rem;
+      color: rgba(201,168,76,0.35);
+      text-align: center;
+      min-height: 1.2em;
+      letter-spacing: 0.03em;
+    }
+
+    /* Scrollbar in flip pages */
+    .flip-leaf-front::-webkit-scrollbar,
+    .flip-leaf-back::-webkit-scrollbar,
+    .flip-behind::-webkit-scrollbar { width: 4px; }
+    .flip-leaf-front::-webkit-scrollbar-track,
+    .flip-leaf-back::-webkit-scrollbar-track,
+    .flip-behind::-webkit-scrollbar-track { background: transparent; }
+    .flip-leaf-front::-webkit-scrollbar-thumb,
+    .flip-leaf-back::-webkit-scrollbar-thumb,
+    .flip-behind::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 2px; }
 
     /* ── PRINT ── */
     @media print {
-      @page {
-        size: A4 portrait;
-        margin: 18mm 22mm 18mm 22mm;
-      }
+      .toolbar, #flipView { display: none !important; }
+      body { padding-top: 0; }
+      #scrollView { padding: 0; max-width: none; }
+      .page { margin-bottom: 0; box-shadow: none; page-break-after: always; border-radius: 0; }
+      .cover { min-height: 100vh; height: 100vh; }
+      .song-page { page-break-before: always; break-before: page; }
+      .analysis-card { page-break-inside: avoid; break-inside: avoid; }
+      .toc-list { columns: 2; }
+    }
 
-      body { background: transparent; }
-
-      .controls { display: none !important; }
-
-      .book {
-        max-width: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .page {
-        margin: 0;
-        box-shadow: none;
-        page-break-after: always;
-        break-after: page;
-      }
-
-      .cover {
-        min-height: 100vh;
-        height: 100vh;
-      }
-
-      .song-page {
-        page-break-before: always;
-        break-before: page;
-      }
-
-      .analysis-card {
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-
-      .lyrics-section-item {
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-
-      .toc-list {
-        columns: 2;
-      }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .toolbar { padding: 0 1rem; }
+      .tb-logo { display: none; }
+      #scrollView { padding: 1rem 0.5rem 5rem; }
+      .toc-page { padding: 2.5rem 1.5rem 2rem; }
+      .song-page { padding: 2.5rem 1.5rem 2rem; }
+      .toc-list { columns: 1; }
+      .song-chapter-header { flex-direction: column; }
+      .song-cover-img, .song-cover-placeholder { width: 80px; height: 80px; }
+      .flip-leaf-front, .flip-leaf-back, .flip-behind { padding: 1.8rem 1.4rem 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <div class="controls">
-    <button class="btn-print" onclick="window.print()">הדפס / שמור PDF</button>
-    <button class="btn-theme" id="themeBtn" onclick="toggleTheme()">● עיצוב כהה</button>
-    <a class="btn-back" href="index.html">← חזרה לאתר</a>
+  <!-- ── TOOLBAR ── -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <a class="tb-logo" href="index.html">amiado</a>
+    </div>
+    <div class="toolbar-right">
+      <button class="tb-btn" id="btnScroll" title="תצוגת גלילה">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="2" y1="3" x2="12" y2="3"/><line x1="2" y1="7" x2="12" y2="7"/><line x1="2" y1="11" x2="12" y2="11"/>
+        </svg>
+        גלילה
+      </button>
+      <button class="tb-btn" id="btnFlip" title="ספר דפים">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="1" y="1" width="12" height="12" rx="1"/>
+          <line x1="7" y1="1" x2="7" y2="13"/>
+          <line x1="7" y1="5" x2="11" y2="3" stroke-width="1"/>
+        </svg>
+        ספר
+      </button>
+      <button class="tb-btn" id="btnTheme">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="tb-btn" id="btnPrint" onclick="window.print()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        PDF
+      </button>
+    </div>
   </div>
 
-  <div class="book" id="book">
-    <!-- ── COVER ── -->
-    <div class="page cover" id="cover">
-      <div class="cover-photo-wrap">
-        <img class="cover-photo" src="amiad_main.jpg" alt="" onerror="this.parentElement.style.display='none'">
-        <div class="cover-photo-gradient"></div>
-      </div>
-      <div class="cover-content">
-        <div class="cover-top">
-          <img class="cover-logo" src="aologo.svg" alt="עמיאדו" onerror="this.style.display='none'">
-        </div>
-        <div class="cover-bottom">
-          <div class="cover-title">
-            <span class="cover-title-main">מגע במילים</span>
-            <span class="cover-title-sub">ומילים במגע איתי</span>
-          </div>
-          <div class="cover-ornament"></div>
-          <div class="cover-author">מאת: עמיעד אידלמן אוברמן</div>
-          <div class="cover-year" id="coverYear"></div>
-        </div>
+  <!-- ── SCROLL VIEW ── -->
+  <div id="scrollView">
+    <div class="page cover" id="pageCover">
+      <svg class="cover-frame-svg" viewBox="0 0 600 500" preserveAspectRatio="none">
+        <rect x="10" y="10" width="580" height="480" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.45"/>
+        <rect x="20" y="20" width="560" height="460" fill="none" stroke="#c9a84c" stroke-width="0.3" opacity="0.25"/>
+        <g stroke="#c9a84c" fill="none" opacity="0.85">
+          <g transform="translate(10,10)"><line x1="0" y1="28" x2="0" y2="0"/><line x1="0" y1="0" x2="28" y2="0"/><line x1="10" y1="10" x2="22" y2="10"/><line x1="10" y1="10" x2="10" y2="22"/><circle cx="10" cy="10" r="2" fill="#c9a84c"/></g>
+          <g transform="translate(590,10) scale(-1,1)"><line x1="0" y1="28" x2="0" y2="0"/><line x1="0" y1="0" x2="28" y2="0"/><line x1="10" y1="10" x2="22" y2="10"/><line x1="10" y1="10" x2="10" y2="22"/><circle cx="10" cy="10" r="2" fill="#c9a84c"/></g>
+          <g transform="translate(10,490) scale(1,-1)"><line x1="0" y1="28" x2="0" y2="0"/><line x1="0" y1="0" x2="28" y2="0"/><line x1="10" y1="10" x2="22" y2="10"/><line x1="10" y1="10" x2="10" y2="22"/><circle cx="10" cy="10" r="2" fill="#c9a84c"/></g>
+          <g transform="translate(590,490) scale(-1,-1)"><line x1="0" y1="28" x2="0" y2="0"/><line x1="0" y1="0" x2="28" y2="0"/><line x1="10" y1="10" x2="22" y2="10"/><line x1="10" y1="10" x2="10" y2="22"/><circle cx="10" cy="10" r="2" fill="#c9a84c"/></g>
+        </g>
+        <line x1="50" y1="140" x2="550" y2="140" stroke="#c9a84c" stroke-width="0.4" opacity="0.4"/>
+        <line x1="50" y1="360" x2="550" y2="360" stroke="#c9a84c" stroke-width="0.4" opacity="0.4"/>
+        <polygon points="300,135 305,140 300,145 295,140" fill="#c9a84c" opacity="0.65"/>
+        <polygon points="300,355 305,360 300,365 295,360" fill="#c9a84c" opacity="0.65"/>
+      </svg>
+      <div class="cover-inner">
+        <div class="cover-supra">עמיעד אידלמן אוברמן</div>
+        <div class="cover-title">amiado</div>
+        <div class="cover-sub">מגע במילים ומילים במגע</div>
+        <div class="cover-rule"></div>
+        <div class="cover-tagline">זה המקדש הפרטי שלי</div>
+        <div class="cover-count" id="coverCount"></div>
       </div>
     </div>
 
-    <!-- ── TOC ── -->
-    <div class="page toc-page" id="toc-container">
+    <div class="page toc-page" id="pageToc">
       <div class="toc-heading">תוכן עניינים</div>
-      <ul class="toc-list" id="toc-list"></ul>
+      <ul class="toc-list" id="tocList"></ul>
     </div>
 
-    <!-- ── SONGS ── -->
-    <div id="songs-container"></div>
+    <div id="songsContainer"></div>
+  </div>
+
+  <!-- ── FLIP VIEW ── -->
+  <div id="flipView">
+    <div class="flip-stage" id="flipStage">
+      <div class="flip-behind" id="flipBehind"></div>
+      <div class="flip-leaf" id="flipLeaf">
+        <div class="flip-leaf-front" id="flipFront"></div>
+        <div class="flip-leaf-back" id="flipBack"></div>
+      </div>
+    </div>
+    <div class="flip-title-hint" id="flipTitleHint"></div>
+    <div class="flip-nav">
+      <!-- RTL: next is ← (arrow pointing left = go forward in Hebrew) -->
+      <button class="flip-arrow" id="flipNextBtn" title="דף הבא">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="flip-counter" id="flipCounter">1 / 1</span>
+      <button class="flip-arrow" id="flipPrevBtn" title="דף קודם">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
   </div>
 
   <script src="app.js"></script>
   <script>
-    // Theme toggle
-    function toggleTheme() {
-      const isDark = document.body.classList.toggle('dark');
-      document.getElementById('themeBtn').textContent = isDark ? '○ עיצוב בהיר' : '● עיצוב כהה';
-      localStorage.setItem('book-theme', isDark ? 'dark' : 'light');
+  (function () {
+    'use strict';
+
+    const ANALYSIS_LABELS = {
+      abstract:      'תקציר',
+      structural:    'מבנה ושפה',
+      psychological: 'פסיכולוגיה ורגש',
+      academic:      'קריאה אקדמית'
+    };
+
+    const COVER_MAP = {
+      'maga-bamilim':            'songs8.jpeg',
+      'shigaon-amorfi':          'songs22.jpeg',
+      'hargasha-meshuna':        'songs12.jpeg',
+      'al-ktsot-hatsbaot':       'songs1.jpeg',
+      'banahar-sheli':           'songs3.jpeg',
+      'lo-amiti':                'songs21.jpeg',
+      'makom-batuach':           'songs17.jpeg',
+      'london':                  'songs2.jpeg',
+      'efshar':                  'songs4.jpeg',
+      'porkan-mini-zol':         'songs10.jpeg',
+      'simanim-shel-bots':       'songs13.jpeg',
+      'gibor-al':                'songs18.jpeg',
+      'ahava-amitit':            'songs20.jpeg',
+      'ben-zona':                'songs5.jpeg',
+      'shalachat':               'songs7.jpeg',
+      'lifamim':                 'songs27.jpeg',
+      'harbe-zman':              'songs32.jpeg',
+      'avak-hair':               'songs25.jpeg',
+      'keshal-rigshi':           'songs6.jpeg',
+      'kach-hakol':              'songs31.jpeg',
+      'lo-noten-laze-koach':     'songs24.jpeg',
+      'mekumatim':               'songs30.jpeg',
+      'eich-ze':                 'songs15.jpeg',
+      'ani-nishar':              'songs19.jpeg',
+      'yafe-tamid':              'songs26.jpeg',
+      'lo-od-amok':              'songs9.jpeg',
+      'yeled-shel-ima-mutzlach': 'songs34.jpeg',
+      'boche-lifamim':           'songs16.jpeg',
+      'lo-pashut':               'songs11.jpeg',
+      'chozer-elay':             'songs14.jpeg',
+      'kimeat-shakuf':           'songs33.jpeg',
+      'at':                      'songs29.jpeg',
+    };
+
+    const songs = window.SONGS || [];
+
+    /* ── Build page HTML strings ── */
+    function buildCoverHTML() {
+      return document.getElementById('pageCover').outerHTML;
     }
-    // Restore saved theme
-    if (localStorage.getItem('book-theme') === 'dark') {
-      document.body.classList.add('dark');
-      document.addEventListener('DOMContentLoaded', () => {
-        const btn = document.getElementById('themeBtn');
-        if (btn) btn.textContent = '○ עיצוב בהיר';
+
+    function buildTocHTML() {
+      return document.getElementById('pageToc').outerHTML;
+    }
+
+    function buildSongHTML(song, i) {
+      const imgSrc = COVER_MAP[song.id];
+      const coverHtml = imgSrc
+        ? `<img class="song-cover-img" src="${imgSrc}" alt="${song.title}" loading="lazy">`
+        : `<div class="song-cover-placeholder"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="22" stroke="#c9a84c" stroke-width="1.2" opacity="0.5"/></svg></div>`;
+
+      let lyricsHtml = '<div class="lyrics-block">';
+      if (song.lyrics && song.lyrics.length) {
+        song.lyrics.forEach(sec => {
+          lyricsHtml += `<div class="lyrics-section-item">`;
+          if (sec.section) lyricsHtml += `<div class="section-label">${sec.section}</div>`;
+          (sec.lines || []).forEach(line => { lyricsHtml += `<span class="lyric-line">${line}</span>`; });
+          lyricsHtml += `</div>`;
+        });
+      }
+      lyricsHtml += '</div>';
+
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=144x144&data=${encodeURIComponent('https://amiado.vercel.app/#/song/' + song.id)}&bgcolor=ffffff&color=1a0d00&margin=6&qzone=1`;
+      const qrHtml = `<div class="song-qr-row">
+        <img class="song-qr-img" src="${qrUrl}" alt="QR" loading="lazy">
+        <div>
+          <div class="song-qr-label">סרוק להאזנה</div>
+          <div class="song-qr-sub">סרקו כדי לנגן את השיר באתר</div>
+        </div>
+      </div>`;
+
+      let analysisHtml = '';
+      if (song.analysis) {
+        analysisHtml = `<div class="analysis-block"><div class="analysis-block-heading">ניתוח יצירה</div>`;
+        Object.entries(song.analysis).forEach(([key, val]) => {
+          if (!val) return;
+          const label = ANALYSIS_LABELS[key] || key;
+          analysisHtml += `<div class="analysis-card"><div class="analysis-card-title">${label}</div><div class="analysis-card-text">${val}</div></div>`;
+        });
+        analysisHtml += `</div>`;
+      }
+
+      return `<div class="song-chapter-header">
+          <div class="song-meta">
+            <div class="song-num">שיר ${i + 1} מתוך ${songs.length}</div>
+            <div class="song-title-h">${song.title}</div>
+          </div>
+          ${coverHtml}
+        </div>
+        ${lyricsHtml}
+        ${qrHtml}
+        ${analysisHtml}`;
+    }
+
+    /* ── Populate scroll view ── */
+    document.getElementById('coverCount').textContent = `${songs.length} שירים`;
+
+    const tocList = document.getElementById('tocList');
+    songs.forEach((song, i) => {
+      const li = document.createElement('li');
+      li.className = 'toc-item';
+      li.innerHTML = `<span class="toc-num">${i + 1}</span><span class="toc-name">${song.title}</span>`;
+      tocList.appendChild(li);
+    });
+
+    const container = document.getElementById('songsContainer');
+    songs.forEach((song, i) => {
+      const page = document.createElement('div');
+      page.className = 'page song-page';
+      page.innerHTML = buildSongHTML(song, i);
+      container.appendChild(page);
+    });
+
+    /* ── Page flip view ── */
+    const allPageContents = []; // HTML strings for each page
+
+    // Collect page contents after scroll view is built
+    function collectPages() {
+      // Page 0: cover
+      allPageContents.push(document.getElementById('pageCover').innerHTML);
+      // Page 1: TOC
+      allPageContents.push(document.getElementById('pageToc').innerHTML);
+      // Pages 2+: songs
+      songs.forEach((song, i) => {
+        allPageContents.push(buildSongHTML(song, i));
       });
     }
-  </script>
-  <script>
-    (function () {
-      'use strict';
+    collectPages();
 
-      const ANALYSIS_LABELS = {
-        abstract:     'תקציר',
-        structural:   'מבנה ושפה',
-        psychological:'פסיכולוגיה ורגש',
-        academic:     'קריאה אקדמית'
-      };
+    const flipView     = document.getElementById('flipView');
+    const flipFront    = document.getElementById('flipFront');
+    const flipBack     = document.getElementById('flipBack');
+    const flipBehind   = document.getElementById('flipBehind');
+    const flipLeaf     = document.getElementById('flipLeaf');
+    const flipCounter  = document.getElementById('flipCounter');
+    const flipTitleHint = document.getElementById('flipTitleHint');
+    const flipNextBtn  = document.getElementById('flipNextBtn');
+    const flipPrevBtn  = document.getElementById('flipPrevBtn');
 
-      const COVER_MAP = {
-        'maga-bamilim':            'songs8.jpeg',
-        'shigaon-amorfi':          'songs22.jpeg',
-        'hargasha-meshuna':        'songs12.jpeg',
-        'al-ktsot-hatsbaot':       'songs1.jpeg',
-        'banahar-sheli':           'songs3.jpeg',
-        'lo-amiti':                'songs21.jpeg',
-        'makom-batuach':           'songs17.jpeg',
-        'london':                  'songs2.jpeg',
-        'efshar':                  'songs4.jpeg',
-        'porkan-mini-zol':         'songs10.jpeg',
-        'simanim-shel-bots':       'songs13.jpeg',
-        'gibor-al':                'songs18.jpeg',
-        'ahava-amitit':            'songs20.jpeg',
-        'ben-zona':                'songs5.jpeg',
-        'shalachat':               'songs7.jpeg',
-        'lifamim':                 'songs27.jpeg',
-        'harbe-zman':              'songs32.jpeg',
-        'avak-hair':               'songs25.jpeg',
-        'keshal-rigshi':           'songs6.jpeg',
-        'kach-hakol':              'songs31.jpeg',
-        'lo-noten-laze-koach':     'songs24.jpeg',
-        'mekumatim':               'songs30.jpeg',
-        'eich-ze':                 'songs15.jpeg',
-        'ani-nishar':              'songs19.jpeg',
-        'yafe-tamid':              'songs26.jpeg',
-        'lo-od-amok':              'songs9.jpeg',
-        'yeled-shel-ima-mutzlach': 'songs34.jpeg',
-        'boche-lifamim':           'songs16.jpeg',
-        'lo-pashut':               'songs11.jpeg',
-        'chozer-elay':             'songs14.jpeg',
-        'kimeat-shakuf':           'songs33.jpeg',
-        'at':                      'songs29.jpeg',
-      };
+    let currentPage = 0;
+    let isFlipping  = false;
+    const TOTAL     = allPageContents.length;
 
-      const songs = window.SONGS || [];
+    function getPageTitle(idx) {
+      if (idx === 0) return 'כריכה';
+      if (idx === 1) return 'תוכן עניינים';
+      const song = songs[idx - 2];
+      return song ? song.title : '';
+    }
 
-      // Year on cover
-      document.getElementById('coverYear').textContent = new Date().getFullYear();
+    function updateUI() {
+      flipCounter.textContent = `${currentPage + 1} / ${TOTAL}`;
+      flipTitleHint.textContent = getPageTitle(currentPage);
+      flipNextBtn.disabled = currentPage >= TOTAL - 1;
+      flipPrevBtn.disabled = currentPage <= 0;
+    }
 
-      // Build TOC
-      const tocList = document.getElementById('toc-list');
-      songs.forEach((song, i) => {
-        const li = document.createElement('li');
-        li.className = 'toc-item';
-        li.innerHTML = `<span class="toc-num">${i + 1}</span><span class="toc-name">${song.title}</span>`;
-        tocList.appendChild(li);
+    function showPage(idx, skipAnim) {
+      currentPage = idx;
+      flipFront.innerHTML = allPageContents[idx] || '';
+      flipBack.innerHTML  = '';
+      flipBehind.innerHTML = '';
+      flipLeaf.style.transition = 'none';
+      flipLeaf.style.transform  = 'rotateY(0deg)';
+      // Cover page: black bg
+      const isCover = idx === 0;
+      flipFront.style.background  = isCover ? '#090907' : '';
+      flipBehind.style.background = '';
+      updateUI();
+    }
+
+    function flipTo(targetIdx) {
+      if (isFlipping || targetIdx < 0 || targetIdx >= TOTAL) return;
+      isFlipping = true;
+
+      const forward = targetIdx > currentPage;
+      const isCoverTarget = targetIdx === 0;
+      const isCoverCurrent = currentPage === 0;
+
+      // front = current page
+      flipFront.innerHTML = allPageContents[currentPage] || '';
+      flipFront.style.background = isCoverCurrent ? '#090907' : '';
+      // back = target page (revealed after flip)
+      flipBack.innerHTML  = allPageContents[targetIdx] || '';
+      flipBack.style.background  = isCoverTarget ? '#090907' : '';
+      // behind = target page (static backdrop)
+      flipBehind.innerHTML = allPageContents[targetIdx] || '';
+      flipBehind.style.background = isCoverTarget ? '#090907' : '';
+
+      // Scroll both panels to top
+      flipFront.scrollTop = 0;
+      flipBack.scrollTop  = 0;
+      flipBehind.scrollTop = 0;
+
+      // Reset to pre-flip state without transition
+      flipLeaf.style.transition = 'none';
+      flipLeaf.style.transform  = 'rotateY(0deg)';
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // Hebrew RTL book:
+          // Forward (next page) = flip from right edge (standard Hebrew turn)
+          // Backward (prev page) = flip from left edge
+          if (forward) {
+            flipLeaf.style.transformOrigin = 'right center';
+          } else {
+            flipLeaf.style.transformOrigin = 'left center';
+          }
+
+          flipLeaf.style.transition = 'transform 0.65s cubic-bezier(0.4, 0, 0.2, 1)';
+          flipLeaf.style.transform  = forward ? 'rotateY(180deg)' : 'rotateY(-180deg)';
+
+          setTimeout(() => {
+            currentPage = targetIdx;
+            showPage(currentPage, true);
+            isFlipping = false;
+            updateUI();
+          }, 680);
+        });
       });
+    }
 
-      // Build song pages
-      const container = document.getElementById('songs-container');
+    flipNextBtn.addEventListener('click', () => flipTo(currentPage + 1));
+    flipPrevBtn.addEventListener('click', () => flipTo(currentPage - 1));
 
-      songs.forEach((song, i) => {
-        const page = document.createElement('div');
-        page.className = 'page song-page';
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (!flipView.classList.contains('active')) return;
+      if (e.key === 'ArrowLeft')  flipTo(currentPage + 1); // forward in Hebrew
+      if (e.key === 'ArrowRight') flipTo(currentPage - 1); // backward
+    });
 
-        const imgSrc = COVER_MAP[song.id];
-        const coverHtml = imgSrc
-          ? `<img class="song-cover-img" src="${imgSrc}" alt="${song.title}" loading="eager">`
-          : `<div class="song-cover-placeholder">
-               <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                 <circle cx="30" cy="30" r="22" stroke="#c9a84c" stroke-width="1.2" opacity="0.5"/>
-               </svg>
-             </div>`;
+    // Touch / swipe
+    let touchStartX = 0;
+    flipView.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    flipView.addEventListener('touchend', e => {
+      const dx = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(dx) < 40) return;
+      if (dx > 0) flipTo(currentPage + 1); // swipe left = next
+      else        flipTo(currentPage - 1); // swipe right = prev
+    }, { passive: true });
 
-        // Lyrics HTML
-        let lyricsHtml = '<div class="lyrics-block">';
-        if (song.lyrics && song.lyrics.length) {
-          song.lyrics.forEach(sec => {
-            lyricsHtml += `<div class="lyrics-section-item">`;
-            if (sec.section) {
-              lyricsHtml += `<div class="section-label">${sec.section}</div>`;
-            }
-            (sec.lines || []).forEach(line => {
-              lyricsHtml += `<span class="lyric-line">${line}</span>`;
-            });
-            lyricsHtml += `</div>`;
-          });
-        }
-        lyricsHtml += '</div>';
+    /* ── View toggle ── */
+    const scrollView = document.getElementById('scrollView');
+    const btnScroll  = document.getElementById('btnScroll');
+    const btnFlip    = document.getElementById('btnFlip');
 
-        // Analysis HTML
-        let analysisHtml = '';
-        if (song.analysis) {
-          analysisHtml += `<div class="analysis-block">
-            <div class="analysis-block-heading">ניתוח יצירה</div>`;
-          Object.entries(song.analysis).forEach(([key, val]) => {
-            if (!val) return;
-            const label = ANALYSIS_LABELS[key] || key;
-            analysisHtml += `<div class="analysis-card">
-              <div class="analysis-card-title">${label}</div>
-              <div class="analysis-card-text">${val}</div>
-            </div>`;
-          });
-          analysisHtml += `</div>`;
-        }
+    function setMode(mode) {
+      const isFlip = mode === 'flip';
+      flipView.classList.toggle('active', isFlip);
+      scrollView.style.display = isFlip ? 'none' : '';
+      btnFlip.classList.toggle('active', isFlip);
+      btnScroll.classList.toggle('active', !isFlip);
+      localStorage.setItem('book-mode', mode);
+      if (isFlip) {
+        showPage(currentPage);
+        updateUI();
+      }
+    }
 
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent('https://amiado.vercel.app/#/song/' + song.id)}&bgcolor=ffffff&color=1a0d00&margin=6&qzone=1`;
-        const qrHtml = `<div class="song-qr-row">
-          <img class="song-qr-img" src="${qrUrl}" alt="QR — ${song.title}" loading="lazy">
-          <div class="song-qr-text">
-            <div class="song-qr-label">סרוק להאזנה</div>
-            <div class="song-qr-sub">סרקו את הקוד כדי לנגן את השיר באתר</div>
-          </div>
-        </div>`;
+    btnScroll.addEventListener('click', () => setMode('scroll'));
+    btnFlip.addEventListener('click',   () => setMode('flip'));
 
-        page.innerHTML = `
-          <div class="song-chapter-header">
-            <div class="song-meta">
-              <div class="song-num">שיר ${i + 1} מתוך ${songs.length}</div>
-              <div class="song-title-h">${song.title}</div>
-            </div>
-            ${coverHtml}
-          </div>
-          ${lyricsHtml}
-          ${qrHtml}
-          ${analysisHtml}
-        `;
+    // Restore saved mode
+    const savedMode = localStorage.getItem('book-mode') || 'scroll';
+    setMode(savedMode);
 
-        container.appendChild(page);
-      });
-    })();
+    /* ── Theme toggle ── */
+    const btnTheme = document.getElementById('btnTheme');
+    function applyTheme(dark) {
+      document.body.classList.toggle('dark', dark);
+      btnTheme.title = dark ? 'עיצוב בהיר' : 'עיצוב כהה';
+    }
+    btnTheme.addEventListener('click', () => {
+      const dark = !document.body.classList.contains('dark');
+      applyTheme(dark);
+      localStorage.setItem('book-theme', dark ? 'dark' : 'light');
+      // If in flip mode, re-render current page to pick up new theme
+      if (flipView.classList.contains('active')) showPage(currentPage);
+    });
+    applyTheme(localStorage.getItem('book-theme') === 'dark');
+
+    // Year on cover
+    document.getElementById('coverCount').textContent = `${songs.length} שירים · ${new Date().getFullYear()}`;
+  })();
   </script>
 </body>
 </html>
