@@ -1515,7 +1515,7 @@ function route() {
     app.innerHTML = renderCollectionPage();
     initCollectionPage();
   } else if (hash === '#/moments') {
-    document.title = 'Amiado — מהסלון שלי';
+    document.title = 'Amiado — מהסלון שלי אליכם';
     document.querySelector('[data-route="moments"]')?.classList.add('active');
     app.innerHTML = renderMomentsPage();
     initMomentsPage();
@@ -1534,7 +1534,7 @@ function route() {
     document.querySelector('[data-route="writings"]')?.classList.add('active');
     app.innerHTML = renderWritingsPage();
   } else if (hash === '#/moments') {
-    document.title = 'Amiado — מהסלון שלי';
+    document.title = 'Amiado — מהסלון שלי אליכם';
     document.querySelector('[data-route="moments"]')?.classList.add('active');
     app.innerHTML = renderMomentsPage();
     initMomentsPage();
@@ -1812,26 +1812,53 @@ function momentsHandleOverlayClick(e) {
   if (e.target === document.getElementById('moments-modal')) momentsCloseModal();
 }
 
+function momentsShare(btn) {
+  const url = btn.dataset.url;
+  const title = btn.dataset.title;
+  if (navigator.share) {
+    navigator.share({ title, url }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      const orig = btn.innerHTML;
+      btn.textContent = '✓';
+      setTimeout(() => { btn.innerHTML = orig; }, 1800);
+      // Toast
+      let toast = document.getElementById('m-copy-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'm-copy-toast';
+        toast.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(20,18,14,.95);border:1px solid rgba(201,168,76,.35);color:#c9a84c;padding:10px 22px;border-radius:24px;font-size:.82rem;letter-spacing:.05em;z-index:9999;pointer-events:none;transition:opacity .3s';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = 'הקישור הועתק ✓';
+      toast.style.opacity = '1';
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2200);
+    });
+  }
+}
+
 function renderMomentsPage() {
   const PLAY = `<svg viewBox="0 0 14 14" fill="none"><path d="M4 2.5l8 4.5-8 4.5V2.5z" fill="#c9a84c"/></svg>`;
   const ARROW = `<svg viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8l5-5" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const GRADS = ['#1a0e20,#0c1525','#0e1a17,#141020','#1a150c,#0c1020','#0c1422,#1a0d18'];
 
+  const SHARE_SVG = `<svg viewBox="0 0 18 18" fill="none" width="15" height="15"><circle cx="14" cy="3" r="2" stroke="currentColor" stroke-width="1.4"/><circle cx="4" cy="9" r="2" stroke="currentColor" stroke-width="1.4"/><circle cx="14" cy="15" r="2" stroke="currentColor" stroke-width="1.4"/><line x1="12.2" y1="4.1" x2="5.8" y2="7.9" stroke="currentColor" stroke-width="1.4"/><line x1="5.8" y1="10.1" x2="12.2" y2="13.9" stroke="currentColor" stroke-width="1.4"/></svg>`;
+
   function listItem(v, gi, li, cat) {
     const [c1, c2] = GRADS[li % 4].split(',');
-    return `<div class="m-list-item" data-cat="${cat}" onclick="momentsOpenModal(${gi})" style="animation-delay:${li * 0.07}s">
-      <div class="m-thumb" style="background:linear-gradient(135deg,${c1},${c2})">
+    const postText = v.post ? `<div class="m-post-preview">${v.post}</div>` : '';
+    return `<div class="m-list-item" data-cat="${cat}" style="animation-delay:${li * 0.07}s">
+      <div class="m-thumb" style="background:linear-gradient(135deg,${c1},${c2})" onclick="momentsOpenModal(${gi})">
         <div class="m-thumb-num">${String(li + 1).padStart(2,'0')}</div>
         <div class="m-thumb-play"><div class="m-thumb-circle">${PLAY}</div></div>
       </div>
-      <div class="m-list-info">
+      <div class="m-list-info" onclick="momentsOpenModal(${gi})">
         <div class="m-list-title">${v.title}</div>
-        <div class="m-comments-preview">
-          <div class="m-comment-line"><b>${v.comments[0].name}:</b> ${v.comments[0].text}</div>
-          ${v.comments[1] ? `<div class="m-comment-line"><b>${v.comments[1].name}:</b> ${v.comments[1].text}</div>` : ''}
-        </div>
+        ${postText}
       </div>
-      <div class="m-list-arrow">${ARROW}</div>
+      <button class="m-share-btn" data-url="${v.fbUrl}" data-title="${v.title}" title="שתף" onclick="event.stopPropagation();momentsShare(this)">${SHARE_SVG}</button>
+      <div class="m-list-arrow" onclick="momentsOpenModal(${gi})">${ARROW}</div>
     </div>`;
   }
 
@@ -1839,9 +1866,10 @@ function renderMomentsPage() {
   const origItems   = MOMENTS_ORIGINALS.map((v, i) => listItem(v, MOMENTS_COVERS.length + i, i, 'original')).join('');
 
   return `<style>
-.moments-page{max-width:760px;margin:0 auto;padding:0 0 80px}
+.moments-page{max-width:760px;margin:0 auto;padding:40px 20px 80px}
 .moments-page h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:300;color:var(--gold);letter-spacing:.14em;text-align:center}
-.m-sub{color:var(--text-dim);font-size:.82rem;letter-spacing:.06em;text-align:center;margin-top:8px}
+.m-sub{color:var(--text-mid);font-size:.9rem;letter-spacing:.04em;text-align:center;margin-top:10px;font-style:italic}
+.m-intro{max-width:560px;margin:14px auto 0;font-size:.82rem;color:var(--text-dim);line-height:1.85;text-align:center;direction:rtl}
 .m-divider-line{width:40px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:14px auto 0}
 .moments-filter{display:flex;justify-content:center;gap:8px;margin:36px 0 44px;flex-wrap:wrap}
 .moments-filter-btn{background:none;border:1px solid var(--card-border);color:var(--text-dim);padding:9px 22px;border-radius:24px;cursor:pointer;font-family:'Frank Ruhl Libre',serif;font-size:.82rem;letter-spacing:.05em;transition:all .25s}
@@ -1849,7 +1877,7 @@ function renderMomentsPage() {
 .moments-filter-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.06)}
 #moments-view-list{max-width:720px;margin:0 auto}
 .m-list-feed{display:flex;flex-direction:column;gap:12px}
-.m-list-item{display:grid;grid-template-columns:130px 1fr 40px;align-items:center;background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .3s,box-shadow .3s,transform .25s;animation:mSlideIn .4s ease both}
+.m-list-item{display:grid;grid-template-columns:130px 1fr auto 40px;align-items:center;background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .3s,box-shadow .3s,transform .25s;animation:mSlideIn .4s ease both}
 @keyframes mSlideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .m-list-item:hover{border-color:rgba(201,168,76,.35);box-shadow:0 0 30px rgba(201,168,76,.07),0 4px 24px rgba(0,0,0,.4);transform:translateX(-3px)}
 .m-thumb{width:130px;height:90px;position:relative;overflow:hidden;flex-shrink:0}
@@ -1859,10 +1887,10 @@ function renderMomentsPage() {
 .m-list-item:hover .m-thumb-circle{background:rgba(201,168,76,.18);border-color:var(--gold);box-shadow:0 0 16px rgba(201,168,76,.3);transform:scale(1.1)}
 .m-thumb-circle svg{width:13px;height:13px;margin-right:-2px}
 .m-list-info{padding:14px 16px;min-width:0}
-.m-list-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;color:var(--text);margin-bottom:8px;letter-spacing:.02em}
-.m-comments-preview{display:flex;flex-direction:column;gap:4px}
-.m-comment-line{font-size:.76rem;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
-.m-comment-line b{color:rgba(201,168,76,.7);font-weight:400}
+.m-list-title{font-family:'Cormorant Garamond',serif;font-size:1.08rem;font-weight:400;color:var(--text);margin-bottom:6px;letter-spacing:.02em}
+.m-post-preview{font-size:.77rem;color:rgba(255,255,255,.52);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.m-share-btn{background:none;border:none;cursor:pointer;color:rgba(201,168,76,.45);padding:0 10px;display:flex;align-items:center;justify-content:center;transition:color .2s;flex-shrink:0}
+.m-share-btn:hover{color:var(--gold)}
 .m-list-arrow{display:flex;align-items:center;justify-content:center;padding-left:16px;color:var(--gold);opacity:.25;transition:opacity .2s,transform .2s}
 .m-list-item:hover .m-list-arrow{opacity:.7;transform:translateX(-3px)}
 .m-list-arrow svg{width:16px;height:16px}
@@ -1891,7 +1919,7 @@ function renderMomentsPage() {
 .m-nav-btn:disabled{opacity:.2;cursor:default}
 .m-counter{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:rgba(201,168,76,.5);letter-spacing:.08em}
 .m-modal-comments{padding:28px 24px;border-right:1px solid var(--card-border);background:rgba(255,255,255,.025);display:flex;flex-direction:column;overflow-y:auto;position:relative}
-.m-close{position:absolute;top:14px;right:14px;z-index:10;width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);color:var(--text-dim);font-size:.78rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.m-close{position:absolute;top:14px;left:14px;z-index:10;width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);color:var(--text-dim);font-size:.78rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .m-close:hover{background:rgba(201,168,76,.15);color:var(--gold);border-color:var(--gold)}
 .m-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:300;color:var(--text);margin-bottom:6px;line-height:1.4;padding-top:2px}
 .m-post{font-size:.83rem;color:var(--text-mid);line-height:1.75;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--card-border);direction:rtl}
@@ -1901,12 +1929,8 @@ function renderMomentsPage() {
 .m-all-comments:hover{opacity:1}
 .m-all-comments svg{width:12px;height:12px}
 @media(max-width:720px){
-  .m-list-item{grid-template-columns:100px 1fr 36px}
+  .m-list-item{grid-template-columns:100px 1fr auto 36px}
   .m-thumb{width:100px;height:80px}
-  .m-grid-feed{grid-template-columns:1fr}
-  .m-video-card{grid-template-columns:1fr!important}
-  .m-video-card iframe{height:250px!important}
-  .m-card-comments{border-right:none!important;border-top:1px solid var(--card-border)!important}
   .m-modal-overlay{align-items:flex-end;padding:0}
   .m-modal-box{grid-template-columns:1fr;border-radius:20px 20px 0 0;max-height:92vh;width:100%;transform:translateY(100%)!important;transition:transform .4s cubic-bezier(.32,.72,0,1)!important}
   .m-modal-overlay.open .m-modal-box{transform:translateY(0)!important}
@@ -1916,14 +1940,15 @@ function renderMomentsPage() {
 </style>
 <div class="page-enter moments-page">
   <header style="text-align:center;margin-bottom:8px;">
-    <h1>מהסלון שלי</h1>
-    <p class="m-sub">תוכן ישירות מהפייסבוק — בלי לצאת מהאתר</p>
+    <h1>מהסלון שלי אליכם</h1>
+    <p class="m-sub">הסלון שלי הוא הבמה הכי כנה שאני מכיר.</p>
+    <p class="m-intro">יש רגעים שנולדים בין כוס קפה לפסנתר פתוח — לא מתוכננים, לא מוגמרים, רק אמיתיים. כשהבית נרגע ויש דקה אחת של שקט, הפסנתר מתעורר. מה שמתחיל שם — מגיע אליכם כמו שהוא.</p>
     <div class="m-divider-line"></div>
   </header>
 
   <div class="moments-filter">
-    <button class="moments-filter-btn" data-filter="cover">כיסויים</button>
     <button class="moments-filter-btn active" data-filter="all">הכל</button>
+    <button class="moments-filter-btn" data-filter="cover">כיסויים</button>
     <button class="moments-filter-btn" data-filter="original">מקוריים</button>
   </div>
 
@@ -1933,19 +1958,19 @@ function renderMomentsPage() {
     </div>
   </div>
 
-  <div class="m-modal-overlay" id="moments-modal" onclick="momentsHandleOverlayClick(event)">
-    <div class="m-modal-box">
-      <div class="m-modal-video">
-        <iframe id="moments-iframe" src="" scrolling="no" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-        <div class="m-modal-nav">
-          <button class="m-nav-btn" id="moments-btn-prev" onclick="momentsNavigate(-1)">‹ הקודם</button>
-          <span class="m-counter" id="moments-counter">1 / ${MOMENTS_VIDEOS.length}</span>
-          <button class="m-nav-btn" id="moments-btn-next" onclick="momentsNavigate(1)">הבא ›</button>
-        </div>
+</div>
+<div class="m-modal-overlay" id="moments-modal" onclick="momentsHandleOverlayClick(event)">
+  <div class="m-modal-box">
+    <div class="m-modal-video">
+      <iframe id="moments-iframe" src="" scrolling="no" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+      <div class="m-modal-nav">
+        <button class="m-nav-btn" id="moments-btn-prev" onclick="momentsNavigate(-1)">‹ הקודם</button>
+        <span class="m-counter" id="moments-counter">1 / ${MOMENTS_VIDEOS.length}</span>
+        <button class="m-nav-btn" id="moments-btn-next" onclick="momentsNavigate(1)">הבא ›</button>
       </div>
-      <div class="m-modal-comments" id="moments-modal-comments">
-        <button class="m-close" onclick="momentsCloseModal()">✕</button>
-      </div>
+    </div>
+    <div class="m-modal-comments" id="moments-modal-comments">
+      <button class="m-close" onclick="momentsCloseModal()">✕</button>
     </div>
   </div>
 </div>`;
