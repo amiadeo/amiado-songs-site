@@ -1509,14 +1509,11 @@ function route() {
     document.title = 'Amiado';
     document.querySelector('[data-route="favorites"]')?.classList.add('active');
     app.innerHTML = renderPlaylistPage(plId);
-  } else if (hash === '#/playlists') {
-    document.title = 'Amiado';
-    document.querySelector('[data-route="favorites"]')?.classList.add('active');
-    app.innerHTML = renderPlaylistsPage();
-  } else if (hash === '#/favorites') {
-    document.title = 'Amiado';
-    document.querySelector('[data-route="favorites"]')?.classList.add('active');
-    app.innerHTML = renderFavoritesPage();
+  } else if (hash === '#/collection') {
+    document.title = 'Amiado — האוסף שלי';
+    document.querySelector('[data-route="collection"]')?.classList.add('active');
+    app.innerHTML = renderCollectionPage();
+    initCollectionPage();
   } else if (hash === '#/bio') {
     document.title = 'Amiado';
     document.querySelector('[data-route="bio"]')?.classList.add('active');
@@ -2058,10 +2055,10 @@ function renderSongPage(id) {
   // Breadcrumb based on navContext
   let bcItems = [{label:'שירים', href:'#/'}];
   if (navContext?.type === 'favorites') {
-    bcItems = [{label:'שירים',href:'#/'},{label:'האוסף שלי',href:'#/favorites'},{label:song.title,href:`#/song/${id}`}];
+    bcItems = [{label:'שירים',href:'#/'},{label:'האוסף שלי',href:'#/collection'},{label:song.title,href:`#/song/${id}`}];
   } else if (navContext?.type === 'playlist') {
     const ctxPl = getPlaylists().find(p => p.id === navContext.plId);
-    bcItems = [{label:'שירים',href:'#/'},{label:'הפלייליסטים',href:'#/playlists'}];
+    bcItems = [{label:'שירים',href:'#/'},{label:'הפלייליסטים',href:'#/collection'}];
     if (ctxPl) bcItems.push({label:ctxPl.name, href:`#/playlist/${ctxPl.id}`});
     bcItems.push({label:song.title, href:`#/song/${id}`});
   } else {
@@ -2287,6 +2284,163 @@ function buildLinksHTML(song) {
 }
 
 // ─────────────────────────────────────────
+// PAGE: COLLECTION (Layout E — Hero + Side Favs)
+// ─────────────────────────────────────────
+function buildPlHeroHTML(pl) {
+  if (!pl) return '<div class="col-pl-empty">בחר פלייליסט</div>';
+  const plSongs = SONGS.filter(s => pl.songIds.includes(s.id));
+  const favs = getFavorites();
+
+  // Cover collage (up to 4 images)
+  const thumbs = plSongs.slice(0, 4).map(s =>
+    `<div class="col-hero-thumb">${getCover(s.id)}</div>`
+  ).join('') || `<div class="col-hero-thumb col-hero-thumb-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>`;
+
+  const gridCols = plSongs.length >= 2 ? 2 : 1;
+  const firstIdx = plSongs.length > 0 ? SONGS.indexOf(plSongs[0]) : -1;
+
+  const songRows = plSongs.map((song, i) => {
+    const idx = SONGS.indexOf(song);
+    const isFav = favs.includes(song.id);
+    return `
+      <div class="col-track" data-id="${song.id}">
+        <div class="col-track-cover">${getCover(song.id)}</div>
+        <span class="col-track-num">${String(i+1).padStart(2,'0')}</span>
+        <div class="col-track-info">
+          <div class="col-track-title">${song.title}</div>
+          <div class="col-track-lyric">${song.lyrics?.[0]?.lines?.[0] || ''}</div>
+        </div>
+        <div class="col-track-btns">
+          <button class="track-fav-btn col-track-fav${isFav?' active':''}" data-song-id="${song.id}" title="מועדפים">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <button class="col-track-play" data-play-idx="${idx}" data-pl-id="${pl.id}" title="נגן">
+            <svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
+          </button>
+          <button class="col-track-remove" data-song-id="${song.id}" data-pl-id="${pl.id}" title="הסר">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>`;
+  }).join('');
+
+  const emptyMsg = plSongs.length === 0
+    ? `<div class="col-pl-songs-empty">עדיין אין שירים בפלייליסט הזה.<br><span>הוסף שירים מעמוד השיר.</span></div>`
+    : '';
+
+  return `
+    <div class="col-hero-cover" style="grid-template-columns:repeat(${gridCols},1fr)">
+      ${thumbs}
+      <div class="col-hero-overlay">
+        <div class="col-hero-info">
+          <div class="col-hero-name">${pl.name}</div>
+          <div class="col-hero-count">${plSongs.length} שיר${plSongs.length !== 1 ? 'ים' : ''}</div>
+        </div>
+        ${firstIdx >= 0 ? `<button class="col-hero-play-all" data-play-idx="${firstIdx}" data-pl-id="${pl.id}">
+          <svg width="12" height="12" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
+          נגן הכל
+        </button>` : ''}
+      </div>
+    </div>
+    <div class="col-track-list">${songRows}${emptyMsg}</div>`;
+}
+
+function renderCollectionPage() {
+  const playlists = getPlaylists();
+  const favIds    = getFavorites();
+  const favSongs  = SONGS.filter(s => favIds.includes(s.id));
+  const activePl  = playlists[0] || null;
+
+  // Playlist tabs
+  const tabs = playlists.map((pl, i) => {
+    const plSongs = SONGS.filter(s => pl.songIds.includes(s.id));
+    const thumbs = plSongs.slice(0, 4).map(s =>
+      `<div class="col-tab-thumb">${getCover(s.id)}</div>`
+    ).join('') || `<div class="col-tab-thumb col-tab-thumb-empty"></div>`;
+    const cols = plSongs.length >= 2 ? 2 : 1;
+    return `
+      <button class="col-pl-tab${i === 0 ? ' active' : ''}" data-pl-id="${pl.id}">
+        <div class="col-tab-mini" style="grid-template-columns:repeat(${cols},1fr)">${thumbs}</div>
+        <span class="col-tab-name">${pl.name}</span>
+        <span class="col-tab-count">${plSongs.length}</span>
+      </button>`;
+  }).join('');
+
+  const noPlaylists = playlists.length === 0
+    ? `<div class="col-pl-empty-state">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <p>עדיין אין פלייליסטים.<br><span>צור פלייליסט מעמוד השיר.</span></p>
+      </div>`
+    : '';
+
+  // Favorites
+  const favRows = favSongs.map(song => {
+    const idx = SONGS.indexOf(song);
+    return `
+      <div class="col-fav-row" data-id="${song.id}">
+        <div class="col-fav-cover">${getCover(song.id)}</div>
+        <div class="col-fav-info">
+          <div class="col-fav-title">${song.title}</div>
+          <div class="col-fav-lang">${song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית'}</div>
+        </div>
+        <div class="col-fav-btns">
+          <button class="track-fav-btn col-fav-heart active" data-song-id="${song.id}" title="הסר ממועדפים">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <button class="col-fav-play" data-play-idx="${idx}" title="נגן">
+            <svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
+          </button>
+        </div>
+      </div>`;
+  }).join('');
+
+  const noFavs = favSongs.length === 0
+    ? `<div class="col-fav-empty">כשמשהו יגע בך — תמצא אותו כאן.<br><span>לחץ על ♥ ליד כל שיר.</span></div>`
+    : '';
+
+  return `
+    <div class="page-enter collection-page">
+      ${bc([{label:'שירים',href:'#/'},{label:'האוסף שלי',href:'#/collection'}])}
+      <div class="col-header">
+        <div class="col-eyebrow">האוסף שלי</div>
+        <h1 class="col-title">הספרייה שלי</h1>
+        <div class="col-divider"></div>
+      </div>
+      <div class="col-body">
+
+        <!-- Left: Playlists -->
+        <div class="col-left">
+          ${playlists.length > 0 ? `<div class="col-pl-tabs" id="colPlTabs">${tabs}</div>` : ''}
+          <div class="col-pl-hero" id="colPlHero">
+            ${activePl ? buildPlHeroHTML(activePl) : noPlaylists}
+          </div>
+          <button class="col-new-pl-btn" id="colNewPlBtn">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            פלייליסט חדש
+          </button>
+          <div class="col-new-pl-form hidden" id="colNewPlForm">
+            <input type="text" class="col-new-pl-input" id="colNewPlInput" placeholder="שם הפלייליסט..." maxlength="40">
+            <button class="col-new-pl-save" id="colNewPlSave">צור</button>
+            <button class="col-new-pl-cancel" id="colNewPlCancel">ביטול</button>
+          </div>
+        </div>
+
+        <!-- Right: Favorites -->
+        <div class="col-right">
+          <div class="col-fav-header">
+            <span class="col-fav-label">♥ מועדפים</span>
+            ${favSongs.length > 0 ? `<span class="col-fav-count">${favSongs.length} שירים</span>` : ''}
+          </div>
+          <div class="col-fav-list" id="colFavList">
+            ${favRows}${noFavs}
+          </div>
+        </div>
+
+      </div>
+    </div>`;
+}
+
+// ─────────────────────────────────────────
 // ─────────────────────────────────────────
 // PAGE: FAVORITES
 // ─────────────────────────────────────────
@@ -2332,7 +2486,7 @@ function renderFavoritesPage() {
 
   return `
     <div class="page-enter favorites-page">
-      ${bc([{label:'שירים',href:'#/'},{label:'האוסף שלי',href:'#/favorites'},{label:'המועדפים',href:'#/favorites'}])}
+      ${bc([{label:'שירים',href:'#/'},{label:'האוסף שלי',href:'#/collection'},{label:'המועדפים',href:'#/collection'}])}
       <div class="fav-hero">
         <div class="fav-eyebrow">האוסף שלי</div>
         <h1 class="fav-page-title">המועדפים</h1>
@@ -2393,7 +2547,7 @@ function renderPlaylistPage(plId) {
 
   return `
     <div class="page-enter playlist-detail-page">
-      ${bc([{label:'שירים',href:'#/'},{label:'הפלייליסטים',href:'#/playlists'},{label:pl.name,href:`#/playlist/${pl.id}`}])}
+      ${bc([{label:'שירים',href:'#/'},{label:'הפלייליסטים',href:'#/collection'},{label:pl.name,href:`#/playlist/${pl.id}`}])}
       <div class="pl-detail-header">
         <div class="fav-eyebrow">פלייליסט</div>
         <h1 class="pl-detail-title">${pl.name}</h1>
@@ -2480,7 +2634,7 @@ function renderPlaylistsPage() {
 
   return `
     <div class="page-enter favorites-page">
-      ${bc([{label:'שירים',href:'#/'},{label:'האוסף שלי',href:'#/playlists'},{label:'הפלייליסטים',href:'#/playlists'}])}
+      ${bc([{label:'שירים',href:'#/'},{label:'האוסף שלי',href:'#/collection'},{label:'הפלייליסטים',href:'#/collection'}])}
       <div class="fav-hero">
         <div class="fav-eyebrow">האוסף שלי</div>
         <h1 class="fav-page-title">הפלייליסטים</h1>
@@ -3669,6 +3823,108 @@ function bindPageEvents() {
 
   // Scroll animations — run after DOM is ready
   requestAnimationFrame(initScrollAnimations);
+}
+
+// ─────────────────────────────────────────
+// COLLECTION PAGE INIT
+// ─────────────────────────────────────────
+function initCollectionPage() {
+  // Tab switching
+  const tabsEl = document.getElementById('colPlTabs');
+  const heroEl = document.getElementById('colPlHero');
+  if (tabsEl && heroEl) {
+    tabsEl.addEventListener('click', e => {
+      const tab = e.target.closest('.col-pl-tab');
+      if (!tab) return;
+      tabsEl.querySelectorAll('.col-pl-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const pl = getPlaylists().find(p => p.id === tab.dataset.plId);
+      if (pl) heroEl.innerHTML = buildPlHeroHTML(pl);
+      attachCollectionHeroHandlers(heroEl);
+    });
+  }
+  if (heroEl) attachCollectionHeroHandlers(heroEl);
+
+  // Play fav buttons
+  document.getElementById('colFavList')?.addEventListener('click', e => {
+    const playBtn = e.target.closest('.col-fav-play');
+    if (playBtn) {
+      const idx = parseInt(playBtn.dataset.playIdx, 10);
+      if (!isNaN(idx)) {
+        navContext = { type: 'favorites', ids: getFavorites() };
+        playSong(idx);
+      }
+    }
+  });
+
+  // New playlist
+  const newBtn    = document.getElementById('colNewPlBtn');
+  const newForm   = document.getElementById('colNewPlForm');
+  const newInput  = document.getElementById('colNewPlInput');
+  const newSave   = document.getElementById('colNewPlSave');
+  const newCancel = document.getElementById('colNewPlCancel');
+  if (newBtn && newForm) {
+    newBtn.addEventListener('click', () => {
+      newBtn.classList.add('hidden');
+      newForm.classList.remove('hidden');
+      newInput.focus();
+    });
+    newCancel.addEventListener('click', () => {
+      newForm.classList.add('hidden');
+      newBtn.classList.remove('hidden');
+      newInput.value = '';
+    });
+    newSave.addEventListener('click', () => {
+      const name = newInput.value.trim();
+      if (!name) return;
+      createPlaylist(name);
+      app.innerHTML = renderCollectionPage();
+      initCollectionPage();
+    });
+    newInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') newSave.click();
+      if (e.key === 'Escape') newCancel.click();
+    });
+  }
+}
+
+function attachCollectionHeroHandlers(heroEl) {
+  // Play track / play-all
+  heroEl.addEventListener('click', e => {
+    const playBtn = e.target.closest('.col-track-play, .col-hero-play-all');
+    if (playBtn) {
+      const idx = parseInt(playBtn.dataset.playIdx, 10);
+      const plId = playBtn.dataset.plId;
+      if (!isNaN(idx)) {
+        const pl = getPlaylists().find(p => p.id === plId);
+        if (pl) navContext = { type: 'playlist', ids: pl.songIds, plId };
+        playSong(idx);
+      }
+    }
+    // Navigate to song
+    const track = e.target.closest('.col-track');
+    if (track && !e.target.closest('button')) {
+      navigateFade('#/song/' + track.dataset.id);
+    }
+    // Remove from playlist
+    const removeBtn = e.target.closest('.col-track-remove');
+    if (removeBtn) {
+      const { songId, plId } = removeBtn.dataset;
+      toggleSongInPlaylist(plId, songId);
+      const activeTab = document.querySelector('.col-pl-tab.active');
+      const pl = getPlaylists().find(p => p.id === plId);
+      if (pl) {
+        heroEl.innerHTML = buildPlHeroHTML(pl);
+        attachCollectionHeroHandlers(heroEl);
+        // Update tab count
+        if (activeTab) {
+          const plSongs = SONGS.filter(s => pl.songIds.includes(s.id));
+          const countEl = activeTab.querySelector('.col-tab-count');
+          if (countEl) countEl.textContent = plSongs.length;
+        }
+      }
+    }
+  });
 }
 
 // ─────────────────────────────────────────
