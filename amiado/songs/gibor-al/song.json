@@ -4,8 +4,71 @@
   "language": "he",
   "coverImage": "songs/gibor-al/cover.jpg",
   "backgroundImage": null,
-  "audio": { "type": "file", "src": "songs/gibor-al/audio.mp3" },
-  "chords": [],
+  "audio": {
+    "type": "file",
+    "src": "songs/gibor-al/audio.mp3"
+  },
+  "chords": {
+    "key": "Bb",
+    "tempo": 123,
+    "capo": 3,
+    "sections": [
+      {
+        "section": "בית 1",
+        "chords": [
+          "Dm",
+          "Am",
+          "F",
+          "G"
+        ]
+      },
+      {
+        "section": "מעבר",
+        "chords": [
+          "G",
+          "D",
+          "Dm",
+          "Am"
+        ]
+      },
+      {
+        "section": "פזמון",
+        "chords": [
+          "Em",
+          "G",
+          "Am",
+          "F"
+        ]
+      },
+      {
+        "section": "בית 2",
+        "chords": [
+          "Dm",
+          "Em",
+          "C",
+          "F"
+        ]
+      },
+      {
+        "section": "מעבר ",
+        "chords": [
+          "G",
+          "Em",
+          "Am",
+          "F"
+        ]
+      },
+      {
+        "section": "פזמון",
+        "chords": [
+          "F",
+          "Em",
+          "G",
+          "C"
+        ]
+      }
+    ]
+  },
   "lyrics": [
     {
       "section": "בית 1",

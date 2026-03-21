@@ -56,7 +56,7 @@ function getCover(id) {
 const SONGS = [
   {
     id: 'maga-bamilim', title: 'מגע במילים', language: 'he',
-    audio: { type: 'file', src: 'songs/maga-bamilim/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/maga-bamilim/audio.mp3' },
     links: {
       spotify: 'https://open.spotify.com/track/3RmIU0o0sO31gX9reWodek?si=3c7413a9523447a9',
       suno: 'https://suno.com/s/veaP24BCdZI87l9H'
@@ -91,13 +91,13 @@ const SONGS = [
     analysis: {
       abstract: 'היצירה \'מגע במילים\' בוחנת את המתח שבין נוכחות פיזית להיעדרות רגשית בתוך מערכת יחסים סוערת. הדובר מציג מודעות עצמית גבוהה לפגמיו ולדינמיקה ההרסנית של הקשר. השיר נע על הציר שבין האמת הכואבת לשקר המנחם, ובין המילה הכתובה לבין המגע הגופני.',
       structural: 'הניגודיות בין כתיבה לשירה: הבית הראשון מבחין בין המילה הכתובה לבין המוזיקה. השירה נתפסת ככלי תקשורת חזק יותר, המצליח לחדור את השריון של הדובר. מוטיב העשן: החזרה על המשפט \'כמה עשן, כמה מריבות...\' יוצרת תחושה של מעגליות חונקת וטשטוש המציאות. עמדה דטרמיניסטית: השורה \'ככה הולך, לא רוצה להיות אחר\' מעידה על קיבעון רגשי המגביר את הטרגדיה שבקשר.',
-      psychological: 'הפרדוקס של האהבה: השאלה \'את מוכנה בכלל לאהוב אותי גם בלעדיי\' נוגעת בנקודה פסיכולוגית עמוקה — האהבה לאדם כרעיון, ולא לאדם הממשי שנוכח בחדר. מגע במילים ומילים במגע: כותרת השיר מייצרת \'סינסטזיה\' — המילים הופכות לישות פיזית שאפשר לגעת בה, אך הן שבריריות ודורשות זהירות. השקר כצורך קיומי: הקריאה \'תשקרי לי, תשכרי אותי\' מעידה על רצון באלחוש רגשי.',
+      psychological: 'הפרדוקס של האהבה: השאלה \'את מוכנה בכלל לאהוב אותי גם בלעדיי\' נוגעת בנקודה פסיכולוגית עמוקה — ה��הבה לאדם כרעיון, ולא לאדם הממשי שנוכח בחדר. מגע במילים ומילים במגע: כותרת השיר מייצרת \'סינסטזיה\' — המילים הופכות לישות פיזית שאפשר לגעת בה, אך הן שבריריות ודורשות זהירות. השקר כצורך קיומי: הקריאה \'תשקרי לי, תשכרי אותי\' מעידה על רצון באלחוש רגשי.',
       academic: 'השיר מגדיר את המרחב היצירתי כמרחב היחיד שבו ניתן לקיים \'מגע\' מבלי להתפרק. הדובר מכיר בכך שהמילים הן גם הגשר וגם המחסום המפריד בינו לבין הנמענת, וכי האינטימיות האמיתית נשמרת דווקא בתוך המעטפת השברירית של השיר.'
     }
   },
   {
     id: 'shigaon-amorfi', title: 'שיגעון אמורפי', language: 'he',
-    audio: { type: 'file', src: 'songs/shigaon-amorfi/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/shigaon-amorfi/audio.mp3' },
     links: { suno: 'https://suno.com/s/veaP24BCdZI87l9H' },
     sunoEmbedId: '4a01e659-5d82-4a29-9b11-ac6fd1c76c31',
     chords: [],
@@ -127,14 +127,14 @@ const SONGS = [
     ],
     analysis: {
       abstract: 'השיר \'מהיום\' הוא מניפסט של טרנספורמציה אישית ותהליך של התפשטות רוחנית. היצירה מתארת את הרגע שבו אדם מחליט להתעלות מעל \'הרדידות\' והקיום האפרורי לטובת גרעין פנימי מזוקק.',
-      structural: 'מוטיב ה\'פרימה\': השימוש בפועל \'לפרום\' בהקשר של זיכרון ושיגעון הוא מפתח מרכזי — פרימה מעידה על פירוק של מבנה קיים. הסרת ה\'תארים\': הדובר מתאר תהליך של הנחת תארים ברחוב — ויתור על הדימוי החיצוני לטובת זהות אותנטית.',
+      structural: 'מוטיב ה\'פרימה\': השימוש בפועל \'לפרום\' בהקשר של זיכרון ושיגעון הוא מפתח מרכ����י — פרימה מעידה על פירוק של מבנה קיים. הסרת ה\'תארים\': הדובר מתאר תהליך של הנחת תארים ברחוב — ויתור על הדימוי החיצוני לטובת זהות אותנטית.',
       psychological: 'פירוק הגוף וארגון מחדש: תיאור הגוף ב\'חתיכות קטנות\' מסמל שלב הכרחי בשינוי נפשי עמוק — כדי להיוולד מחדש, הישן חייב להתפרק. בין שפיות לשיגעון: החזרה על \'זיכרון\' ו\'שיגעון\' יוצרת תחושה של טשטוש גבולות.',
       academic: 'ביצירה זו, הדובר משתמש בשפה גופנית חריפה כדי לעבד חוויות של אשמה, זיכרון וקיבעון. השיר אינו מבטיח פתרון קל, אך הוא מציב עמדה נחושה של התנגדות לרדידות ומחויבות לאמת הפנימית.'
     }
   },
   {
     id: 'hargasha-meshuna', title: 'הרגשה משונה', language: 'he',
-    audio: { type: 'file', src: 'songs/hargasha-meshuna/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/hargasha-meshuna/audio.mp3' },
     links: { suno: 'https://suno.com/s/b89qWPn1QbxdBVG1' },
     sunoEmbedId: '4a441bf9-e85a-419b-bf8e-abd5d0f054df',
     chords: [],
@@ -171,7 +171,7 @@ const SONGS = [
   },
   {
     id: 'al-ktsot-hatsbaot', title: 'על קצות האצבעות', language: 'he',
-    audio: { type: 'file', src: 'songs/al-ktsot-hatsbaot/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/al-ktsot-hatsbaot/audio.mp3' },
     links: { suno: 'https://suno.com/s/nHAQkbcoDqxlr20p' },
     sunoEmbedId: 'd7170979-b4c4-4c4b-8ba7-c58f14b47249',
     chords: [],
@@ -206,7 +206,7 @@ const SONGS = [
   },
   {
     id: 'banahar-sheli', title: 'בנהר שלי', language: 'he',
-    audio: { type: 'file', src: 'songs/banahar-sheli/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/banahar-sheli/audio.mp3' },
     links: { suno: 'https://suno.com/s/ka2Rz9DUQiTLadpq' },
     sunoEmbedId: '918820c2-c7f7-4b24-8bf7-a693aab12584',
     chords: [],
@@ -238,7 +238,7 @@ const SONGS = [
   },
   {
     id: 'lo-amiti', title: 'לא אמיתי', language: 'he',
-    audio: { type: 'file', src: 'songs/lo-amiti/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/lo-amiti/audio.mp3' },
     links: { suno: 'https://suno.com/s/CzIEo9m0U4664YmT' },
     sunoEmbedId: '5ab3aad7-3868-42ef-bda8-93b6e9402682',
     chords: [],
@@ -275,7 +275,7 @@ const SONGS = [
   },
   {
     id: 'makom-batuach', title: 'מקום בטוח', language: 'he',
-    audio: { type: 'file', src: 'songs/makom-batuach/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/makom-batuach/audio.mp3' },
     links: { suno: 'https://suno.com/s/owkAkw13FaiaGpvn' },
     sunoEmbedId: 'f461a913-a0c2-40d9-8994-331f71d825c6',
     chords: [],
@@ -312,7 +312,7 @@ const SONGS = [
   },
   {
     id: 'london', title: 'לונדון', language: 'he',
-    audio: { type: 'file', src: 'songs/london/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/london/audio.mp3' },
     links: { suno: 'https://suno.com/s/loZ4xATBgkiLjXgP' },
     sunoEmbedId: '7941e64c-e715-4a14-b186-8a8801ece479',
     chords: [],
@@ -348,7 +348,7 @@ const SONGS = [
   },
   {
     id: 'efshar', title: 'אפשר', language: 'he',
-    audio: { type: 'file', src: 'songs/efshar/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/efshar/audio.mp3' },
     links: { suno: 'https://suno.com/s/AChDQ0BECJxk5xgV' },
     sunoEmbedId: '13e63159-a1e8-4168-9f95-56c0534dfec0',
     chords: [],
@@ -388,7 +388,7 @@ const SONGS = [
   },
   {
     id: 'porkan-mini-zol', title: 'פורקן מיני זול', language: 'he',
-    audio: { type: 'file', src: 'songs/porkan-mini-zol/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/porkan-mini-zol/audio.mp3' },
     links: { suno: 'https://suno.com/s/GPfCSVUQjnR0yBPj' },
     sunoEmbedId: '61982dd7-4486-43f3-a856-1ef89704bfc9',
     chords: [],
@@ -431,7 +431,7 @@ const SONGS = [
   },
   {
     id: 'simanim-shel-bots', title: 'סימנים של בוץ', language: 'he',
-    audio: { type: 'file', src: 'songs/simanim-shel-bots/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/simanim-shel-bots/audio.mp3' },
     links: {
       spotify: 'https://open.spotify.com/track/0Vc3uoOSQHeQykOdj9BET7?si=0b8d9b5eccdc4135',
       suno: 'https://suno.com/s/rQ3RWNsdGb7Dt3bh'
@@ -476,10 +476,40 @@ const SONGS = [
   },
   {
     id: 'gibor-al', title: 'גיבור על', language: 'he',
-    audio: { type: 'file', src: 'songs/gibor-al/audio.mp3' },
+    audio: { type: 'file', src: 'amiado/songs/gibor-al/audio.mp3' },
     youtubeVideoId: '35zFmxPcgdc',
     links: { youtube: 'https://youtu.be/35zFmxPcgdc?si=5FarfUC2UZG6r6kU' },
-    chords: [],
+chords: {
+      key: 'Bb',
+      tempo: 123,
+      capo: 3,
+      sections: [
+        {
+          section: 'בית 1',
+          chords: ['Dm', 'Am', 'F', 'G']
+        },
+        {
+          section: 'מעבר',
+          chords: ['G', 'D', 'Dm', 'Am']
+        },
+        {
+          section: 'פזמון',
+          chords: ['Em', 'G', 'Am', 'F']
+        },
+        {
+          section: 'בית 2',
+          chords: ['Dm', 'Em', 'C', 'F']
+        },
+        {
+          section: 'מעבר ',
+          chords: ['G', 'Em', 'Am', 'F']
+        },
+        {
+          section: 'פזמון',
+          chords: ['F', 'Em', 'G', 'C']
+        }
+      ]
+    },
     lyrics: [
       { section: 'בית 1', lines: [
         'חצות, שוב צעקות מתחתיי',
@@ -1081,7 +1111,7 @@ const SONGS = [
     analysis: {
       abstract: 'השיר מתאר מערכת יחסים מורכבת הנמצאת במבוי סתום רגשי. הוא מציג דמות נשית החווה קונפליקט פנימי עמוק בין הפחד מבדידות לבין הפחד מאינטימיות, בעוד שהדובר עומד מולה מתוסכל.',
       structural: 'השיר בנוי כהסלמה רגשית. הבית הראשון מציג את הפרדוקס הקיומי, והפזמון החוזר מדגיש את חוסר האונים של הדובר ("אני משתגע"). הבית השני קצר וממוקד בדימויים גופניים הממחישים את חוסר התקשורת.',
-      psychological: 'היצירה נוגעת במושג של "חרדת קרבה". הדמות הנשית נמצאת במצב שבו כל פתרון הוא מקור לפחד. הדובר חווה בלבול שכן עיניה "מספרות ומשקרות" בו-זמנית, מה שיוצר אצלו תחושת ערעור על המציאות.',
+      psychological: 'היצירה נוגעת במושג של "חרדת ק��בה". הדמות הנשית נמצאת במצב שבו כל פתרון הוא מקור לפחד. הדובר חווה בלבול שכן עיניה "מספרות ומשקרות" בו-זמנית, מה שיוצר אצלו תחושת ערעור על המציאות.',
       academic: 'השיר משתמש בשפה של ניגודים ("מספרות ומשקרות", "לבד ויחד") לייצר אווירה של דיסוננס. הביטוי "לא כל כך פשוט" ככותרת וכפזמון מייצג את השחיקה של השפה – כשאין מילים להסביר את המורכבות, נותרים עם קלישאה שהופכת למציאות כואבת.'
     }
   },
@@ -1119,7 +1149,7 @@ const SONGS = [
     analysis: {
       abstract: 'השיר מתאר מערכת יחסים מורכבת וסמויה, המתקיימת בתוך שגרה בורגנית יומיומית. הוא עוסק במתח שבין המצג החיצוני הנורמטיבי לבין תשוקה או קשר רגשי שמתרחש "בפינת הרחוב" ובמחשבות בלילה.',
       structural: 'השיר בנוי על חזרתיות של זמן ומקום ("כל בוקר באותה שעה"), המדגישה את הטקסיות של המפגשים המקריים-לכאורה. הפזמון יוצר ניגוד חריף בין החיים ה"מסודרים" של הגבר לבין העובדה שבלילה הוא "חוזר" אל הדובר.',
-      psychological: 'היצירה נוגעת בכמיהה לקרבה דרך מתווכים (הילד והכלבה כגשר למגע) ובניסיון "לדלות בחתיכות קטנות" פירורי תשומת לב. יש כאן תיאור של אדם שחי חיים כפולים – פיזיים עם משפחתו ורגשיים עם דמות אחרת.',
+      psychological: 'היצירה נוגעת בכמיהה לקרבה דרך מתווכ��ם (הילד והכלבה כגשר למגע) ובניסיון "לדלות בחתיכות קטנות" פירורי תשומת לב. יש כאן תיאור של אדם שחי חיים כפולים – פיזיים עם משפחתו ורגשיים עם דמות אחרת.',
       academic: 'השיר משתמש במוטיב ה"מרחב הציבורי" (פינת רחוב) כזירה לאינטימיות חטופה. השפה היומיומית ("מחליפים נימוסים") טעונה בסאבטקסט של כאב ובדידות. הבחירה להציג את האישה החוקית בתפקידים פונקציונליים בלבד מדגישה את הניכור של הגבר בתוך ביתו שלו.'
     }
   },
@@ -1254,6 +1284,9 @@ function playSong(idx) {
     const embedUrl = `https://www.youtube.com/embed/${song.youtubeVideoId}?autoplay=1&enablejsapi=1`;
     if (existingIframe) {
       existingIframe.src = embedUrl;
+      state.playing = true;
+      updatePlayPauseIcon();
+      return;
     } else if (ph) {
       const iframe = document.createElement('iframe');
       iframe.id = 'yt-iframe-' + song.id;
@@ -1265,10 +1298,11 @@ function playSong(idx) {
       iframe.allowFullscreen = true;
       iframe.className = 'yt-iframe';
       ph.replaceWith(iframe);
+      state.playing = true;
+      updatePlayPauseIcon();
+      return;
     }
-    state.playing = true;
-    updatePlayPauseIcon();
-    return;
+    // No YouTube placeholder — fall through to audio file
   }
 
   // If song has a Suno embed, inject/reload the iframe with autoplay
@@ -1663,89 +1697,63 @@ function getWeeklyWriting() {
 
 function renderHomePage() {
   const favs = getFavorites();
-  const savedView = localStorage.getItem('amiado_songs_view') || 'list';
-  const isGrid = savedView === 'grid';
+  const savedView = localStorage.getItem('amiado_songs_view') || 'cinematic';
+  const isCinematic = savedView === 'cinematic';
+  const isSpotlight = savedView === 'spotlight';
 
-  const gridCards = SONGS.map((song, i) => {
+  // ── Cinematic cards (Layout F) ────────────────────────────────────────
+  const cinematicCards = SONGS.map((song, i) => {
     const isFav = favs.includes(song.id);
-    const excerpt = song.analysis?.abstract
-      ? song.analysis.abstract.replace(/\s+/g,' ').trim().slice(0, 85) + '…'
-      : '';
+    const num = String(i + 1).padStart(2, '0');
+    const langLabel = song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית';
     return `
-    <div class="song-grid-card" data-id="${song.id}" data-title="${song.title}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}">
-      <div class="song-grid-card-cover">
-        <a href="#/song/${song.id}" class="song-grid-card-img-link">${getCover(song.id)}</a>
-      </div>
-      <button class="track-fav-btn song-grid-fav-btn${isFav ? ' active' : ''}" data-song-id="${song.id}" title="מועדפים">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
-      </button>
-      <div class="song-grid-card-panel">
-        <div class="song-grid-card-panel-top">
-          <span class="song-grid-card-panel-title">${song.title}</span>
-          <div class="song-grid-card-panel-btns">
-            <button class="track-add-btn song-grid-add-btn" data-song-id="${song.id}" title="הוסף לפלייליסט">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-              </svg>
-            </button>
-            <button class="song-grid-play-btn" data-play-idx="${i}" title="נגן">
-              <svg width="16" height="16" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
-            </button>
-          </div>
+    <div class="song-cine-card" data-id="${song.id}" data-title="${song.title}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}">
+      <div class="song-cine-img">${getCover(song.id)}<div class="song-cine-num">${num}</div></div>
+      <div class="song-cine-text">
+        <div class="song-cine-lang">${langLabel}</div>
+        <div class="song-cine-title">${song.title}</div>
+        <div class="song-cine-btns">
+          <button class="song-cine-play-btn" data-play-idx="${i}" title="נגן">
+            <svg width="12" height="12" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
+          </button>
+          <button class="track-fav-btn song-cine-fav-btn${isFav ? ' active' : ''}" data-song-id="${song.id}" title="מועדפים">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <button class="track-add-btn song-cine-add-btn" data-song-id="${song.id}" title="הוסף לפלייליסט">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
         </div>
-        ${excerpt ? `<p class="song-grid-card-panel-excerpt">${excerpt}</p>` : ''}
       </div>
     </div>`;
   }).join('');
 
-  const tracks = SONGS.map((song, i) => {
-    const num = String(i + 1).padStart(2, '0');
-    const hasSuno = !!(song.links && song.links.suno);
-    const hasSpotify = !!(song.links && song.links.spotify);
-    const hasYoutube = !!(song.links && song.links.youtube);
+  // ── Spotlight items (Layout H) ────────────────────────────────────────
+  const spotFirstSong = SONGS[0];
+  const spotFirstIdx  = 0;
+  const spotFirstExcerpt = spotFirstSong.analysis?.abstract
+    ? spotFirstSong.analysis.abstract.replace(/\s+/g,' ').trim().slice(0, 110) + '…'
+    : '';
+  const spotItems = SONGS.map((song, i) => {
     const isFav = favs.includes(song.id);
-
-    const badges = [
-      hasSpotify ? `<span class="track-badge track-badge--spotify">Spotify</span>` : '',
-      hasYoutube ? `<span class="track-badge track-badge--yt">YouTube</span>` : '',
-      hasSuno    ? `<span class="track-badge track-badge--suno">Suno</span>` : ''
-    ].filter(Boolean).join('');
-
+    const num = String(i + 1).padStart(2, '0');
+    const langLabel = song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית';
     return `
-    <li class="track-item" data-id="${song.id}" data-title="${song.title}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}">
-      <span class="track-num">${num}</span>
-      <a href="#/song/${song.id}" class="track-title-link">
-        <div class="track-title-row">
-          <span class="track-title">${song.title}</span>
-          <span class="track-badges">${badges}</span>
-        </div>
-        <span class="track-lyric-preview">${song.analysis && song.analysis.abstract ? song.analysis.abstract.slice(0, 80) + (song.analysis.abstract.length > 80 ? '…' : '') : ''}</span>
-      </a>
-      <div class="track-actions">
-        <button class="track-fav-btn${isFav ? ' active' : ''}" data-song-id="${song.id}" title="מועדפים">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
+    <div class="spot-item${i === 0 ? ' active' : ''}" data-id="${song.id}" data-title="${song.title}" data-idx="${i}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}">
+      <div class="spot-item-cover">${getCover(song.id)}</div>
+      <div class="spot-item-info">
+        <div class="spot-item-num">${num}</div>
+        <div class="spot-item-title">${song.title}</div>
+        <div class="spot-item-lang">${langLabel}</div>
+      </div>
+      <div class="spot-item-actions">
+        <button class="track-fav-btn spot-fav-btn${isFav ? ' active' : ''}" data-song-id="${song.id}" title="מועדפים">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </button>
-        <button class="track-add-btn" data-song-id="${song.id}" title="הוסף לפלייליסט">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-        </button>
-        <button class="track-play-btn" data-play-idx="${i}" title="נגן">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1v10l9-5z"/></svg>
-        </button>
-        <button class="track-open-btn track-share-btn" data-song-id="${song.id}" data-song-title="${song.title}" title="שתף שיר">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-          </svg>
+        <button class="spot-play-btn" data-play-idx="${i}" title="נגן">
+          <svg width="9" height="9" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
         </button>
       </div>
-      <a href="#/song/${song.id}" class="track-cover" tabindex="-1">${getCover(song.id)}</a>
-    </li>`;
+    </div>`;
   }).join('');
 
   return `
@@ -1803,35 +1811,33 @@ function renderHomePage() {
         const writing = getWeeklyWriting();
         return `
         <section class="sotw-section">
-          <div class="sotw-row">
-            <a href="#/song/${song.id}" class="sotw-card">
-              <div class="sotw-cover">${getCover(song.id)}</div>
-              <div class="sotw-overlay"></div>
-              <div class="sotw-content">
-                <span class="sotw-label">שיר השבוע</span>
-                <h2 class="sotw-title">${song.title}</h2>
-                ${song.analysis?.abstract ? `<p class="sotw-desc">${song.analysis.abstract.slice(0, 100)}…</p>` : ''}
-                <div class="sotw-actions">
-                  <button class="sotw-play-btn" data-play-idx="${songIdx}" data-song-id="${song.id}">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11L12 7z"/></svg>
+          <div class="sotw3-wrap">
+            <div class="sotw3-song">
+              <div class="sotw3-bg">${getCover(song.id)}</div>
+              <div class="sotw3-ov"></div>
+              <div class="sotw3-content">
+                <span class="sotw3-label">שיר השבוע</span>
+                <div class="sotw3-title">${song.title}</div>
+                ${song.analysis?.abstract ? `<div class="sotw3-desc">${song.analysis.abstract.slice(0, 80)}…</div>` : ''}
+                <div class="sotw3-actions">
+                  <button class="sotw3-play-btn" data-play-idx="${songIdx}" data-song-id="${song.id}">
+                    <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11L12 7z"/></svg>
                     נגן עכשיו
                   </button>
-                  <span class="sotw-link-hint">לדף השיר ←</span>
+                  <a href="#/song/${song.id}" class="sotw3-link-hint">לדף השיר ←</a>
                 </div>
               </div>
-            </a>
-            <a href="#/writing/${writing.id}" class="sotw-card sotw-card--writing">
-              ${writing.image ? `<div class="sotw-cover"><img src="${writing.image}" alt="${writing.title}" loading="lazy"></div>` : '<div class="sotw-cover sotw-cover--plain"></div>'}
-              <div class="sotw-overlay sotw-overlay--writing"></div>
-              <div class="sotw-content">
-                <span class="sotw-label">כתב השבוע</span>
-                <h2 class="sotw-title">${writing.title}</h2>
-                ${writing.excerpt ? `<p class="sotw-desc">${writing.excerpt.slice(0, 100)}…</p>` : ''}
-                <div class="sotw-actions">
-                  <span class="sotw-link-hint">לקריאה ←</span>
-                </div>
+            </div>
+            <div class="sotw3-writing">
+              <div class="sotw3-content">
+                <span class="sotw3-label">כתב השבוע</span>
+                <div class="sotw3-title">${writing.title}</div>
+                ${writing.excerpt ? `<div class="sotw3-desc">${writing.excerpt.slice(0, 90)}…</div>` : ''}
+                <a href="#/writing/${writing.id}" class="sotw3-writing-link">לקריאה ←</a>
               </div>
-            </a>
+            </div>
+            <div class="sotw3-seam"></div>
+            <div class="sotw3-dot"></div>
           </div>
         </section>`;
       })()}
@@ -1846,15 +1852,24 @@ function renderHomePage() {
               <button class="songs-tab" data-tab="cover">קאברים</button>
             </div>
             <div class="songs-chapter-controls">
-              <button class="songs-view-btn${!isGrid ? ' active' : ''}" id="songsViewList" title="תצוגת רשימה">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <line x1="2" y1="4" x2="12" y2="4"/><line x1="2" y1="7.5" x2="12" y2="7.5"/><line x1="2" y1="11" x2="12" y2="11"/>
+              <button class="songs-view-btn${isCinematic ? ' active' : ''}" id="songsViewCinematic" title="תצוגה קולנועית">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <rect x="1" y="1" width="4" height="3.5" rx="1" fill="currentColor" opacity="0.75"/>
+                  <line x1="7" y1="2.75" x2="13" y2="2.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <rect x="1" y="5.25" width="4" height="3.5" rx="1" fill="currentColor" opacity="0.75"/>
+                  <line x1="7" y1="7" x2="13" y2="7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <rect x="1" y="9.5" width="4" height="3.5" rx="1" fill="currentColor" opacity="0.75"/>
+                  <line x1="7" y1="11.25" x2="13" y2="11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
               </button>
-              <button class="songs-view-btn${isGrid ? ' active' : ''}" id="songsViewGrid" title="תצוגת תמונות">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" opacity="0.8">
-                  <rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/>
-                  <rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/>
+              <button class="songs-view-btn${isSpotlight ? ' active' : ''}" id="songsViewSpotlight" title="תצוגת זרקור">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <rect x="1" y="1" width="7" height="12" rx="1" fill="currentColor" opacity="0.8"/>
+                  <line x1="10" y1="2.5" x2="13" y2="2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="10" y1="5" x2="13" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="10" y1="7.5" x2="13" y2="7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="10" y1="10" x2="13" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="10" y1="12.5" x2="13" y2="12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
               </button>
               <button class="pl-play-all-btn" data-play-idx="0" id="homePlayAllBtn">
@@ -1876,8 +1891,31 @@ function renderHomePage() {
           <span class="songs-search-count" id="songsSearchCount"></span>
         </div>
         <section class="songs-section">
-          <ol class="songs-tracklist${isGrid ? ' hidden' : ''}" id="songsTracklist">${tracks}</ol>
-          <div class="songs-grid${!isGrid ? ' hidden' : ''}" id="songsGrid">${gridCards}</div>
+          <div class="songs-cinematic${!isCinematic ? ' hidden' : ''}" id="songsCinematic">${cinematicCards}</div>
+          <div class="songs-spotlight${!isSpotlight ? ' hidden' : ''}" id="songsSpotlight">
+            <div class="spot-featured" id="spotFeatured" data-id="${spotFirstSong.id}" data-idx="${spotFirstIdx}">
+              <div class="spot-featured-bg">${getCover(spotFirstSong.id)}</div>
+              <div class="spot-featured-overlay"></div>
+              <button class="track-fav-btn spot-featured-fav${favs.includes(spotFirstSong.id) ? ' active' : ''}" data-song-id="${spotFirstSong.id}" title="מועדפים">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="${favs.includes(spotFirstSong.id) ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+              <div class="spot-featured-info">
+                <div class="spot-featured-num">${String(spotFirstIdx + 1).padStart(2, '0')}</div>
+                <div class="spot-featured-title">${spotFirstSong.title}</div>
+                ${spotFirstExcerpt ? `<div class="spot-featured-excerpt">${spotFirstExcerpt}</div>` : ''}
+                <div class="spot-featured-btns">
+                  <button class="spot-featured-play" data-play-idx="${spotFirstIdx}">
+                    <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11L12 7z"/></svg>
+                    נגן עכשיו
+                  </button>
+                  <button class="track-add-btn spot-featured-add" data-song-id="${spotFirstSong.id}">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="spot-list" id="spotList">${spotItems}</div>
+          </div>
           <div class="songs-empty-state hidden" id="songsEmptyState">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
             <div class="songs-empty-title">מגיע בקרוב</div>
@@ -1947,10 +1985,11 @@ function renderSongPage(id) {
   const num = String(idx + 1).padStart(2, '0');
   const isFav = getFavorites().includes(song.id);
 
+  let _klIdx = 0;
   const lyricsHTML = song.lyrics.map(sec => `
     <div class="lyrics-section">
       <div class="lyrics-section-label">${sec.section}</div>
-      ${sec.lines.map(l => `<span class="lyrics-line">${l}</span>`).join('')}
+      ${sec.lines.map(l => `<span class="lyrics-line" data-kl="${_klIdx++}">${l}</span>`).join('')}
     </div>
   `).join('');
 
@@ -2034,9 +2073,42 @@ function renderSongPage(id) {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             <span>שתף</span>
           </button>
+          ${song.audio?.type === 'file' ? `<button class="shma-btn btn-karaoke-song" data-song-id="${song.id}" title="קריוקי">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            <span>קריוקי</span>
+          </button>` : ''}
         </div>
         <div class="song-hero-meta">
           <div class="song-hero-top">
+            <div class="song-hero-top-mobile">
+              <a href="#/" class="song-mobile-back-btn" title="חזרה לרשימה">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </a>
+              <div class="song-mobile-nav-row">
+                ${prevNavSong ? `<a href="#/song/${prevNavSong.id}" class="song-mobile-nav-arrow" data-nav="prev" title="${prevNavSong.title}">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </a>` : '<span class="song-mobile-nav-arrow disabled"></span>'}
+                <span class="song-mobile-nav-num">${num}</span>
+                ${nextNavSong ? `<a href="#/song/${nextNavSong.id}" class="song-mobile-nav-arrow" data-nav="next" title="${nextNavSong.title}">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </a>` : '<span class="song-mobile-nav-arrow disabled"></span>'}
+              </div>
+              <button class="song-mobile-search-btn" title="חיפוש">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </button>
+            </div>
+            <!-- Mobile inline search overlay -->
+            <div class="song-mobile-search-overlay" id="songMobileSearch">
+              <div class="smso-backdrop"></div>
+              <div class="smso-panel">
+                <div class="smso-input-row">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" class="smso-input" placeholder="חיפוש שיר..." dir="rtl" autocomplete="off">
+                  <button class="smso-close">✕</button>
+                </div>
+                <div class="smso-results" id="smsoResults"></div>
+              </div>
+            </div>
             ${bc(bcItems)}
             <div class="song-hero-nav">
               ${prevNavSong ? `<a href="#/song/${prevNavSong.id}" class="song-hero-nav-btn" data-nav="prev">
@@ -2062,6 +2134,10 @@ function renderSongPage(id) {
                 שתף
               </button>
               ${linksHTML}
+              ${song.audio?.type === 'file' ? `<button class="btn-karaoke-song" data-song-id="${song.id}" title="מצב קריוקי">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                קריוקי
+              </button>` : ''}
             </div>
           </div>
         </div>
@@ -2069,8 +2145,22 @@ function renderSongPage(id) {
 
       <div class="song-content">
         <div class="song-body">
-          <div class="lyrics-col">
-            <div class="lyrics-title">מילים</div>
+          <div class="lyrics-col" id="lyricsCol">
+            <div class="lyrics-title-row">
+              <div class="lyrics-title">מילים</div>
+              ${song.audio?.type === 'file' ? `
+              <div class="karaoke-bar" id="karaokeBar">
+                <audio id="karaokeAudio" src="${song.audio.src}" preload="auto" style="display:none"></audio>
+                <button class="karaoke-start-btn" id="karaokeStartBtn" title="הפעל קריוקי">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                  קריוקי
+                </button>
+                <button class="karaoke-stop-btn" id="karaokeStopBtn" title="עצור קריוקי" hidden>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                  עצור
+                </button>
+              </div>` : ''}
+            </div>
             ${lyricsHTML}
           </div>
           <aside class="song-sidebar">
@@ -2087,6 +2177,7 @@ function renderSongPage(id) {
               <div class="coming-soon-text">השיר יעלה בקרוב</div>
               <div class="coming-soon-sub">ההפקה בעיצומה</div>
             </div>`)}
+          ${buildChordsBox(song)}
           </aside>
         </div>
 
@@ -2101,7 +2192,30 @@ function renderSongPage(id) {
       </div>
 
     </div>
+
+
   `;
+}
+
+function buildChordsBox(song) {
+  const c = song.chords;
+  if (!c || !c.sections || c.sections.length === 0) return '';
+
+  const metaParts = [];
+  if (c.capo > 0) metaParts.push('Capo ' + c.capo);
+  if (c.key)      metaParts.push(c.key);
+  if (c.tempo)    metaParts.push(c.tempo + ' BPM');
+
+  const sectionsHTML = c.sections.map(s => {
+    if (!s.chords || s.chords.length === 0) return '';
+    const tags = s.chords.map(ch => '<span class="chord-tag">' + ch + '</span>').join('');
+    return '<div class="chords-section-row"><span class="chords-section-label">' + s.section + '</span><div class="chords-list">' + tags + '</div></div>';
+  }).join('');
+
+  const meta = metaParts.length ? ' <span class="chords-meta">' + metaParts.join(' · ') + '</span>' : '';
+  return '<details class="chords-box"><summary class="chords-title">אקורדים' + meta +
+    '<span class="chords-arrow">▾</span></summary>' +
+    '<div class="chords-sections">' + sectionsHTML + '</div></details>';
 }
 
 function buildSunoEmbed(song) {
@@ -2378,7 +2492,7 @@ function renderBioPage() {
             <p>
               אני כותב ומלחין מוזיקה בעברית ובאנגלית. עבורי, הכתיבה היא הניסיון הנצחי לגשר על הפער שבין המילים למציאות,
               ולמצוא את המרווח המדויק שבו רגש הופך לצליל.
-              האתר הזה הוא אוסף מחשבות, סיפורים, רגעים, שירים ותחנות בדרך שלי.
+              האתר הזה הוא אוסף מח��בות, סיפורים, רגעים, שירים ותחנות בדרך שלי.
               אני כותב כדי להבין, כדי לזכור, וכדי לתת לצבעים של היומיום ביטוי על הדף.
               אני מאמין שביצירה, כמו בחיים, תמיד לאתגר את עצמך והישאר סקרן ונאמן לעצמך.
             </p>
@@ -2966,6 +3080,54 @@ function bindPageEvents() {
     setTimeout(() => playSong(idx), 80);
   }
 
+  // Mobile song page — inline search overlay
+  const songSearchBtn = document.querySelector('.song-mobile-search-btn');
+  const songSearchOverlay = document.getElementById('songMobileSearch');
+  const smsoInput = songSearchOverlay?.querySelector('.smso-input');
+  const smsoResults = document.getElementById('smsoResults');
+
+  function openSongSearch() {
+    songSearchOverlay?.classList.add('active');
+    setTimeout(() => smsoInput?.focus(), 60);
+  }
+  function closeSongSearch() {
+    songSearchOverlay?.classList.remove('active');
+    if (smsoInput) smsoInput.value = '';
+    if (smsoResults) smsoResults.innerHTML = '';
+  }
+
+  songSearchBtn?.addEventListener('click', openSongSearch);
+  songSearchOverlay?.querySelector('.smso-backdrop')?.addEventListener('click', closeSongSearch);
+  songSearchOverlay?.querySelector('.smso-close')?.addEventListener('click', closeSongSearch);
+
+  smsoInput?.addEventListener('input', () => {
+    const q = smsoInput.value.trim();
+    if (!q) { smsoResults.innerHTML = ''; return; }
+    const matches = SONGS.filter(s =>
+      s.title.includes(q) || s.id.includes(q.toLowerCase().replace(/\s/g, '-'))
+    ).slice(0, 7);
+    smsoResults.innerHTML = matches.length
+      ? matches.map(s => `
+        <a class="smso-result" href="#/song/${s.id}">
+          <div class="smso-result-cover">${getCover(s.id)}</div>
+          <div class="smso-result-title">${s.title}</div>
+        </a>`).join('')
+      : '<div class="smso-empty">לא נמצאו שירים</div>';
+    smsoResults.querySelectorAll('.smso-result').forEach(a => {
+      a.addEventListener('click', closeSongSearch);
+    });
+  });
+
+  // Mobile song page — prev/next nav arrows auto-play
+  document.querySelectorAll('.song-mobile-nav-arrow[data-nav]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const href = btn.getAttribute('href');
+      const songId = href.replace('#/song/', '');
+      const idx = SONGS.findIndex(s => s.id === songId);
+      if (idx >= 0) pendingAutoplaySongIdx = idx;
+    });
+  });
+
   // Song page nav buttons — auto-play the target song after navigation
   document.querySelectorAll('.song-hero-nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -3137,7 +3299,7 @@ function bindPageEvents() {
   if (searchInput) {
     searchInput.addEventListener('input', () => {
       const q = searchInput.value.trim();
-      const items = document.querySelectorAll('#songsTracklist .track-item, #songsGrid .song-grid-card');
+      const items = document.querySelectorAll('#songsCinematic .song-cine-card, #spotList .spot-item');
       let visible = 0;
       items.forEach(item => {
         const match = !q || (item.dataset.title || '').includes(q);
@@ -3221,67 +3383,130 @@ function bindPageEvents() {
   }
 
   // Home page — View toggle
-  const songsViewList = document.getElementById('songsViewList');
-  const songsViewGrid = document.getElementById('songsViewGrid');
-  const songsTracklist = document.getElementById('songsTracklist');
-  const songsGridEl = document.getElementById('songsGrid');
+  const songsViewCinematic = document.getElementById('songsViewCinematic');
+  const songsViewSpotlight = document.getElementById('songsViewSpotlight');
+  const songsCinematicEl  = document.getElementById('songsCinematic');
+  const songsSpotlightEl  = document.getElementById('songsSpotlight');
+
   function applySongsView(view) {
-    if (!songsTracklist || !songsGridEl) return;
-    if (view === 'grid') {
-      songsTracklist.classList.add('hidden');
-      songsGridEl.classList.remove('hidden');
-      if (songsViewList) songsViewList.classList.remove('active');
-      if (songsViewGrid) songsViewGrid.classList.add('active');
-    } else {
-      songsTracklist.classList.remove('hidden');
-      songsGridEl.classList.add('hidden');
-      if (songsViewList) songsViewList.classList.add('active');
-      if (songsViewGrid) songsViewGrid.classList.remove('active');
-    }
+    if (songsCinematicEl)  songsCinematicEl.classList.toggle('hidden', view !== 'cinematic');
+    if (songsSpotlightEl)  songsSpotlightEl.classList.toggle('hidden', view !== 'spotlight');
+    if (songsViewCinematic) songsViewCinematic.classList.toggle('active', view === 'cinematic');
+    if (songsViewSpotlight) songsViewSpotlight.classList.toggle('active', view === 'spotlight');
   }
-  if (songsViewList) songsViewList.addEventListener('click', () => { localStorage.setItem('amiado_songs_view', 'list'); applySongsView('list'); });
-  if (songsViewGrid) songsViewGrid.addEventListener('click', () => { localStorage.setItem('amiado_songs_view', 'grid'); applySongsView('grid'); });
+  if (songsViewCinematic) songsViewCinematic.addEventListener('click', () => { localStorage.setItem('amiado_songs_view', 'cinematic'); applySongsView('cinematic'); });
+  if (songsViewSpotlight) songsViewSpotlight.addEventListener('click', () => { localStorage.setItem('amiado_songs_view', 'spotlight'); applySongsView('spotlight'); });
 
   // Home page — Category tabs
   const tabBtns = document.querySelectorAll('.songs-tab');
   const songsEmptyState = document.getElementById('songsEmptyState');
   const savedTab = localStorage.getItem('amiado_songs_tab') || 'he';
+
+  function updateSpotFeatured(song, idx) {
+    const spotFeatured = document.getElementById('spotFeatured');
+    if (!spotFeatured) return;
+    const favs2 = getFavorites();
+    const isFav = favs2.includes(song.id);
+    const num = String(idx + 1).padStart(2, '0');
+    const excerpt = song.analysis?.abstract
+      ? song.analysis.abstract.replace(/\s+/g,' ').trim().slice(0, 110) + '…'
+      : '';
+    spotFeatured.dataset.id  = song.id;
+    spotFeatured.dataset.idx = idx;
+    spotFeatured.innerHTML = `
+      <div class="spot-featured-bg">${getCover(song.id)}</div>
+      <div class="spot-featured-overlay"></div>
+      <button class="track-fav-btn spot-featured-fav${isFav ? ' active' : ''}" data-song-id="${song.id}" title="מועדפים">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+      <div class="spot-featured-info">
+        <div class="spot-featured-num">${num}</div>
+        <div class="spot-featured-title">${song.title}</div>
+        ${excerpt ? `<div class="spot-featured-excerpt">${excerpt}</div>` : ''}
+        <div class="spot-featured-btns">
+          <button class="spot-featured-play" data-play-idx="${idx}">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11L12 7z"/></svg>
+            נגן עכשיו
+          </button>
+          <button class="track-add-btn spot-featured-add" data-song-id="${song.id}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>`;
+  }
+
   function applySongsTab(tab) {
     tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-    const items = document.querySelectorAll('#songsTracklist .track-item');
-    const cards = document.querySelectorAll('#songsGrid .song-grid-card');
+    const cines   = document.querySelectorAll('#songsCinematic .song-cine-card');
+    const spotIs  = document.querySelectorAll('#spotList .spot-item');
     let visibleCount = 0;
     const matches = el => {
       if (tab === 'cover') return el.dataset.cover === '1';
       return el.dataset.lang === tab && el.dataset.cover !== '1';
     };
-    items.forEach(el => { const m = matches(el); el.style.display = m ? '' : 'none'; if (m) visibleCount++; });
-    cards.forEach(el => { el.style.display = matches(el) ? '' : 'none'; });
+    cines.forEach(el => { const m = matches(el); el.style.display = m ? '' : 'none'; if (m) visibleCount++; });
+    spotIs.forEach(el => { el.style.display = matches(el) ? '' : 'none'; });
+    // Update spotlight featured to first visible
+    const firstSpot = [...spotIs].find(el => matches(el));
+    if (firstSpot) {
+      const song = SONGS.find(s => s.id === firstSpot.dataset.id);
+      const idx  = parseInt(firstSpot.dataset.idx, 10);
+      if (song) updateSpotFeatured(song, idx);
+      spotIs.forEach(el => el.classList.toggle('active', el === firstSpot));
+    }
     if (songsEmptyState) songsEmptyState.classList.toggle('hidden', visibleCount > 0);
   }
   tabBtns.forEach(b => b.addEventListener('click', () => { localStorage.setItem('amiado_songs_tab', b.dataset.tab); applySongsTab(b.dataset.tab); }));
   applySongsTab(savedTab);
 
-  // Home page — Grid card click → navigate to song
-  document.querySelectorAll('.song-grid-card[data-id]').forEach(card => {
+  // Home page — Cinematic card click → navigate
+  document.querySelectorAll('.song-cine-card').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('.song-grid-play-btn') || e.target.closest('.song-grid-add-btn') || e.target.closest('.song-grid-fav-btn')) return;
+      if (e.target.closest('.song-cine-play-btn') || e.target.closest('.song-cine-fav-btn') || e.target.closest('.song-cine-add-btn')) return;
       navigateFade(`#/song/${card.dataset.id}`);
     });
   });
 
-  // Home page — Grid card play
-  document.querySelectorAll('.song-grid-play-btn').forEach(btn => {
+  // Home page — Cinematic play buttons
+  document.querySelectorAll('.song-cine-play-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       const idx = parseInt(btn.dataset.playIdx, 10);
-      if (!isNaN(idx)) {
-        navContext = { type: 'playlist', ids: SONGS.map(s => s.id), plId: null };
-        playSong(idx);
-      }
+      if (!isNaN(idx)) { navContext = { type: 'playlist', ids: SONGS.map(s => s.id), plId: null }; playSong(idx); }
     });
   });
+
+  // Home page — Spotlight container (event delegation)
+  const spotlightContainer = document.getElementById('songsSpotlight');
+  if (spotlightContainer) {
+    spotlightContainer.addEventListener('click', (e) => {
+      // Play buttons
+      const playBtn = e.target.closest('.spot-featured-play, .spot-play-btn');
+      if (playBtn) {
+        e.preventDefault(); e.stopPropagation();
+        const idx = parseInt(playBtn.dataset.playIdx, 10);
+        if (!isNaN(idx)) { navContext = { type: 'playlist', ids: SONGS.map(s => s.id), plId: null }; playSong(idx); }
+        return;
+      }
+      // Fav / add buttons — let bubble to .track-fav-btn / .track-add-btn handlers
+      if (e.target.closest('.spot-featured-fav, .spot-fav-btn, .spot-featured-add')) return;
+      // List item click → update featured
+      const listItem = e.target.closest('.spot-item');
+      if (listItem && !e.target.closest('.spot-item-actions')) {
+        const id  = listItem.dataset.id;
+        const idx = parseInt(listItem.dataset.idx, 10);
+        const song = SONGS.find(s => s.id === id);
+        if (song) updateSpotFeatured(song, idx);
+        document.querySelectorAll('.spot-item').forEach(si => si.classList.toggle('active', si === listItem));
+        return;
+      }
+      // Featured click → navigate
+      if (e.target.closest('.spot-featured')) {
+        const id = document.getElementById('spotFeatured')?.dataset.id;
+        if (id) navigateFade(`#/song/${id}`);
+      }
+    });
+  }
 
   // Playlist detail — Play All
   document.querySelectorAll('.pl-play-all-btn').forEach(btn => {
@@ -3424,6 +3649,65 @@ function bindPageEvents() {
     window._bioSliderInterval = setInterval(() => goToSlide(current + 1), 4000);
   }
 
+  // Karaoke mode
+  if (document.getElementById('karaokeAudio')) initKaraoke();
+
   // Scroll animations — run after DOM is ready
   requestAnimationFrame(initScrollAnimations);
+}
+
+// ─────────────────────────────────────────
+// KARAOKE MODE
+// ─────────────────────────────────────────
+function initKaraoke() {
+  const audio      = document.getElementById('karaokeAudio');
+  const startBtn   = document.getElementById('karaokeStartBtn');
+  const stopBtn    = document.getElementById('karaokeStopBtn');
+  const lyricsCol  = document.getElementById('lyricsCol');
+  if (!audio || !startBtn || !lyricsCol) return;
+
+  // All lyric line elements in DOM order
+  const lineEls = Array.from(lyricsCol.querySelectorAll('.lyrics-line[data-kl]'));
+  const total = lineEls.length;
+  let activeLine = -1;
+
+  function syncLyrics() {
+    if (!audio.duration || total === 0) return;
+    const li = Math.min(Math.floor((audio.currentTime / audio.duration) * total), total - 1);
+    if (li === activeLine) return;
+    if (activeLine >= 0) lineEls[activeLine]?.classList.remove('kl-active');
+    activeLine = li;
+    lineEls[activeLine]?.classList.add('kl-active');
+    lineEls[activeLine]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function startKaraoke() {
+    audio.currentTime = 0;
+    activeLine = -1;
+    lineEls.forEach(el => el.classList.remove('kl-active'));
+    lyricsCol.classList.add('karaoke-mode');
+    startBtn.hidden = true;
+    stopBtn.hidden = false;
+    audio.play();
+  }
+
+  function stopKaraoke() {
+    audio.pause();
+    audio.currentTime = 0;
+    lineEls.forEach(el => el.classList.remove('kl-active'));
+    activeLine = -1;
+    lyricsCol.classList.remove('karaoke-mode');
+    startBtn.hidden = false;
+    stopBtn.hidden = true;
+  }
+
+  audio.addEventListener('timeupdate', syncLyrics);
+  audio.addEventListener('ended', stopKaraoke);
+  startBtn.addEventListener('click', startKaraoke);
+  stopBtn.addEventListener('click', stopKaraoke);
+
+  // Also wire the hero buttons (desktop + mobile)
+  document.querySelectorAll('.btn-karaoke-song').forEach(btn => {
+    btn.addEventListener('click', startKaraoke);
+  });
 }
