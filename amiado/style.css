@@ -2537,8 +2537,9 @@ body {
   gap: 32px;
   direction: rtl;
 }
-.site-footer-logo-icon .site-footer-logo-img { height: 20px; width: 20px; object-fit: contain; display: block; opacity: 0.7; transition: opacity 0.2s; }
-.site-footer-logo-icon:hover .site-footer-logo-img { opacity: 1; }
+.site-footer-logo-icon { border-color: rgba(201,168,76,0.55) !important; background: rgba(201,168,76,0.07) !important; }
+.site-footer-logo-icon:hover { border-color: var(--gold) !important; background: rgba(201,168,76,0.15) !important; box-shadow: 0 0 12px rgba(201,168,76,0.25) !important; }
+.site-footer-logo-icon .site-footer-logo-img { height: 22px; width: 22px; object-fit: contain; display: block; filter: drop-shadow(0 0 5px rgba(201,168,76,0.55)); }
 .site-footer-text {
   flex: 1;
   font-size: 0.72rem;
