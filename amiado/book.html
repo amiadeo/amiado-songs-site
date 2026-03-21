@@ -11,13 +11,45 @@
     /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ── THEME VARIABLES ── */
+    :root {
+      --bg:           #ede8df;
+      --page-bg:      #ffffff;
+      --page-shadow:  0 2px 24px rgba(0,0,0,0.09);
+      --text:         #1a1a1a;
+      --text-body:    #2a2a2a;
+      --text-dim:     #3a3a3a;
+      --border:       #e8dcc8;
+      --border-toc:   #ddd3be;
+      --analysis-bg:  #faf8f3;
+      --toc-name:     #2a2a2a;
+      --song-title:   #0d1117;
+      --btn-back:     #888;
+    }
+
+    body.dark {
+      --bg:           #0d1117;
+      --page-bg:      #111620;
+      --page-shadow:  0 2px 32px rgba(0,0,0,0.5);
+      --text:         rgba(255,255,255,0.92);
+      --text-body:    rgba(255,255,255,0.82);
+      --text-dim:     rgba(255,255,255,0.65);
+      --border:       rgba(201,168,76,0.18);
+      --border-toc:   rgba(255,255,255,0.08);
+      --analysis-bg:  #181d2a;
+      --toc-name:     rgba(255,255,255,0.82);
+      --song-title:   rgba(255,255,255,0.95);
+      --btn-back:     rgba(255,255,255,0.35);
+    }
+
     /* ── BASE ── */
     body {
       font-family: 'Frank Ruhl Libre', 'David Libre', 'Times New Roman', serif;
       direction: rtl;
-      background: #ede8df;
-      color: #1a1a1a;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.8;
+      transition: background 0.35s ease, color 0.35s ease;
     }
 
     /* ── SCREEN CONTROLS ── */
@@ -51,12 +83,29 @@
       box-shadow: 0 6px 28px rgba(201,168,76,0.55);
     }
 
+    .btn-theme {
+      background: none;
+      border: 1px solid rgba(201,168,76,0.4);
+      color: #c9a84c;
+      padding: 0.5rem 1.1rem;
+      font-size: 0.82rem;
+      font-family: 'Heebo', sans-serif;
+      font-weight: 500;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+    }
+    .btn-theme:hover { background: rgba(201,168,76,0.1); border-color: #c9a84c; }
+
     .btn-back {
       font-size: 0.82rem;
-      color: #888;
+      color: var(--btn-back);
       font-family: 'Heebo', sans-serif;
       text-decoration: none;
       padding: 0.25rem 0;
+      transition: color 0.2s;
     }
     .btn-back:hover { color: #c9a84c; }
 
@@ -69,11 +118,12 @@
 
     /* ── PAGE BASE ── */
     .page {
-      background: #fff;
+      background: var(--page-bg);
       margin-bottom: 1.5rem;
-      box-shadow: 0 2px 24px rgba(0,0,0,0.09);
+      box-shadow: var(--page-shadow);
       position: relative;
       overflow: hidden;
+      transition: background 0.35s ease, box-shadow 0.35s ease;
     }
 
     /* ── COVER ── */
@@ -136,7 +186,7 @@
       font-family: 'Heebo', sans-serif;
       margin-bottom: 2.5rem;
       padding-bottom: 1rem;
-      border-bottom: 1.5px solid #e8dcc8;
+      border-bottom: 1.5px solid var(--border);
     }
 
     .toc-list {
@@ -150,7 +200,7 @@
       align-items: baseline;
       gap: 0.6rem;
       padding: 0.5rem 0;
-      border-bottom: 1px dotted #ddd3be;
+      border-bottom: 1px dotted var(--border-toc);
       break-inside: avoid;
     }
 
@@ -165,7 +215,7 @@
 
     .toc-name {
       font-size: 1rem;
-      color: #2a2a2a;
+      color: var(--toc-name);
     }
 
     /* ── SONG CHAPTER ── */
@@ -180,7 +230,7 @@
       gap: 2rem;
       margin-bottom: 2.5rem;
       padding-bottom: 2rem;
-      border-bottom: 1.5px solid #e8dcc8;
+      border-bottom: 1.5px solid var(--border);
     }
 
     .song-meta {
@@ -200,7 +250,7 @@
     .song-title-h {
       font-size: clamp(2rem, 5vw, 2.8rem);
       font-weight: 900;
-      color: #0d1117;
+      color: var(--song-title);
       line-height: 1.15;
     }
 
@@ -252,7 +302,7 @@
     .lyric-line {
       font-size: 1.08rem;
       line-height: 2.1;
-      color: #2a2a2a;
+      color: var(--text-body);
       display: block;
     }
 
@@ -260,7 +310,7 @@
     .analysis-block {
       margin-top: 2rem;
       padding-top: 2rem;
-      border-top: 1.5px solid #e8dcc8;
+      border-top: 1.5px solid var(--border);
     }
 
     .analysis-block-heading {
@@ -276,11 +326,12 @@
     .analysis-card {
       margin-bottom: 1.4rem;
       padding: 1.25rem 1.5rem 1.25rem 1.5rem;
-      background: #faf8f3;
+      background: var(--analysis-bg);
       border-radius: 6px;
       border-right: 3px solid #c9a84c;
       page-break-inside: avoid;
       break-inside: avoid;
+      transition: background 0.35s ease;
     }
 
     .analysis-card-title {
@@ -296,7 +347,7 @@
     .analysis-card-text {
       font-size: 0.92rem;
       line-height: 1.9;
-      color: #3a3a3a;
+      color: var(--text-dim);
     }
 
     /* ── PRINT ── */
@@ -353,6 +404,7 @@
 
   <div class="controls">
     <button class="btn-print" onclick="window.print()">הדפס / שמור PDF</button>
+    <button class="btn-theme" id="themeBtn" onclick="toggleTheme()">🌙 עיצוב כהה</button>
     <a class="btn-back" href="index.html">← חזרה לאתר</a>
   </div>
 
@@ -377,6 +429,22 @@
   </div>
 
   <script src="app.js"></script>
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle('dark');
+      document.getElementById('themeBtn').textContent = isDark ? '☀️ עיצוב בהיר' : '🌙 עיצוב כהה';
+      localStorage.setItem('book-theme', isDark ? 'dark' : 'light');
+    }
+    // Restore saved theme
+    if (localStorage.getItem('book-theme') === 'dark') {
+      document.body.classList.add('dark');
+      document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('themeBtn');
+        if (btn) btn.textContent = '☀️ עיצוב בהיר';
+      });
+    }
+  </script>
   <script>
     (function () {
       'use strict';
