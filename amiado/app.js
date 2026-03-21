@@ -2342,7 +2342,17 @@ function buildPlHeroHTML(pl) {
         </button>` : ''}
       </div>
     </div>
-    <div class="col-track-list">${songRows}${emptyMsg}</div>`;
+    <div class="col-track-list">${songRows}${emptyMsg}</div>
+    <div class="col-add-song-area">
+      <button class="col-add-song-btn" data-pl-id="${pl.id}">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        הוסף שיר
+      </button>
+      <div class="col-add-song-picker hidden" data-pl-id="${pl.id}">
+        <input class="col-add-song-search" placeholder="חפש שיר..." autocomplete="off">
+        <div class="col-add-song-results"></div>
+      </div>
+    </div>`;
 }
 
 function renderCollectionPage() {
@@ -2442,18 +2452,20 @@ function renderCollectionPage() {
 
         <!-- Left: Playlists -->
         <div class="col-left">
+          <div class="col-left-top">
+            <button class="col-new-pl-btn" id="colNewPlBtn">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              פלייליסט חדש
+            </button>
+            <div class="col-new-pl-form hidden" id="colNewPlForm">
+              <input type="text" class="col-new-pl-input" id="colNewPlInput" placeholder="שם הפלייליסט..." maxlength="40">
+              <button class="col-new-pl-save" id="colNewPlSave">צור</button>
+              <button class="col-new-pl-cancel" id="colNewPlCancel">ביטול</button>
+            </div>
+          </div>
           ${playlists.length > 0 ? `<div class="col-pl-tabs" id="colPlTabs">${tabs}</div>` : ''}
           <div class="col-pl-hero" id="colPlHero">
             ${activePl ? buildPlHeroHTML(activePl) : noPlaylists}
-          </div>
-          <button class="col-new-pl-btn" id="colNewPlBtn">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            פלייליסט חדש
-          </button>
-          <div class="col-new-pl-form hidden" id="colNewPlForm">
-            <input type="text" class="col-new-pl-input" id="colNewPlInput" placeholder="שם הפלייליסט..." maxlength="40">
-            <button class="col-new-pl-save" id="colNewPlSave">צור</button>
-            <button class="col-new-pl-cancel" id="colNewPlCancel">ביטול</button>
           </div>
         </div>
 
@@ -3948,12 +3960,59 @@ function attachCollectionHeroHandlers(heroEl) {
       if (pl) {
         heroEl.innerHTML = buildPlHeroHTML(pl);
         attachCollectionHeroHandlers(heroEl);
-        // Update tab count
         if (activeTab) {
           const plSongs = SONGS.filter(s => pl.songIds.includes(s.id));
           const countEl = activeTab.querySelector('.col-tab-count');
           if (countEl) countEl.textContent = plSongs.length;
         }
+      }
+    }
+
+    // Toggle add-song picker
+    const addBtn = e.target.closest('.col-add-song-btn');
+    if (addBtn) {
+      const plId = addBtn.dataset.plId;
+      const picker = heroEl.querySelector(`.col-add-song-picker[data-pl-id="${plId}"]`);
+      if (!picker) return;
+      const isHidden = picker.classList.contains('hidden');
+      picker.classList.toggle('hidden', !isHidden);
+      if (isHidden) {
+        const pl = getPlaylists().find(p => p.id === plId);
+        const existingIds = pl ? pl.songIds : [];
+        const available = SONGS.filter(s => !existingIds.includes(s.id));
+        const resultsEl = picker.querySelector('.col-add-song-results');
+        const renderResults = (list) => {
+          resultsEl.innerHTML = list.slice(0, 20).map(s => `
+            <div class="col-add-song-item" data-song-id="${s.id}" data-pl-id="${plId}">
+              <div class="col-add-song-cover">${getCover(s.id)}</div>
+              <span class="col-add-song-title">${s.title}</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>`).join('');
+        };
+        renderResults(available);
+        const searchInput = picker.querySelector('.col-add-song-search');
+        searchInput.focus();
+        searchInput.addEventListener('input', () => {
+          const q = searchInput.value.trim().toLowerCase();
+          renderResults(q ? available.filter(s => s.title.toLowerCase().includes(q)) : available);
+        });
+        resultsEl.addEventListener('click', ev => {
+          const item = ev.target.closest('.col-add-song-item');
+          if (!item) return;
+          const { songId, plId: pid } = item.dataset;
+          toggleSongInPlaylist(pid, songId);
+          const updatedPl = getPlaylists().find(p => p.id === pid);
+          if (updatedPl) {
+            heroEl.innerHTML = buildPlHeroHTML(updatedPl);
+            attachCollectionHeroHandlers(heroEl);
+            const activeTab = document.querySelector('.col-pl-tab.active');
+            if (activeTab) {
+              const plSongs = SONGS.filter(s => updatedPl.songIds.includes(s.id));
+              const countEl = activeTab.querySelector('.col-tab-count');
+              if (countEl) countEl.textContent = plSongs.length;
+            }
+          }
+        });
       }
     }
   });
