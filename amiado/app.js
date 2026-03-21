@@ -1945,6 +1945,7 @@ function renderSongPage(id) {
 
   const idx = SONGS.indexOf(song);
   const num = String(idx + 1).padStart(2, '0');
+  const isFav = getFavorites().includes(song.id);
 
   const lyricsHTML = song.lyrics.map(sec => `
     <div class="lyrics-section">
