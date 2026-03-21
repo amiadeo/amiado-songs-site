@@ -2727,6 +2727,13 @@ function buildAudioPanel(song, idx) {
   // Single source — YouTube only
   if (hasYT) return buildYoutubeEmbed(song);
 
+  // Single source — Suno only
+  if (hasSuno) return `
+    <div class="sidebar-player">
+      <div class="sidebar-player-title">האזנה — Suno</div>
+      ${buildSunoEmbedInner(song)}
+    </div>`;
+
   // Single source — file only
   if (hasFile) return `
     <div class="sidebar-player">
