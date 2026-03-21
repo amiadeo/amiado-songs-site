@@ -1341,7 +1341,15 @@ function playSong(idx) {
     return;
   }
 
-  // Local audio file fallback (if audio file exists)
+  playSongFile(idx);
+}
+
+// Force-play the local audio file, bypassing Suno/YouTube embeds
+function playSongFile(idx) {
+  const song = SONGS[idx];
+  if (!song || !song.audio?.src) return;
+  state.currentIdx = idx;
+  updatePlayerUI(song);
   if (song.audio && song.audio.src) {
     audio.src = song.audio.src;
     audio.volume = parseFloat(document.getElementById('volumeSlider').value);
@@ -2559,7 +2567,7 @@ function buildAudioPanel(song, idx) {
       </div>
       <div class="ast-panel" data-ast-panel="mine">
         <div class="sidebar-player">
-          <button class="sidebar-play-btn" data-play-idx="${idx}">
+          <button class="sidebar-play-btn" data-play-file-idx="${idx}">
             <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5v11L12 7z"/></svg>
             נגן
           </button>
@@ -3855,6 +3863,13 @@ function closePlaylistDropdown() {
 // EVENT BINDING (after each render)
 // ─────────────────────────────────────────
 function bindPageEvents() {
+  // "ביצוע שלי" play buttons — force file playback, skip Suno/YT
+  document.querySelectorAll('[data-play-file-idx]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      playSongFile(parseInt(btn.dataset.playFileIdx, 10));
+    });
+  });
+
   // Audio source switcher tabs (ביצוע שלי / ביצוע Suno)
   document.querySelectorAll('.ast-tab').forEach(tab => {
     tab.addEventListener('click', () => {
