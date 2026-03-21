@@ -1515,7 +1515,7 @@ function route() {
     app.innerHTML = renderCollectionPage();
     initCollectionPage();
   } else if (hash === '#/moments') {
-    document.title = 'Amiado — מה קורה אצלי';
+    document.title = 'Amiado — מהסלון שלי';
     document.querySelector('[data-route="moments"]')?.classList.add('active');
     app.innerHTML = renderMomentsPage();
     initMomentsPage();
@@ -1534,7 +1534,7 @@ function route() {
     document.querySelector('[data-route="writings"]')?.classList.add('active');
     app.innerHTML = renderWritingsPage();
   } else if (hash === '#/moments') {
-    document.title = 'Amiado — מה קורה אצלי';
+    document.title = 'Amiado — מהסלון שלי';
     document.querySelector('[data-route="moments"]')?.classList.add('active');
     app.innerHTML = renderMomentsPage();
     initMomentsPage();
@@ -1698,7 +1698,7 @@ function bc(items) {
 }
 
 // ─────────────────────────────────────────
-// PAGE: MOMENTS (מה קורה אצלי)
+// PAGE: MOMENTS (מהסלון שלי)
 // ─────────────────────────────────────────
 const MOMENTS_COVERS = [
   { id: 219322850264239, title: "Mix & Match, נטע וסיה — סלון שלי",
@@ -1928,7 +1928,7 @@ function renderMomentsPage() {
 </style>
 <div class="page-enter moments-page">
   <header style="text-align:center;margin-bottom:8px;">
-    <h1>מה קורה אצלי</h1>
+    <h1>מהסלון שלי</h1>
     <p class="m-sub">תוכן ישירות מהפייסבוק — בלי לצאת מהאתר</p>
     <div class="m-divider-line"></div>
   </header>
@@ -2602,7 +2602,7 @@ function buildLinksHTML(song) {
 }
 
 // ─────────────────────────────────────────
-// PAGE: MOMENTS (מה קורה אצלי — Facebook videos)
+// PAGE: MOMENTS (מהסלון שלי — Facebook videos)
 // ─────────────────────────────────────────
 const MOMENTS_COVERS = [
   { id: 219322850264239, title: "Mix & Match, נטע וסיה — סלון שלי", post: "Mix & Match, Neta and Sia visited my living room, So instead of coffee, I played for them a bit :)", comments: [{ name: "אלונה", text: "אהוב מוכשר שלנו" }, { name: "יובל", text: "מהמם, אחלה שילוב ואחלה ביצוע" }, { name: "מאירה", text: "ביצוע מושלם ❤️ אוהבת את הקול הנוגע שלך.." }] },
@@ -2671,9 +2671,9 @@ function renderMomentsPage() {
     <a class="mom-modal-fb" href="${v.fbUrl}" target="_blank" rel="noopener">לכל התגובות בפייסבוק <svg viewBox="0 0 12 12" fill="none"><path d="M10 6H2M6 2L2 6l4 4" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>`;
 
   return `<div class="page-enter moments-page">
-    ${bc([{label:'שירים',href:'#/'},{label:'מה קורה אצלי',href:'#/moments'}])}
+    ${bc([{label:'שירים',href:'#/'},{label:'מהסלון שלי',href:'#/moments'}])}
     <div class="mom-header">
-      <h1 class="mom-title">מה קורה אצלי</h1>
+      <h1 class="mom-title">מהסלון שלי</h1>
       <p class="mom-subtitle">תוכן ישירות מהפייסבוק — בלי לצאת מהאתר</p>
       <div class="mom-divider"></div>
     </div>
