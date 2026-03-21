@@ -4456,6 +4456,20 @@ body {
 }
 .spot-fav-btn.active { color: var(--gold) !important; border-color: var(--gold); }
 .spot-fav-btn:hover  { color: var(--gold); border-color: var(--gold); }
+.spot-add-btn {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(232,227,216,0.18);
+  background: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: color 0.2s, border-color 0.2s;
+}
+.spot-add-btn:hover { color: var(--gold); border-color: var(--gold); }
 .spot-play-btn {
   width: 24px; height: 24px;
   border-radius: 50%;

@@ -1379,13 +1379,25 @@ function updatePlayPauseIcon() {
 }
 
 // Player controls
+function getActiveYTIframe() {
+  const song = SONGS[state.currentIdx];
+  return song ? document.getElementById('yt-iframe-' + song.id) : null;
+}
+
+function ytCommand(cmd) {
+  const iframe = getActiveYTIframe();
+  if (iframe) iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: cmd, args: '' }), '*');
+}
+
 document.getElementById('playBtn').addEventListener('click', () => {
   if (state.currentIdx < 0) return;
   if (state.playing) {
     audio.pause();
+    ytCommand('pauseVideo');
     state.playing = false;
   } else {
     audio.play().catch(() => {});
+    ytCommand('playVideo');
     state.playing = true;
   }
   updatePlayPauseIcon();
@@ -1393,12 +1405,12 @@ document.getElementById('playBtn').addEventListener('click', () => {
 
 document.getElementById('prevBtn').addEventListener('click', () => {
   const idx = getPrevSongIdx();
-  if (idx !== -1) playSong(idx);
+  if (idx !== -1) { ytCommand('stopVideo'); playSong(idx); }
 });
 
 document.getElementById('nextBtn').addEventListener('click', () => {
   const idx = getNextSongIdx();
-  if (idx !== -1) playSong(idx);
+  if (idx !== -1) { ytCommand('stopVideo'); playSong(idx); }
 });
 
 audio.addEventListener('ended', () => {
@@ -1748,6 +1760,9 @@ function renderHomePage() {
       <div class="spot-item-actions">
         <button class="track-fav-btn spot-fav-btn${isFav ? ' active' : ''}" data-song-id="${song.id}" title="מועדפים">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="track-add-btn spot-add-btn" data-song-id="${song.id}" title="הוסף לפלייליסט">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
         <button class="spot-play-btn" data-play-idx="${i}" title="נגן">
           <svg width="9" height="9" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
