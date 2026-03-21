@@ -4698,6 +4698,22 @@ body {
 }
 .col-track-play:hover { transform: scale(1.1); }
 
+/* Full page empty state */
+.col-empty-page {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 60px 20px 80px; text-align: center; gap: 16px;
+}
+.col-empty-icon { margin-bottom: 8px; }
+.col-empty-title { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; color: var(--text-main); }
+.col-empty-sub { font-size: 0.9rem; color: var(--text-dim); line-height: 1.8; max-width: 360px; }
+.col-empty-cta {
+  display: inline-block; margin-top: 8px;
+  font-size: 0.85rem; color: var(--gold); text-decoration: none; letter-spacing: 0.04em;
+  border-bottom: 1px solid transparent; transition: border-color 0.2s;
+}
+.col-empty-cta:hover { border-color: var(--gold); }
+.col-new-pl-area { margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
 /* Empty states */
 .col-pl-empty-state {
   padding: 40px 20px;
