@@ -121,8 +121,8 @@ const SONGS = [
       { section: 'בית 3', lines: [
         'מהיום הגוף בחתיכות קטנות',
         'שנושאות את שמי פזורות על מרצפות פצועות',
-        'לסיר אשמה כל מה שרפיון',
-        'ולא אבר לא כפנים במה שבפנים'
+        'להסיר אשמה, ריפיון כל תא נטוש',
+        'מה שבפנים כבר לא אמורפי ולא ישוב'
       ]}
     ],
     analysis: {
@@ -1538,6 +1538,9 @@ function route() {
     document.querySelector('[data-route="bio"]')?.classList.add('active');
     app.innerHTML = renderBioPage();
     setTimeout(runBioAnimation, 50);
+  } else if (hash === '#/book') {
+    document.title = 'Amiado — ספר השירים';
+    app.innerHTML = renderBookPage();
   } else if (hash.startsWith('#/writing/')) {
     const id = hash.slice(10);
     document.title = 'Amiado';
@@ -3469,6 +3472,21 @@ function renderBioPage() {
         </div>
       </div>
 
+      <!-- Book teaser -->
+      <div class="bio-book-teaser">
+        <div class="bio-book-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <div class="bio-book-text">
+          <div class="bio-book-label">ספר השירים הדיגיטלי</div>
+          <div class="bio-book-sub">כל ${SONGS.length} השירים — מילים מלאות, ניתוח ספרותי, וקוד QR לניגון</div>
+        </div>
+        <a href="#/book" class="bio-book-btn">
+          <span>לספר</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="15 18 9 12 15 6"/></svg>
+        </a>
+      </div>
+
       <div class="bio-cta">
         <p class="bio-cta-title">מגע במילים ומילים במגע איתי</p>
         <p class="bio-cta-sub">בין המילים למציאות, נמצאים השירים שלי. בואו למצוא בהם את הרגע שלכם.</p>
@@ -3479,6 +3497,63 @@ function renderBioPage() {
       </div>
     </div>
   `;
+}
+
+// ─────────────────────────────────────────
+// PAGE: BOOK
+// ─────────────────────────────────────────
+function renderBookPage() {
+  const BASE = 'https://amiado.vercel.app/%23/song/';
+  const QR   = id => `https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${BASE}${id}&bgcolor=0d1117&color=c9a84c&margin=6&qzone=1`;
+
+  const songPages = SONGS.map((song, idx) => {
+    const sections = (song.lyrics || []).map(sec => `
+      <div class="book-section">
+        <div class="book-section-name">${sec.section}</div>
+        ${sec.lines.map(l => `<div class="book-line">${l}</div>`).join('')}
+      </div>`).join('');
+
+    return `
+    <div class="book-song-page">
+      <div class="book-song-header">
+        <span class="book-song-num">${String(idx + 1).padStart(2, '0')}</span>
+        <h2 class="book-song-title">${song.title}</h2>
+        <span class="book-song-lang">${song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית'}</span>
+      </div>
+      <div class="book-song-body">
+        <div class="book-lyrics">${sections}</div>
+        <div class="book-qr-col">
+          <img class="book-qr" src="${QR(song.id)}" alt="QR — ${song.title}" loading="lazy">
+          <div class="book-qr-label">סרוק להאזנה</div>
+        </div>
+      </div>
+      ${song.analysis?.abstract ? `<div class="book-abstract">${song.analysis.abstract}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="page-enter book-page">
+      ${bc([{label:'שירים',href:'#/'},{label:'ספר השירים',href:'#/book'}])}
+      <div class="book-top-bar no-print">
+        <div class="book-top-info">
+          <h1 class="book-top-title">ספר השירים הדיגיטלי</h1>
+          <span class="book-top-count">${SONGS.length} שירים · amiado</span>
+        </div>
+        <button class="book-print-btn" onclick="window.print()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          הדפס / שמור PDF
+        </button>
+      </div>
+      <div class="book-cover no-print">
+        <div class="book-cover-inner">
+          <div class="book-cover-sub">עמיעד אידלמן אוברמן</div>
+          <div class="book-cover-title">amiado</div>
+          <div class="book-cover-tagline">מגע במילים ומילים במגע</div>
+          <div class="book-cover-count">${SONGS.length} שירים</div>
+        </div>
+      </div>
+      <div class="book-songs">${songPages}</div>
+    </div>`;
 }
 
 // ─────────────────────────────────────────
