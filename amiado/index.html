@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Poppins:wght@300;400;500&family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260321">
+  <link rel="stylesheet" href="style.css?v=20260322">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -36,6 +36,9 @@
       <a href="#/writings" class="nav-link" data-route="writings">כתבים</a>
       <a href="#/collection" class="nav-link" data-route="collection">האוסף שלי</a>
     </div>
+    <button class="nav-search-btn" id="navSearchBtn" title="חיפוש">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
     <div class="nav-socials">
       <a href="https://open.spotify.com/artist/7402OgTntEjhGoKYp8rWCO?si=G20H4d8YR8ulstT4EiOsBg" target="_blank" rel="noopener" class="nav-social-link" title="Spotify" aria-label="Spotify">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.13-9.965-1.166a.78.78 0 0 1-.43-1.497c3.633-1.043 8.157-.537 11.209 1.334a.78.78 0 0 1 .258 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.794c3.527-1.07 9.385-.862 13.088 1.329a.937.937 0 0 1-.928 1.622z"/></svg>
@@ -45,6 +48,16 @@
       </a>
     </div>
   </nav>
+
+  <div class="global-search-overlay" id="globalSearchOverlay">
+    <div class="gso-backdrop" id="gsoBackdrop"></div>
+    <div class="gso-box">
+      <svg class="gso-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="gso-input" id="gsoInput" placeholder="חיפוש שיר..." dir="rtl" autocomplete="off">
+      <button class="gso-close" id="gsoClose">✕</button>
+      <div class="gso-results" id="gsoResults"></div>
+    </div>
+  </div>
 
   <main id="app" role="main"></main>
 
@@ -58,6 +71,7 @@
         </div>
       </div>
       <div class="player-center">
+        <canvas id="vizCanvas" class="player-viz" aria-hidden="true"></canvas>
         <div class="player-controls">
           <button class="player-btn" id="prevBtn" title="הקודם" aria-label="שיר קודם">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M11.5 2h1.5v12h-1.5V2zM2.5 3.36L9.5 8l-7 4.64V3.36z"/></svg>
@@ -109,7 +123,7 @@
 
   <audio id="audioEl" preload="metadata"></audio>
 
-  <script src="app.js?v=20260321"></script>
+  <script src="app.js?v=20260322"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

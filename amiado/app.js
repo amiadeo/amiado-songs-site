@@ -200,7 +200,7 @@ const SONGS = [
     analysis: {
       abstract: 'השיר \'על קצות האצבעות\' עוסק במאבק הפנימי שבין הצורך בהיעלמות לבין הצורך בהכרה עצמית. השיר מתאר מצב קיומי של \'הליכה על ביצים\' בתוך החיים עצמם, תוך ניסיון לא להכביד ולא להשאיר חותם.',
       structural: 'מוטיב ה\'ללא\': השיר רווי בחסכים — \'ללא סיכוי\', \'ללא מילה\', \'ללא כוונה\', \'ללא סליחה\'. הלילה כדמות דינמית: בבית הראשון הלילה \'שורד\' את השתיקות, ובשני הוא \'נוטש\' אותן — מהתכנסות פסיבית למרד פעיל.',
-      psychological: 'משבר הזהות: \'לחפש בי ולראות בי משהו אחר\' — הדובר מרגיש שהמבט החיצוני עליו מעוות את דמותו. הסכמים והשלמות: \'הסכמי חיבה ללא כוונה\' — תיאור חריף של זיוף חברתי שאין בו סליחה.',
+      psychological: 'משבר הזהות: \'לחפש בי ולראות בי משהו אחר\' — הדובר מרגיש שהמבט החיצוני עליו מעוות את דמותו. הסכמים והשלמות: \'הסכמי חיבה ��לא כוונה\' — תיאור חריף של זיוף חברתי שאין בו סליחה.',
       academic: 'היצירה \'על קצות האצבעות\' משרטטת דיוקן של אדם הנמצא בתנודה מתמדת בין נוכחות להיעדרות. דרך שימוש בשפה רזה אך טעונה, השיר מצליח להעביר תחושה של מחנק ורצון להשתחרר מהציפיות המעיקות.'
     }
   },
@@ -1187,7 +1187,7 @@ chords: {
     analysis: {
       abstract: 'השיר הוא שיר של הגדרה עצמית ובחירה מודעת בחיים רגשיים אל מול טראומה או אובדן. הוא עוסק במרחב הלימינלי – אותו "בין לבין" דק ושקוף שבו האדם מעצב את זהותו בין הקטבים של חייו.',
       structural: 'השיר בנוי כסדרה של הצהרות ("אני בוחר") המובילות לפירוט של ניגודים. השימוש החוזר במילה "בין" מייצר מקצב של מטוטלת. המעבר מ"הייתי" ל"בניתי" מעיד על תהליך של צמיחה – ממצב פסיבי למצב אקטיבי של יצירה.',
-      psychological: 'המושג "יתום מרגש" הוא דימוי עוצמתי המתאר ניתוק רגשי כתוצאה מכאב. הדובר נלחם בנטייה הזו ובוחר בחיות הרגשית למרות הסיכון. השיר מתאר את המאמץ לשמור על שלמות עצמית בתוך עולם של סתירות.',
+      psychological: 'המושג "יתום מרגש" הוא דימוי ��וצמתי המתאר ניתוק רגשי כתוצאה מכאב. הדובר נלחם בנטייה הזו ובוחר בחיות הרגשית למרות הסיכון. השיר מתאר את המאמץ לשמור על שלמות עצמית בתוך עולם של סתירות.',
       academic: 'היצירה עוסקת בפילוסופיה של הבחירה (אקזיסטנציאליזם). הדובר מגדיר את ה"גבול הדק" לא כחיץ מפריד, אלא כמרחב של קיום. השקיפות של הגבול מעידה על כך שהמעברים בין מצבי צבירה נפשיים הם מהירים וכמעט בלתי מורגשים.'
     }
   },
@@ -1216,7 +1216,7 @@ chords: {
     ],
     analysis: {
       abstract: 'השיר מתאר דמות בעלת רגישות גבוהה לפרטים הקטנים והמרגיזים של היומיום. מול עולם רועש ומפריע, ניצבת דמות נשית אהובה שמהווה את "התיקון" ואת המרחב שבו הדובר יכול פשוט "להיות אמיתי".',
-      structural: 'השיר בנוי על מבנה של ניגוד חריף בין הבתים לפזמון. הבתים עמוסים בפרטים ריאליסטיים, לעיתים נוירוטיים, ומייצרים תחושת אי-נחת. הפזמון, לעומת זאת, הוא מרחב של שקט ומחילה.',
+      structural: 'השיר בנוי על מבנה של ניגוד חריף בין הבתים ��פזמון. הבתים עמוסים בפרטים ריאליסטיים, לעיתים נוירוטיים, ומייצרים תחושת אי-נחת. הפזמון, לעומת זאת, הוא מרחב של שקט ומחילה.',
       psychological: 'השיר חושף דמות שחווה חרדות קטנות ושליטה עצמית גבוהה. האהובה בשיר אינה רק מושא לאהבה, היא פונקציה פסיכולוגית של "הכלה" – היא אוהבת את מה שהוא דוחה, ובכך מאפשרת לו לקבל את עצמו.',
       academic: 'היצירה משתמשת בזרם תודעה יומיומי כדי לבנות תמה של "גאולה דרך האחר". השימוש בפרטים בנאליים (אוטובוס, עיתון) הופך את השיר לנגיש ואנושי. המילה "למחול" מעידה שהדובר מרגיש אשם, והאהבה נתפסת כחסד המטהר אותו מהמועקות הקטנות.'
     }
@@ -1464,8 +1464,8 @@ window.addEventListener('message', e => {
   } catch {}
 });
 
-audio.addEventListener('play',  () => { state.playing = true;  updatePlayPauseIcon(); });
-audio.addEventListener('pause', () => { state.playing = false; updatePlayPauseIcon(); });
+audio.addEventListener('play',  () => { state.playing = true;  updatePlayPauseIcon(); _startViz(); });
+audio.addEventListener('pause', () => { state.playing = false; updatePlayPauseIcon(); _stopViz(); });
 
 // Progress bar
 audio.addEventListener('timeupdate', () => {
@@ -1581,15 +1581,76 @@ window.addEventListener('load', route);
 // ─────────────────────────────────────────
 function navigateFade(href) {
   const appEl = document.getElementById('app');
-  appEl.style.transition = 'opacity 0.18s ease';
+  appEl.style.transition = 'opacity 0.3s ease, filter 0.3s ease';
   appEl.style.opacity = '0';
+  appEl.style.filter = 'blur(4px)';
   setTimeout(() => {
     window.location.hash = href;
     requestAnimationFrame(() => {
       appEl.style.transition = '';
       appEl.style.opacity = '';
+      appEl.style.filter = '';
     });
-  }, 180);
+  }, 300);
+}
+
+// ─────────────────────────────────────────
+// AUDIO VISUALIZER
+// ─────────────────────────────────────────
+let _audioCtx = null, _analyser = null, _vizRaf = null;
+
+function _ensureAudioCtx() {
+  if (_audioCtx) {
+    if (_audioCtx.state === 'suspended') _audioCtx.resume();
+    return;
+  }
+  _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  _analyser = _audioCtx.createAnalyser();
+  _analyser.fftSize = 64;
+  _analyser.smoothingTimeConstant = 0.8;
+  const src = _audioCtx.createMediaElementSource(audio);
+  src.connect(_analyser);
+  _analyser.connect(_audioCtx.destination);
+}
+
+function _startViz() {
+  _ensureAudioCtx();
+  const canvas = document.getElementById('vizCanvas');
+  if (!canvas || !_analyser) return;
+  canvas.classList.add('active');
+  const ctx2d = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width  = canvas.offsetWidth  * dpr;
+  canvas.height = canvas.offsetHeight * dpr;
+  ctx2d.scale(dpr, dpr);
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  const BARS = 18, GAP = 2;
+  const barW = Math.floor((W - (BARS - 1) * GAP) / BARS);
+  const data = new Uint8Array(_analyser.frequencyBinCount);
+
+  function draw() {
+    _vizRaf = requestAnimationFrame(draw);
+    _analyser.getByteFrequencyData(data);
+    ctx2d.clearRect(0, 0, W, H);
+    for (let i = 0; i < BARS; i++) {
+      const v = data[i] / 255;
+      const h = Math.max(2, Math.floor(v * H));
+      ctx2d.fillStyle = `rgba(201,168,76,${(0.35 + v * 0.65).toFixed(2)})`;
+      ctx2d.fillRect(i * (barW + GAP), H - h, barW, h);
+    }
+  }
+  cancelAnimationFrame(_vizRaf);
+  draw();
+}
+
+function _stopViz() {
+  cancelAnimationFrame(_vizRaf);
+  _vizRaf = null;
+  const canvas = document.getElementById('vizCanvas');
+  if (!canvas) return;
+  canvas.classList.remove('active');
+  const ctx2d = canvas.getContext('2d');
+  ctx2d.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 // Intercept all internal <a> clicks except nav/logo/dropdown
@@ -1671,6 +1732,54 @@ function initScrollAnimations() {
     }
   }, 80);
 }
+
+// ─────────────────────────────────────────
+// GLOBAL NAV SEARCH (one-time init)
+// ─────────────────────────────────────────
+window.addEventListener('load', () => {
+  const navSearchBtn = document.getElementById('navSearchBtn');
+  const overlay      = document.getElementById('globalSearchOverlay');
+  const backdrop     = document.getElementById('gsoBackdrop');
+  const input        = document.getElementById('gsoInput');
+  const results      = document.getElementById('gsoResults');
+  const closeBtn     = document.getElementById('gsoClose');
+  if (!navSearchBtn || !overlay) return;
+
+  function openSearch() {
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => input?.focus(), 60);
+  }
+  function closeSearch() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if (input) input.value = '';
+    if (results) results.innerHTML = '';
+  }
+
+  navSearchBtn.addEventListener('click', openSearch);
+  backdrop?.addEventListener('click', closeSearch);
+  closeBtn?.addEventListener('click', closeSearch);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSearch(); });
+
+  input?.addEventListener('input', () => {
+    const q = input.value.trim();
+    if (!q) { results.innerHTML = ''; return; }
+    const matches = SONGS.filter(s =>
+      s.title.includes(q) || s.id.includes(q.toLowerCase().replace(/\s+/g, '-'))
+    ).slice(0, 8);
+    results.innerHTML = matches.length
+      ? matches.map(s => `
+          <a class="gso-result" href="#/song/${s.id}">
+            <div class="gso-result-cover">${getCover(s.id)}</div>
+            <div class="gso-result-title">${s.title}</div>
+          </a>`).join('')
+      : '<div class="gso-empty">לא נמצאו שירים</div>';
+    results.querySelectorAll('.gso-result').forEach(a => {
+      a.addEventListener('click', closeSearch);
+    });
+  });
+});
 
 // ─────────────────────────────────────────
 // NAV DROPDOWN (one-time init)
@@ -2043,7 +2152,7 @@ function renderHomePage() {
       ? song.analysis.abstract.replace(/\s+/g,' ').trim().slice(0, 90) + '…'
       : '';
     return `
-    <div class="song-cine-card" data-id="${song.id}" data-title="${song.title}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}">
+    <div class="song-cine-card" data-id="${song.id}" data-title="${song.title}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}" data-has-file="${song.audio?.src ? '1' : '0'}">
       <div class="song-cine-img">${getCover(song.id)}<div class="song-cine-num">${num}</div></div>
       <div class="song-cine-text">
         <div class="song-cine-lang">${langLabel}</div>
@@ -2075,7 +2184,7 @@ function renderHomePage() {
     const num = String(i + 1).padStart(2, '0');
     const langLabel = song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית';
     return `
-    <div class="spot-item${i === 0 ? ' active' : ''}" data-id="${song.id}" data-title="${song.title}" data-idx="${i}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}">
+    <div class="spot-item${i === 0 ? ' active' : ''}" data-id="${song.id}" data-title="${song.title}" data-idx="${i}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}" data-has-file="${song.audio?.src ? '1' : '0'}">
       <div class="spot-item-cover">${getCover(song.id)}</div>
       <div class="spot-item-info">
         <div class="spot-item-num">${num}</div>
@@ -2187,9 +2296,10 @@ function renderHomePage() {
         <header class="songs-chapter-heading">
           <div class="songs-chapter-label-row">
             <div class="songs-tabs" id="songsTabs">
-              <button class="songs-tab active" data-tab="he">שירים בעברית</button>
-              <button class="songs-tab" data-tab="en">שירים באנגלית</button>
-              <button class="songs-tab" data-tab="cover">קאברים</button>
+              <button class="songs-tab active" data-tab="all">הכל</button>
+              <button class="songs-tab" data-tab="he">עברית</button>
+              <button class="songs-tab" data-tab="mine">ביצוע שלי</button>
+              <button class="songs-tab" data-tab="en">English</button>
             </div>
             <div class="songs-chapter-controls">
               <button class="songs-view-btn${isCinematic ? ' active' : ''}" id="songsViewCinematic" title="תצוגה קולנועית">
@@ -2514,6 +2624,18 @@ function renderSongPage(id) {
           <div class="credits-inner">${creditsHTML}</div>
         </div>
       </div>
+
+      ${nextNavSong ? `<div class="next-song-strip">
+        <span class="nss-label">הבא בתור</span>
+        <a class="nss-inner" href="#/song/${nextNavSong.id}">
+          <div class="nss-cover">${getCover(nextNavSong.id)}</div>
+          <div class="nss-info">
+            <div class="nss-title">${nextNavSong.title}</div>
+            <div class="nss-sub">${nextNavSong.language === 'en' ? 'English' : nextNavSong.language === 'es' ? 'Español' : 'עברית'}</div>
+          </div>
+          <svg class="nss-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </a>
+      </div>` : ''}
 
     </div>
 
@@ -4145,22 +4267,47 @@ function bindPageEvents() {
     });
   }
 
-  // Song page — share button
+  // Song page — share button (popover with WhatsApp + copy link)
   document.querySelectorAll('.btn-share-song').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
+    btn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       const songId    = btn.dataset.songId;
       const songTitle = btn.dataset.songTitle;
       const url       = `${location.origin}${location.pathname}#/song/${songId}`;
-      if (navigator.share) {
-        try { await navigator.share({ title: songTitle, text: `${songTitle} — Amiado`, url }); } catch {}
-      } else {
-        await navigator.clipboard.writeText(url);
-        const orig = btn.innerHTML;
-        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> הועתק`;
-        setTimeout(() => { btn.innerHTML = orig; }, 2000);
-      }
+      const waText    = encodeURIComponent(`${songTitle} — amiado\n${url}`);
+
+      // Remove any existing share popovers
+      document.querySelectorAll('.share-popover').forEach(p => p.remove());
+
+      const pop = document.createElement('div');
+      pop.className = 'share-popover';
+      pop.innerHTML = `
+        <a class="share-pop-item" href="https://wa.me/?text=${waText}" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+        <button class="share-pop-item share-pop-copy">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          העתק קישור
+        </button>`;
+      document.body.appendChild(pop);
+
+      // Position near button
+      const rect = btn.getBoundingClientRect();
+      pop.style.top  = (rect.bottom + window.scrollY + 8) + 'px';
+      pop.style.right = (document.documentElement.clientWidth - rect.right) + 'px';
+
+      pop.querySelector('.share-pop-copy').addEventListener('click', async () => {
+        await navigator.clipboard.writeText(url).catch(() => {});
+        pop.querySelector('.share-pop-copy').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> הועתק!`;
+        setTimeout(() => pop.remove(), 1400);
+      });
+
+      const closePop = (ev) => {
+        if (!pop.contains(ev.target) && ev.target !== btn) { pop.remove(); document.removeEventListener('click', closePop); }
+      };
+      setTimeout(() => document.addEventListener('click', closePop), 0);
     });
   });
 
@@ -4222,7 +4369,7 @@ function bindPageEvents() {
   // Home page — Category tabs
   const tabBtns = document.querySelectorAll('.songs-tab');
   const songsEmptyState = document.getElementById('songsEmptyState');
-  const savedTab = localStorage.getItem('amiado_songs_tab') || 'he';
+  const savedTab = localStorage.getItem('amiado_songs_tab') || 'all';
 
   function updateSpotFeatured(song, idx) {
     const spotFeatured = document.getElementById('spotFeatured');
@@ -4263,6 +4410,8 @@ function bindPageEvents() {
     const spotIs  = document.querySelectorAll('#spotList .spot-item');
     let visibleCount = 0;
     const matches = el => {
+      if (tab === 'all') return true;
+      if (tab === 'mine') return el.dataset.hasFile === '1';
       if (tab === 'cover') return el.dataset.cover === '1';
       return el.dataset.lang === tab && el.dataset.cover !== '1';
     };
