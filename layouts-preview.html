@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amiado — Layout Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Frank+Ruhl+Libre:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d13;
+    --gold: #c9a84c;
+    --gold-dim: rgba(201,168,76,0.35);
+    --text: #e8e3d8;
+    --text-dim: rgba(232,227,216,0.45);
+    --text-mid: rgba(232,227,216,0.7);
+    --card-bg: #14141e;
+    --card-border: rgba(201,168,76,0.15);
+    --surface: #1a1a26;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 300;
+    direction: rtl;
+    min-height: 100vh;
+  }
+
+  /* ── Sticky Nav ─────────────────────────────────────────── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(13,13,19,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.2rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    flex-direction: row-reverse;
+  }
+
+  .nav-links a {
+    color: var(--text-mid);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    padding: 6px 14px;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover {
+    color: var(--gold);
+    border-color: var(--gold-dim);
+    background: rgba(201,168,76,0.06);
+  }
+
+  /* ── Page Header ─────────────────────────────────────────── */
+  .page-header {
+    text-align: center;
+    padding: 72px 32px 56px;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    color: var(--text);
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+  }
+
+  .page-header h1 span { color: var(--gold); }
+
+  .page-header p {
+    color: var(--text-mid);
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Layout Section Wrapper ──────────────────────────────── */
+  .layout-section {
+    padding: 72px 40px;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .layout-section:last-of-type { border-bottom: none; }
+
+  .section-header {
+    margin-bottom: 40px;
+    text-align: right;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.9rem;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+  }
+
+  .section-desc {
+    color: var(--text-mid);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* ── Preview Stage ───────────────────────────────────────── */
+  .preview-stage {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .preview-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .preview-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .preview-frame {
+    background: var(--bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Desktop preview: inner content is 900px, scaled 0.55 → 495px display */
+  .preview-frame.desktop {
+    width: 495px;
+    height: 400px;
+  }
+
+  .preview-frame.desktop .preview-inner {
+    width: 900px;
+    transform-origin: top right;
+    transform: scale(0.55);
+    height: calc(400px / 0.55);
+    overflow: hidden;
+  }
+
+  /* Mobile preview: inner content is 375px, scaled 0.75 → 281px display */
+  .preview-frame.mobile {
+    width: 281px;
+    height: 400px;
+  }
+
+  .preview-frame.mobile .preview-inner {
+    width: 375px;
+    transform-origin: top right;
+    transform: scale(0.75);
+    height: calc(400px / 0.75);
+    overflow: hidden;
+  }
+
+  /* ── Choose Button ───────────────────────────────────────── */
+  .choose-btn {
+    margin-top: 28px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    padding: 12px 32px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: block;
+  }
+
+  .choose-btn:hover {
+    background: var(--gold);
+    color: var(--bg);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     SHARED INNER STYLES (used inside preview-inner)
+  ═══════════════════════════════════════════════════════════ */
+  .preview-inner {
+    direction: rtl;
+    font-family: 'Frank Ruhl Libre', serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+  }
+
+  /* placeholder image block */
+  .img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a1f35 50%, #1a2035 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(201,168,76,0.2);
+    font-size: 2rem;
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     LAYOUT A — כרטיסיות (Current-style refined)
+  ───────────────────────────────────────────────────────── */
+
+  .la-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .la-grid.desktop { grid-template-columns: repeat(2, 1fr); }
+  .la-grid.mobile  { grid-template-columns: repeat(2, 1fr); }
+
+  .la-card {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+  }
+
+  .la-card:hover .la-img-overlay { opacity: 1; }
+
+  .la-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 65%;
+    object-fit: cover;
+  }
+
+  .la-img-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 65%;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a1f35 50%, #1a2035 100%);
+  }
+
+  .la-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(201,168,76,0.08);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .la-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 40%;
+    background: linear-gradient(to top, #0d0d13 0%, #0d0d13 45%, transparent 100%);
+  }
+
+  .la-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 14px 14px;
+  }
+
+  .la-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .la-excerpt {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .la-play {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: var(--bg);
+    padding-right: 1px;
+  }
+
+  .la-heart {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    background: rgba(13,13,19,0.7);
+    border-radius: 50%;
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     LAYOUT B — SOTW מורחב
+  ───────────────────────────────────────────────────────── */
+
+  .lb-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .lb-grid.desktop { grid-template-columns: repeat(2, 1fr); }
+  .lb-grid.mobile  { grid-template-columns: 1fr; }
+
+  .lb-card {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+  }
+
+  .lb-grid.desktop .lb-card { aspect-ratio: 3 / 4; }
+  .lb-grid.mobile  .lb-card { aspect-ratio: 3 / 4; }
+
+  .lb-img-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a1f35 50%, #1a2035 100%);
+  }
+
+  .lb-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13,13,19,0.97) 0%, rgba(13,13,19,0.6) 40%, transparent 70%);
+  }
+
+  .lb-num {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    font-weight: 300;
+  }
+
+  .lb-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 16px 18px;
+  }
+
+  .lb-line {
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    margin-bottom: 10px;
+    margin-right: 0;
+    margin-left: auto;
+  }
+
+  .lb-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.3rem;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  .lb-excerpt {
+    font-size: 0.68rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .lb-card:hover .lb-excerpt { opacity: 1; }
+
+  /* ─────────────────────────────────────────────────────────
+     LAYOUT C — רשימת אלבום
+  ───────────────────────────────────────────────────────── */
+
+  .lc-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lc-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    cursor: pointer;
+    position: relative;
+  }
+
+  .lc-row:first-child { border-top: 1px solid rgba(201,168,76,0.1); }
+
+  .lc-row:hover .lc-play-btn { opacity: 1; }
+  .lc-row:hover .lc-num { opacity: 0; }
+
+  .lc-thumb {
+    flex-shrink: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .lc-list.desktop .lc-thumb { width: 88px; height: 88px; }
+  .lc-list.mobile  .lc-thumb { width: 72px; height: 72px; }
+
+  .lc-thumb-bg {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a1f35 50%, #1a2035 100%);
+  }
+
+  .lc-play-btn {
+    position: absolute;
+    inset: 0;
+    background: rgba(201,168,76,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg);
+    font-size: 1.1rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: 4px;
+  }
+
+  .lc-list.mobile .lc-play-btn { opacity: 1; background: rgba(201,168,76,0.85); }
+
+  .lc-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lc-num {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    transition: opacity 0.2s;
+  }
+
+  .lc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.05rem;
+    color: var(--text);
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .lc-list.desktop .lc-title { font-size: 1.15rem; }
+
+  .lc-excerpt {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     LAYOUT D — עיתון / Magazine
+  ───────────────────────────────────────────────────────── */
+
+  /* Desktop: featured full-width + 3-column grid */
+  .ld-wrap.desktop .ld-featured {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+
+  .ld-wrap.mobile .ld-featured {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    cursor: pointer;
+  }
+
+  .ld-featured-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a1f35 50%, #1a2035 100%);
+  }
+
+  .ld-featured-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13,13,19,0.95) 0%, rgba(13,13,19,0.3) 60%, transparent 100%);
+  }
+
+  .ld-featured-tag {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(13,13,19,0.5);
+  }
+
+  .ld-featured-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 18px 20px 20px;
+  }
+
+  .ld-featured-num {
+    font-size: 0.62rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+
+  .ld-featured-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.9rem;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .ld-wrap.mobile .ld-featured-title { font-size: 1.5rem; }
+
+  .ld-featured-excerpt {
+    font-size: 0.72rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Grid cards */
+  .ld-grid {
+    display: grid;
+    gap: 14px;
+  }
+
+  .ld-wrap.desktop .ld-grid { grid-template-columns: repeat(3, 1fr); }
+  .ld-wrap.mobile  .ld-grid { grid-template-columns: 1fr; }
+
+  .ld-card {
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+  }
+
+  .ld-card-img {
+    width: 100%;
+    height: 110px;
+    position: relative;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a1f35 50%, #1a2035 100%);
+  }
+
+  .ld-wrap.mobile .ld-card-img { height: 140px; }
+
+  .ld-card-body {
+    padding: 12px 12px 14px;
+  }
+
+  .ld-card-num {
+    font-size: 0.58rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+  }
+
+  .ld-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 5px;
+  }
+
+  .ld-card-excerpt {
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     LAYOUT E — מוזאיקה זורמת
+  ───────────────────────────────────────────────────────── */
+
+  .le-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .le-card {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+  }
+
+  /* First card: spans 2 columns, tall */
+  .le-grid .le-card:nth-child(1) {
+    grid-column: span 2;
+    height: 340px;
+  }
+
+  /* Second card: single column, same tall height */
+  .le-grid .le-card:nth-child(2) {
+    height: 340px;
+  }
+
+  /* Cards 3–5: normal height */
+  .le-grid .le-card:nth-child(3),
+  .le-grid .le-card:nth-child(4),
+  .le-grid .le-card:nth-child(5) {
+    height: 200px;
+  }
+
+  /* Last card: spans 2 columns, normal height */
+  .le-grid .le-card:nth-child(6) {
+    grid-column: span 2;
+    height: 200px;
+  }
+
+  .le-card-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .le-card-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13,13,19,0.95) 0%, rgba(13,13,19,0.4) 55%, transparent 100%);
+  }
+
+  .le-card-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 16px 16px;
+  }
+
+  .le-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: var(--text);
+    line-height: 1.25;
+  }
+
+  .le-grid .le-card:nth-child(1) .le-card-title { font-size: 1.5rem; }
+
+  .le-play {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.62rem;
+    color: var(--bg);
+    padding-right: 1px;
+  }
+
+  .le-heart {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    background: rgba(13,13,19,0.7);
+    border-radius: 50%;
+  }
+
+  /* Mobile: 2 columns, alternating heights */
+  @media (max-width: 400px) {
+    .le-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .le-grid .le-card {
+      grid-column: auto !important;
+      height: 190px !important;
+    }
+    .le-grid .le-card:nth-child(odd) {
+      height: 240px !important;
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     ACTION BUTTONS (shared across all layouts)
+  ───────────────────────────────────────────────────────── */
+
+  /* Heart button — top-left corner (physical left = visual right in RTL) */
+  .btn-heart {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 5;
+    flex-shrink: 0;
+  }
+  .la-card:hover .btn-heart,
+  .lb-card:hover .btn-heart,
+  .ld-featured:hover .btn-heart,
+  .ld-card:hover .btn-heart,
+  .le-card:hover .btn-heart,
+  .lf-card:hover .btn-heart,
+  .lg-card:hover .btn-heart,
+  .lh-featured:hover .btn-heart,
+  .li-card:hover .btn-heart,
+  .li-card-mobile:hover .btn-heart { opacity: 1; }
+
+  /* Play button — gold circle */
+  .btn-play {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #c9a84c;
+    border: none;
+    color: #0d0d13;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Add button */
+  .btn-add {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Panel button row (play + add together) */
+  .btn-panel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  /* Share button (for list layouts) */
+  .btn-share {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Layout C — actions column on left side of each row */
+  .lc-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .lc-row:hover .lc-actions { opacity: 1; }
+
+  /* ── Scrollbar ─────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.5); }
+
+  /* ── Divider ──────────────────────────────────────────── */
+  .gold-divider {
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 0 20px auto;
+  }
+
+  /* ── Responsive nav ──────────────────────────────────── */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .preview-stage { flex-direction: column; }
+    .preview-frame.desktop { width: 100%; max-width: 495px; }
+    .layout-section { padding: 48px 20px; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ── Sticky Nav ─────────────────────────────────────────── -->
+<nav class="sticky-nav">
+  <div class="nav-brand">Amiado — Layout Preview</div>
+  <ul class="nav-links">
+    <li><a href="#layout-a">A — כרטיסיות</a></li>
+    <li><a href="#layout-b">B — SOTW מורחב</a></li>
+    <li><a href="#layout-c">C — רשימת אלבום</a></li>
+    <li><a href="#layout-d">D — עיתון</a></li>
+    <li><a href="#layout-e">E — מוזאיקה זורמת</a></li>
+  </ul>
+</nav>
+
+<!-- ── Page Header ─────────────────────────────────────────── -->
+<header class="page-header">
+  <h1>בחר <span>פריסת שירים</span></h1>
+  <p>בחר את הפריסה המועדפת עליך למסך ולמובייל</p>
+</header>
+
+
+<!-- ════════════════════════════════════════════════════════
+     LAYOUT A
+═════════════════════════════════════════════════════════ -->
+<section class="layout-section" id="layout-a">
+  <div class="section-header">
+    <div class="gold-divider"></div>
+    <span class="section-label">Layout A</span>
+    <h2 class="section-title">כרטיסיות — תצוגה נוכחית מעודנת</h2>
+    <p class="section-desc">גריד דו-עמודי עם כרטיסיות ריבועיות. התמונה ממלאת 65% מהכרטיס, עם גרדיאנט, כותרת ותקציר בתחתית. כפתור ניגון זהב וסמל לב.</p>
+  </div>
+
+  <div class="preview-stage">
+
+    <!-- Desktop A -->
+    <div class="preview-box">
+      <span class="preview-label">דסקטופ</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner" id="la-desktop">
+          <div class="la-grid desktop" id="la-grid-desktop"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile A -->
+    <div class="preview-box">
+      <span class="preview-label">מובייל</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner" id="la-mobile">
+          <div class="la-grid mobile" id="la-grid-mobile"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <button class="choose-btn" onclick="choose('A','כרטיסיות — תצוגה נוכחית מעודנת')">בחר פריסה זו ✓</button>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════
+     LAYOUT B
+═════════════════════════════════════════════════════════ -->
+<section class="layout-section" id="layout-b">
+  <div class="section-header">
+    <div class="gold-divider"></div>
+    <span class="section-label">Layout B</span>
+    <h2 class="section-title">כרטיסיות מורחבות — בהשראת SOTW</h2>
+    <p class="section-desc">כרטיסיות פורטרט גבוהות (3:4). מספר שיר קטן למעלה, קו זהב אופקי לפני הכותרת, תקציר מוסתר עד ריחוף. במובייל — עמודה אחת.</p>
+  </div>
+
+  <div class="preview-stage">
+
+    <div class="preview-box">
+      <span class="preview-label">דסקטופ</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner" id="lb-desktop">
+          <div class="lb-grid desktop" id="lb-grid-desktop"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-box">
+      <span class="preview-label">מובייל</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner" id="lb-mobile">
+          <div class="lb-grid mobile" id="lb-grid-mobile"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <button class="choose-btn" onclick="choose('B','כרטיסיות מורחבות — בהשראת SOTW')">בחר פריסה זו ✓</button>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════
+     LAYOUT C
+═════════════════════════════════════════════════════════ -->
+<section class="layout-section" id="layout-c">
+  <div class="section-header">
+    <div class="gold-divider"></div>
+    <span class="section-label">Layout C</span>
+    <h2 class="section-title">רשימת אלבום — מהיר לסריקה</h2>
+    <p class="section-desc">עמודה אחת, כל שיר בשורה עם תמונה ממוזערת מימין (RTL), מספר שיר, כותרת ותקציר. כפתור ניגון מופיע בריחוף בדסקטופ, גלוי תמיד במובייל. מינימליסטי ונקי.</p>
+  </div>
+
+  <div class="preview-stage">
+
+    <div class="preview-box">
+      <span class="preview-label">דסקטופ</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner" id="lc-desktop">
+          <div class="lc-list desktop" id="lc-list-desktop"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-box">
+      <span class="preview-label">מובייל</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner" id="lc-mobile">
+          <div class="lc-list mobile" id="lc-list-mobile"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <button class="choose-btn" onclick="choose('C','רשימת אלבום — מהיר לסריקה')">בחר פריסה זו ✓</button>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════
+     LAYOUT D
+═════════════════════════════════════════════════════════ -->
+<section class="layout-section" id="layout-d">
+  <div class="section-header">
+    <div class="gold-divider"></div>
+    <span class="section-label">Layout D</span>
+    <h2 class="section-title">פריסת מגזין — עם שיר מוצג</h2>
+    <p class="section-desc">בדסקטופ: השיר הראשון מוצג בפריסה רחבה ומלאה, שאר השירים מתחת בגריד תלת-עמודי. במובייל: כל הכרטיסיות בעמודה, הראשונה גבוהה יותר.</p>
+  </div>
+
+  <div class="preview-stage">
+
+    <div class="preview-box">
+      <span class="preview-label">דסקטופ</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner" id="ld-desktop">
+          <div class="ld-wrap desktop" id="ld-wrap-desktop"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-box">
+      <span class="preview-label">מובייל</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner" id="ld-mobile">
+          <div class="ld-wrap mobile" id="ld-wrap-mobile"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <button class="choose-btn" onclick="choose('D','פריסת מגזין — עם שיר מוצג')">בחר פריסה זו ✓</button>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════
+     LAYOUT E
+═════════════════════════════════════════════════════════ -->
+<section class="layout-section" id="layout-e">
+  <div class="section-header">
+    <div class="gold-divider"></div>
+    <span class="section-label">Layout E</span>
+    <h2 class="section-title">מוזאיקה זורמת — ניגוד גדול וקטן</h2>
+    <p class="section-desc">מוזאיקה זורמת — ניגוד בין כרטיסים גדולים וקטנים יוצר קצב ויזואלי דינמי ועיתונאי</p>
+  </div>
+
+  <div class="preview-stage">
+
+    <div class="preview-box">
+      <span class="preview-label">דסקטופ</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner" id="le-desktop">
+          <div class="le-grid" id="le-grid-desktop"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-box">
+      <span class="preview-label">מובייל</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner" id="le-mobile">
+          <div class="le-grid" id="le-grid-mobile"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <button class="choose-btn" onclick="choose('E','מוזאיקה זורמת — ניגוד בין כרטיסים גדולים וקטנים')">בחר פריסה זו ✓</button>
+</section>
+
+
+<script>
+const SONGS = [
+  { id: 'shigaon-amorfi',  title: 'שיגעון אמורפי',       num: '02', img: 'amiado/songs/songs2.jpeg',  excerpt: 'ביצוע פרפורמטיבי אישית שתחליך את התפשטות רוחנית והיצירה' },
+  { id: 'mgba-bmilim',     title: 'מגע במילים',           num: '05', img: 'amiado/songs/songs5.jpeg',  excerpt: 'היצירה מגע במילים בוחנת את המפגש בין פיזיות לחוודות' },
+  { id: 'al-ktzot',        title: 'על קצות האצבעות',     num: '08', img: 'amiado/songs/songs8.jpeg',  excerpt: 'על רקמת הנפש שבין הצורד להעלמות' },
+  { id: 'hargasha',        title: 'הרגשה משהו',           num: '11', img: 'amiado/songs/songs11.jpeg', excerpt: 'אהבה לא ברורה לי בלדה אקזיסטנציאלית המוסקת' },
+  { id: 'gibor-al',        title: 'גיבור על',             num: '14', img: 'amiado/songs/songs14.jpeg', excerpt: 'על הדמות הפנימית שמגינה על הנפש' },
+  { id: 'lev-patuach',     title: 'לב פתוח',              num: '17', img: 'amiado/songs/songs17.jpeg', excerpt: 'פגיעות כעוצמה, פתיחות כאומץ' },
+];
+
+/* ── Gradient palette per song for image placeholder variety ── */
+const GRADIENTS = [
+  'linear-gradient(135deg, #1e1e2e 0%, #2a1f35 60%, #1a2035 100%)',
+  'linear-gradient(135deg, #1a2035 0%, #251e30 60%, #20152a 100%)',
+  'linear-gradient(135deg, #201520 0%, #1e2530 60%, #152025 100%)',
+  'linear-gradient(135deg, #15201a 0%, #2a2015 60%, #1a152a 100%)',
+  'linear-gradient(135deg, #252015 0%, #1a2020 60%, #151a25 100%)',
+  'linear-gradient(135deg, #1a1525 0%, #20201a 60%, #251520 100%)',
+];
+
+const SVG_HEART = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+const SVG_PLUS  = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
+const SVG_PLAY  = `<svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>`;
+const SVG_SHARE = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`;
+
+/* ── Layout A ─────────────────────────────────────── */
+function buildLayoutA(containerId, songs) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = songs.map((s, i) => `
+    <div class="la-card">
+      <div class="la-img-bg" style="background:${GRADIENTS[i % GRADIENTS.length]}"></div>
+      <div class="la-img-overlay"></div>
+      <div class="la-gradient"></div>
+      <button class="btn-heart">${SVG_HEART}</button>
+      <div class="la-bottom">
+        <div class="la-title">${s.title}</div>
+        <div class="la-excerpt">${s.excerpt}</div>
+        <div class="btn-panel">
+          <button class="btn-play">${SVG_PLAY}</button>
+          <button class="btn-add">${SVG_PLUS}</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── Layout B ─────────────────────────────────────── */
+function buildLayoutB(containerId, songs) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = songs.map((s, i) => `
+    <div class="lb-card">
+      <div class="lb-img-bg" style="background:${GRADIENTS[i % GRADIENTS.length]}"></div>
+      <div class="lb-gradient"></div>
+      <div class="lb-num">${s.num} / 32</div>
+      <button class="btn-heart">${SVG_HEART}</button>
+      <div class="lb-bottom">
+        <div class="lb-line"></div>
+        <div class="lb-title">${s.title}</div>
+        <div class="lb-excerpt">${s.excerpt}</div>
+        <div class="btn-panel">
+          <button class="btn-play">${SVG_PLAY}</button>
+          <button class="btn-add">${SVG_PLUS}</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── Layout C ─────────────────────────────────────── */
+function buildLayoutC(containerId, songs, isMobile) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = songs.map((s, i) => `
+    <div class="lc-row">
+      <div class="lc-thumb" style="${isMobile ? 'width:72px;height:72px' : 'width:88px;height:88px'}">
+        <div class="lc-thumb-bg" style="background:${GRADIENTS[i % GRADIENTS.length]}; width:100%; height:100%;"></div>
+        <div class="lc-play-btn">${SVG_PLAY}</div>
+      </div>
+      <div class="lc-text">
+        <div class="lc-num">${s.num}</div>
+        <div class="lc-title">${s.title}</div>
+        <div class="lc-excerpt">${s.excerpt}</div>
+      </div>
+      <div class="lc-actions">
+        <button class="btn-heart" style="position:static;opacity:1;">${SVG_HEART}</button>
+        <button class="btn-add">${SVG_PLUS}</button>
+        <button class="btn-play" style="width:28px;height:28px;">${SVG_PLAY}</button>
+        <button class="btn-share">${SVG_SHARE}</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── Layout D ─────────────────────────────────────── */
+function buildLayoutD(containerId, songs, isMobile) {
+  const el = document.getElementById(containerId);
+  const [featured, ...rest] = songs;
+
+  const gridCards = rest.map((s, i) => `
+    <div class="ld-card" style="position:relative;">
+      <div class="ld-card-img" style="background:${GRADIENTS[(i + 1) % GRADIENTS.length]};position:relative;">
+        <button class="btn-heart">${SVG_HEART}</button>
+      </div>
+      <div class="ld-card-body">
+        <div class="ld-card-num">${s.num}</div>
+        <div class="ld-card-title">${s.title}</div>
+        <div class="ld-card-excerpt">${s.excerpt}</div>
+        <div class="btn-panel">
+          <button class="btn-play">${SVG_PLAY}</button>
+          <button class="btn-add">${SVG_PLUS}</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  el.innerHTML = `
+    <div class="ld-featured">
+      <div class="ld-featured-bg" style="background:${GRADIENTS[0]}"></div>
+      <div class="ld-featured-gradient"></div>
+      <div class="ld-featured-tag">שיר מוצג</div>
+      <button class="btn-heart">${SVG_HEART}</button>
+      <div class="ld-featured-bottom">
+        <div class="ld-featured-num">${featured.num} / 32</div>
+        <div class="ld-featured-title">${featured.title}</div>
+        <div class="ld-featured-excerpt">${featured.excerpt}</div>
+        <div class="btn-panel">
+          <button class="btn-play">${SVG_PLAY}</button>
+          <button class="btn-add">${SVG_PLUS}</button>
+        </div>
+      </div>
+    </div>
+    <div class="ld-grid">${gridCards}</div>
+  `;
+}
+
+/* ── Init ─────────────────────────────────────────── */
+buildLayoutA('la-grid-desktop', SONGS);
+buildLayoutA('la-grid-mobile',  SONGS);
+
+buildLayoutB('lb-grid-desktop', SONGS);
+buildLayoutB('lb-grid-mobile',  SONGS);
+
+buildLayoutC('lc-list-desktop', SONGS, false);
+buildLayoutC('lc-list-mobile',  SONGS, true);
+
+buildLayoutD('ld-wrap-desktop', SONGS, false);
+buildLayoutD('ld-wrap-mobile',  SONGS, true);
+
+/* ── Layout E ─────────────────────────────────────── */
+function buildLayoutE(containerId, songs) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = songs.map((s, i) => `
+    <div class="le-card">
+      <div class="le-card-bg" style="background:${GRADIENTS[i % GRADIENTS.length]}"></div>
+      <div class="le-card-gradient"></div>
+      <button class="btn-heart">${SVG_HEART}</button>
+      <div class="le-card-bottom">
+        <div class="le-card-title">${s.title}</div>
+        <div class="btn-panel">
+          <button class="btn-play" style="width:30px;height:30px;">${SVG_PLAY}</button>
+          <button class="btn-add">${SVG_PLUS}</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+buildLayoutE('le-grid-desktop', SONGS);
+buildLayoutE('le-grid-mobile',  SONGS);
+
+/* ── Choose handler ──────────────────────────────── */
+function choose(letter, name) {
+  alert(`✓ נבחרה פריסה ${letter}: ${name}`);
+}
+</script>
+</body>
+</html>

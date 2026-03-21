@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amiado — Collection Layout Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Frank+Ruhl+Libre:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d0d13;
+  --gold: #c9a84c;
+  --gold-dim: rgba(201,168,76,0.2);
+  --text: #e8e3d8;
+  --text-dim: rgba(232,227,216,0.4);
+  --text-mid: rgba(232,227,216,0.65);
+  --card-bg: #14141e;
+  --card-border: rgba(201,168,76,0.13);
+  --surface: #1a1a26;
+  --border-s: rgba(255,255,255,0.06);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Frank Ruhl Libre', serif;
+  font-weight: 300;
+  direction: rtl;
+  min-height: 100vh;
+}
+
+/* ── Sticky Nav ─────────────────────────── */
+.sticky-nav {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(13,13,19,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.nav-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300; font-size: 1.2rem;
+  color: var(--gold); letter-spacing: 0.05em;
+}
+.nav-links { display: flex; gap: 8px; list-style: none; }
+.nav-links a {
+  color: var(--text-mid); text-decoration: none; font-size: 0.78rem;
+  letter-spacing: 0.03em; padding: 6px 14px;
+  border: 1px solid transparent; border-radius: 20px; transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--gold); border-color: var(--gold-dim); background: rgba(201,168,76,0.06); }
+
+/* ── Page Header ────────────────────────── */
+.page-header {
+  text-align: center; padding: 72px 32px 56px;
+  border-bottom: 1px solid var(--card-border);
+}
+.page-header h1 {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-weight: 300; font-size: clamp(2.4rem, 5vw, 3.6rem);
+  color: var(--text); letter-spacing: 0.04em; margin-bottom: 16px;
+}
+.page-header h1 span { color: var(--gold); }
+.page-header p { color: var(--text-mid); font-size: 1rem; font-weight: 300; letter-spacing: 0.02em; }
+
+/* ── Layout Section ─────────────────────── */
+.layout-section { padding: 72px 40px; border-bottom: 1px solid var(--card-border); }
+.layout-section:last-of-type { border-bottom: none; }
+.section-header { margin-bottom: 40px; text-align: right; }
+.section-label {
+  display: inline-block; font-size: 0.7rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--gold);
+  border: 1px solid var(--gold-dim); padding: 4px 12px; border-radius: 20px; margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif; font-weight: 300;
+  font-size: 1.9rem; color: var(--text); margin-bottom: 8px; letter-spacing: 0.03em;
+}
+.section-desc { color: var(--text-mid); font-size: 0.88rem; line-height: 1.7; max-width: 520px; }
+
+/* ── Preview Stage ──────────────────────── */
+.preview-stage {
+  display: flex; gap: 48px; align-items: flex-start;
+  justify-content: flex-start; flex-wrap: wrap;
+}
+.preview-box { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.preview-label { font-size: 0.72rem; letter-spacing: 0.12em; color: var(--text-dim); text-transform: uppercase; }
+.preview-frame {
+  background: var(--bg); border: 1px solid var(--card-border);
+  border-radius: 8px; overflow: hidden; position: relative;
+}
+.preview-frame.desktop { width: 495px; height: 500px; }
+.preview-frame.desktop .preview-inner {
+  width: 900px; transform-origin: top right; transform: scale(0.55);
+  height: calc(500px / 0.55); overflow: hidden;
+}
+.preview-frame.mobile { width: 240px; height: 500px; }
+.preview-frame.mobile .preview-inner {
+  width: 375px; transform-origin: top right; transform: scale(0.64);
+  height: calc(500px / 0.64); overflow: hidden;
+}
+.choose-btn {
+  margin-top: 28px; background: transparent;
+  border: 1px solid var(--gold); color: var(--gold);
+  font-family: 'Frank Ruhl Libre', serif; font-weight: 300;
+  font-size: 0.9rem; letter-spacing: 0.06em; padding: 12px 32px;
+  border-radius: 30px; cursor: pointer; transition: all 0.25s; display: block;
+}
+.choose-btn:hover { background: var(--gold); color: var(--bg); }
+
+/* ══════════════════════════════════════════
+   SHARED INNER STYLES
+══════════════════════════════════════════ */
+.preview-inner {
+  direction: rtl; font-family: 'Frank Ruhl Libre', serif;
+  background: var(--bg); color: var(--text); padding: 28px 24px;
+}
+
+/* Cover placeholder */
+.cover-ph {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #1e1e2e 0%, #2a1f35 50%, #1a2035 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.cover-ph svg { opacity: 0.25; }
+
+/* Page eyebrow + title */
+.pi-eyebrow {
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(201,168,76,0.6); margin-bottom: 6px;
+}
+.pi-title {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-weight: 300; font-size: 2.2rem; color: var(--text);
+  letter-spacing: 0.04em; line-height: 1.1; margin-bottom: 4px;
+}
+.pi-divider {
+  width: 36px; height: 1px; background: var(--gold);
+  opacity: 0.4; margin: 10px 0 18px;
+}
+
+/* Section sub-heading */
+.sub-heading {
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7; margin-bottom: 12px;
+}
+
+/* Icon buttons */
+.ic-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; cursor: pointer; padding: 0; flex-shrink: 0;
+}
+.ic-play {
+  width: 26px; height: 26px; background: var(--gold); border: none; color: #000;
+}
+.ic-play.sm { width: 20px; height: 20px; }
+.ic-ghost {
+  width: 22px; height: 22px; background: none;
+  border: 1px solid rgba(232,227,216,0.2); color: var(--text-dim);
+}
+.ic-ghost.sm { width: 18px; height: 18px; }
+
+/* ══════════════════════════════════════════
+   LAYOUT A — Tabs (מועדפים | פלייליסטים)
+══════════════════════════════════════════ */
+
+/* Tab bar */
+.la-tabs {
+  display: flex; gap: 4px; margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-s); padding-bottom: 0;
+}
+.la-tab {
+  padding: 8px 18px; font-size: 0.78rem; letter-spacing: 0.06em;
+  color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; transition: color 0.2s;
+}
+.la-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* Favorites list rows */
+.la-fav-list { display: flex; flex-direction: column; gap: 4px; }
+.la-fav-row {
+  display: flex; align-items: center; gap: 10px;
+  height: 54px; border-radius: 6px; overflow: hidden;
+  border: 1px solid var(--card-border); background: var(--card-bg);
+  cursor: pointer; transition: background 0.2s;
+}
+.la-fav-row:hover { background: #1c1c2a; }
+.la-fav-cover { width: 54px; height: 54px; flex-shrink: 0; overflow: hidden; }
+.la-fav-info { flex: 1; min-width: 0; padding: 0 4px; }
+.la-fav-title { font-size: 0.88rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.la-fav-lang { font-size: 0.58rem; color: rgba(201,168,76,0.5); letter-spacing: 0.1em; text-transform: uppercase; }
+.la-fav-btns { display: flex; gap: 6px; padding-left: 10px; }
+
+/* Playlists tab: grid cards */
+.la-pl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.la-pl-card {
+  border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--card-border); background: var(--card-bg); cursor: pointer;
+}
+.la-pl-cover {
+  aspect-ratio: 1/1; display: grid;
+  grid-template-columns: repeat(2,1fr); grid-template-rows: repeat(2,1fr); overflow: hidden;
+}
+.la-pl-cover.single { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+.la-pl-thumb { overflow: hidden; }
+.la-pl-caption { padding: 8px 10px 10px; display: flex; justify-content: space-between; align-items: center; }
+.la-pl-name { font-size: 0.78rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.la-pl-count { font-size: 0.6rem; color: var(--text-dim); margin-top: 2px; }
+.la-pl-new {
+  border-radius: 8px; overflow: hidden; aspect-ratio: 1/1;
+  border: 1px dashed rgba(201,168,76,0.25); background: rgba(201,168,76,0.04);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; cursor: pointer; color: rgba(201,168,76,0.4); font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+/* ══════════════════════════════════════════
+   LAYOUT B — ספרייה (Stacked)
+══════════════════════════════════════════ */
+.lb-pl-scroll { display: flex; gap: 12px; overflow: hidden; margin-bottom: 28px; }
+.lb-pl-card {
+  flex-shrink: 0; width: 130px; border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--card-border); background: var(--card-bg);
+}
+.lb-pl-cover { aspect-ratio: 1/1; display: grid; grid-template-columns: repeat(2,1fr); grid-template-rows: repeat(2,1fr); overflow: hidden; }
+.lb-pl-cover.single { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+.lb-pl-thumb { overflow: hidden; }
+.lb-pl-info { padding: 8px 10px 10px; }
+.lb-pl-name { font-size: 0.75rem; color: var(--text); }
+.lb-pl-count { font-size: 0.58rem; color: var(--text-dim); margin-top: 2px; }
+.lb-pl-new {
+  flex-shrink: 0; width: 130px; border-radius: 8px;
+  border: 1px dashed rgba(201,168,76,0.22); background: rgba(201,168,76,0.03);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; cursor: pointer; color: rgba(201,168,76,0.4); font-size: 0.68rem; letter-spacing: 0.1em;
+  aspect-ratio: auto; min-height: 110px;
+}
+.lb-divider { height: 1px; background: var(--border-s); margin: 4px 0 20px; }
+.lb-fav-list { display: flex; flex-direction: column; gap: 4px; }
+.lb-fav-row {
+  display: flex; align-items: center; gap: 10px;
+  height: 50px; border-radius: 6px; overflow: hidden;
+  border: 1px solid var(--card-border); background: var(--card-bg);
+}
+.lb-fav-cover { width: 50px; height: 50px; flex-shrink: 0; overflow: hidden; }
+.lb-fav-info { flex: 1; min-width: 0; padding: 0 4px; }
+.lb-fav-title { font-size: 0.82rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lb-fav-lang { font-size: 0.56rem; color: rgba(201,168,76,0.5); letter-spacing: 0.1em; text-transform: uppercase; }
+.lb-fav-btns { display: flex; gap: 5px; padding-left: 8px; }
+
+/* ══════════════════════════════════════════
+   LAYOUT C — Dashboard (Split)
+══════════════════════════════════════════ */
+.lc-grid { display: grid; grid-template-columns: 220px 1fr; gap: 0; min-height: 520px; }
+.lc-left {
+  border-left: 1px solid var(--border-s); padding: 0 0 0 20px;
+  display: flex; flex-direction: column; gap: 0;
+}
+.lc-right { padding: 0 20px 0 0; }
+.lc-panel-title {
+  font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7; margin-bottom: 14px; padding-top: 2px;
+}
+
+/* Left: Playlists stacked */
+.lc-pl-list { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.lc-pl-row {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+  border-radius: 6px; border: 1px solid var(--card-border); background: var(--card-bg);
+  cursor: pointer; transition: background 0.2s;
+}
+.lc-pl-row:hover { background: #1c1c2a; }
+.lc-pl-collage {
+  width: 36px; height: 36px; flex-shrink: 0; border-radius: 4px; overflow: hidden;
+  display: grid; grid-template-columns: repeat(2,1fr); grid-template-rows: repeat(2,1fr);
+}
+.lc-pl-collage.single { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+.lc-pl-collage-thumb { overflow: hidden; }
+.lc-pl-info { min-width: 0; flex: 1; }
+.lc-pl-name { font-size: 0.75rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lc-pl-count { font-size: 0.58rem; color: var(--text-dim); }
+.lc-pl-new-btn {
+  display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+  border-radius: 6px; border: 1px dashed rgba(201,168,76,0.22);
+  background: transparent; color: rgba(201,168,76,0.45); cursor: pointer;
+  font-size: 0.7rem; letter-spacing: 0.08em; margin-top: 6px;
+  font-family: 'Frank Ruhl Libre', serif; width: 100%;
+}
+.lc-pl-new-icon {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.3);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Right: Favorites list */
+.lc-fav-list { display: flex; flex-direction: column; gap: 4px; }
+.lc-fav-row {
+  display: flex; align-items: center; gap: 10px;
+  height: 54px; border-radius: 6px; overflow: hidden;
+  border: 1px solid var(--card-border); background: var(--card-bg); cursor: pointer;
+}
+.lc-fav-cover { width: 54px; height: 54px; flex-shrink: 0; overflow: hidden; }
+.lc-fav-info { flex: 1; min-width: 0; padding: 0 4px; }
+.lc-fav-title { font-size: 0.86rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lc-fav-lang { font-size: 0.57rem; color: rgba(201,168,76,0.5); letter-spacing: 0.1em; text-transform: uppercase; }
+.lc-fav-btns { display: flex; gap: 5px; padding-left: 10px; }
+
+/* Mobile: LC stacks */
+.mobile .lc-grid { grid-template-columns: 1fr; }
+.mobile .lc-left { border-left: none; border-bottom: 1px solid var(--border-s); padding: 0 0 20px 0; margin-bottom: 20px; }
+.mobile .lc-right { padding: 0; }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav class="sticky-nav">
+  <span class="nav-brand">amiado</span>
+  <ul class="nav-links">
+    <li><a href="#layout-a">A — Tabs</a></li>
+    <li><a href="#layout-b">B — ספרייה</a></li>
+    <li><a href="#layout-c">C — Dashboard</a></li>
+  </ul>
+</nav>
+
+<!-- ── Page Header ── -->
+<header class="page-header">
+  <h1>האוסף שלי — <span>Layout Preview</span></h1>
+  <p>שלוש הצעות לפריסת עמוד מועדפים + פלייליסטים</p>
+</header>
+
+<!-- ════════════════════════════════════════════
+     LAYOUT A — Tabs
+════════════════════════════════════════════ -->
+<section class="layout-section" id="layout-a">
+  <div class="section-header">
+    <div class="section-label">Layout A</div>
+    <h2 class="section-title">Tabs — מועדפים | פלייליסטים</h2>
+    <p class="section-desc">
+      עמוד אחד עם שני טאבים. נקי ומוכר — מועדפים כרשימה, פלייליסטים כגריד כרטיסים. המשתמש בוחר מה לראות.
+    </p>
+  </div>
+
+  <div class="preview-stage">
+
+    <!-- Desktop -->
+    <div class="preview-box">
+      <span class="preview-label">Desktop</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner">
+
+          <div class="pi-eyebrow">האוסף שלי</div>
+          <div class="pi-title">הספרייה שלי</div>
+          <div class="pi-divider"></div>
+
+          <!-- Tabs -->
+          <div class="la-tabs">
+            <div class="la-tab active">♥ מועדפים <span style="opacity:.5;font-size:.85em">(6)</span></div>
+            <div class="la-tab">🎵 פלייליסטים <span style="opacity:.5;font-size:.85em">(2)</span></div>
+          </div>
+
+          <!-- Favorites list -->
+          <div class="la-fav-list">
+            <div class="la-fav-row">
+              <div class="la-fav-cover"><div class="cover-ph"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              <div class="la-fav-info"><div class="la-fav-title">מגע במילים</div><div class="la-fav-lang">עברית</div></div>
+              <div class="la-fav-btns">
+                <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="la-fav-row">
+              <div class="la-fav-cover"><div class="cover-ph"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              <div class="la-fav-info"><div class="la-fav-title">שיגעון אמורפי</div><div class="la-fav-lang">עברית</div></div>
+              <div class="la-fav-btns">
+                <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="la-fav-row">
+              <div class="la-fav-cover"><div class="cover-ph"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              <div class="la-fav-info"><div class="la-fav-title">הרגשה משונה</div><div class="la-fav-lang">עברית</div></div>
+              <div class="la-fav-btns">
+                <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="la-fav-row">
+              <div class="la-fav-cover"><div class="cover-ph"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              <div class="la-fav-info"><div class="la-fav-title">בנהר שלי</div><div class="la-fav-lang">עברית</div></div>
+              <div class="la-fav-btns">
+                <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="la-fav-row">
+              <div class="la-fav-cover"><div class="cover-ph"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              <div class="la-fav-info"><div class="la-fav-title">לא אמיתי</div><div class="la-fav-lang">עברית</div></div>
+              <div class="la-fav-btns">
+                <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile: playlists tab active -->
+    <div class="preview-box">
+      <span class="preview-label">Mobile — טאב פלייליסטים</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner">
+
+          <div class="pi-eyebrow">האוסף שלי</div>
+          <div class="pi-title" style="font-size:1.7rem">הספרייה שלי</div>
+          <div class="pi-divider"></div>
+
+          <div class="la-tabs">
+            <div class="la-tab">♥ מועדפים</div>
+            <div class="la-tab active">🎵 פלייליסטים</div>
+          </div>
+
+          <div class="la-pl-grid" style="grid-template-columns:repeat(2,1fr)">
+            <div class="la-pl-card">
+              <div class="la-pl-cover">
+                <div class="la-pl-thumb"><div class="cover-ph" style="height:100%"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+                <div class="la-pl-thumb"><div class="cover-ph" style="height:100%"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+                <div class="la-pl-thumb"><div class="cover-ph" style="height:100%"></div></div>
+                <div class="la-pl-thumb"><div class="cover-ph" style="height:100%"></div></div>
+              </div>
+              <div class="la-pl-caption">
+                <div><div class="la-pl-name">שירי בוקר</div><div class="la-pl-count">4 שירים</div></div>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="la-pl-card">
+              <div class="la-pl-cover single">
+                <div class="la-pl-thumb"><div class="cover-ph" style="height:100%"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              </div>
+              <div class="la-pl-caption">
+                <div><div class="la-pl-name">אהובים</div><div class="la-pl-count">1 שיר</div></div>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="la-pl-new" style="min-height:80px;font-size:.65rem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              פלייליסט חדש
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <button class="choose-btn" onclick="alert('Layout A נבחר!')">✓ בחר Layout A</button>
+</section>
+
+<!-- ════════════════════════════════════════════
+     LAYOUT B — ספרייה (Stacked)
+════════════════════════════════════════════ -->
+<section class="layout-section" id="layout-b">
+  <div class="section-header">
+    <div class="section-label">Layout B</div>
+    <h2 class="section-title">ספרייה — הכל בעמוד אחד</h2>
+    <p class="section-desc">
+      פלייליסטים בשורה אופקית (scrollable) עם כרטיסי קולאז׳, ומועדפים כרשימה Cinematic מתחת. הכל גלוי ללא לחיצה.
+    </p>
+  </div>
+
+  <div class="preview-stage">
+
+    <!-- Desktop -->
+    <div class="preview-box">
+      <span class="preview-label">Desktop</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner">
+
+          <div class="pi-eyebrow">האוסף שלי</div>
+          <div class="pi-title">הספרייה שלי</div>
+          <div class="pi-divider"></div>
+
+          <!-- Playlists row -->
+          <div class="sub-heading">פלייליסטים</div>
+          <div class="lb-pl-scroll">
+            <div class="lb-pl-card">
+              <div class="lb-pl-cover">
+                <div class="lb-pl-thumb"><div class="cover-ph" style="height:65px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+                <div class="lb-pl-thumb"><div class="cover-ph" style="height:65px"></div></div>
+                <div class="lb-pl-thumb"><div class="cover-ph" style="height:65px"></div></div>
+                <div class="lb-pl-thumb"><div class="cover-ph" style="height:65px"></div></div>
+              </div>
+              <div class="lb-pl-info" style="display:flex;justify-content:space-between;align-items:center">
+                <div><div class="lb-pl-name">שירי בוקר</div><div class="lb-pl-count">4 שירים</div></div>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="lb-pl-card">
+              <div class="lb-pl-cover single">
+                <div class="lb-pl-thumb"><div class="cover-ph" style="height:130px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              </div>
+              <div class="lb-pl-info" style="display:flex;justify-content:space-between;align-items:center">
+                <div><div class="lb-pl-name">אהובים</div><div class="lb-pl-count">1 שיר</div></div>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="lb-pl-new">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              + חדש
+            </div>
+          </div>
+
+          <div class="lb-divider"></div>
+
+          <!-- Favorites list -->
+          <div class="sub-heading" style="margin-bottom:10px">מועדפים</div>
+          <div class="lb-fav-list">
+            <div class="lb-fav-row">
+              <div class="lb-fav-cover"><div class="cover-ph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              <div class="lb-fav-info"><div class="lb-fav-title">מגע במילים</div><div class="lb-fav-lang">עברית</div></div>
+              <div class="lb-fav-btns">
+                <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="lb-fav-row">
+              <div class="lb-fav-cover"><div class="cover-ph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              <div class="lb-fav-info"><div class="lb-fav-title">שיגעון אמורפי</div><div class="lb-fav-lang">עברית</div></div>
+              <div class="lb-fav-btns">
+                <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="lb-fav-row">
+              <div class="lb-fav-cover"><div class="cover-ph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              <div class="lb-fav-info"><div class="lb-fav-title">הרגשה משונה</div><div class="lb-fav-lang">עברית</div></div>
+              <div class="lb-fav-btns">
+                <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="preview-box">
+      <span class="preview-label">Mobile</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner">
+
+          <div class="pi-eyebrow">האוסף שלי</div>
+          <div class="pi-title" style="font-size:1.7rem">הספרייה שלי</div>
+          <div class="pi-divider"></div>
+
+          <div class="sub-heading">פלייליסטים</div>
+          <div class="lb-pl-scroll" style="gap:8px;margin-bottom:18px">
+            <div class="lb-pl-card" style="width:100px">
+              <div class="lb-pl-cover">
+                <div class="lb-pl-thumb"><div class="cover-ph" style="height:50px"></div></div>
+                <div class="lb-pl-thumb"><div class="cover-ph" style="height:50px"></div></div>
+                <div class="lb-pl-thumb"><div class="cover-ph" style="height:50px"></div></div>
+                <div class="lb-pl-thumb"><div class="cover-ph" style="height:50px"></div></div>
+              </div>
+              <div class="lb-pl-info"><div class="lb-pl-name">שירי בוקר</div><div class="lb-pl-count">4 שירים</div></div>
+            </div>
+            <div class="lb-pl-new" style="width:100px;min-height:100px;font-size:.62rem">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              + חדש
+            </div>
+          </div>
+
+          <div class="lb-divider"></div>
+
+          <div class="sub-heading" style="margin-bottom:8px">מועדפים</div>
+          <div class="lb-fav-list">
+            <div class="lb-fav-row">
+              <div class="lb-fav-cover"><div class="cover-ph"></div></div>
+              <div class="lb-fav-info"><div class="lb-fav-title">מגע במילים</div><div class="lb-fav-lang">עברית</div></div>
+              <div class="lb-fav-btns"><button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+            </div>
+            <div class="lb-fav-row">
+              <div class="lb-fav-cover"><div class="cover-ph"></div></div>
+              <div class="lb-fav-info"><div class="lb-fav-title">שיגעון אמורפי</div><div class="lb-fav-lang">עברית</div></div>
+              <div class="lb-fav-btns"><button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+            </div>
+            <div class="lb-fav-row">
+              <div class="lb-fav-cover"><div class="cover-ph"></div></div>
+              <div class="lb-fav-info"><div class="lb-fav-title">הרגשה משונה</div><div class="lb-fav-lang">עברית</div></div>
+              <div class="lb-fav-btns"><button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <button class="choose-btn" onclick="alert('Layout B נבחר!')">✓ בחר Layout B</button>
+</section>
+
+<!-- ════════════════════════════════════════════
+     LAYOUT C — Dashboard (Split)
+════════════════════════════════════════════ -->
+<section class="layout-section" id="layout-c">
+  <div class="section-header">
+    <div class="section-label">Layout C</div>
+    <h2 class="section-title">Dashboard — שתי עמודות</h2>
+    <p class="section-desc">
+      פלייליסטים בעמודה צרה משמאל (כרשימה עם מיני-קולאז׳), מועדפים בעמודה רחבה מימין. הכל גלוי בבת-אחת. במובייל: מועדפים למעלה, פלייליסטים למטה.
+    </p>
+  </div>
+
+  <div class="preview-stage">
+
+    <!-- Desktop -->
+    <div class="preview-box">
+      <span class="preview-label">Desktop</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner">
+
+          <div class="pi-eyebrow">האוסף שלי</div>
+          <div class="pi-title">הספרייה שלי</div>
+          <div class="pi-divider"></div>
+
+          <div class="lc-grid">
+
+            <!-- Left: Playlists -->
+            <div class="lc-left">
+              <div class="lc-panel-title">פלייליסטים</div>
+              <div class="lc-pl-list">
+                <div class="lc-pl-row">
+                  <div class="lc-pl-collage">
+                    <div class="lc-pl-collage-thumb"><div class="cover-ph" style="height:18px"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+                    <div class="lc-pl-collage-thumb"><div class="cover-ph" style="height:18px"></div></div>
+                    <div class="lc-pl-collage-thumb"><div class="cover-ph" style="height:18px"></div></div>
+                    <div class="lc-pl-collage-thumb"><div class="cover-ph" style="height:18px"></div></div>
+                  </div>
+                  <div class="lc-pl-info"><div class="lc-pl-name">שירי בוקר</div><div class="lc-pl-count">4 שירים</div></div>
+                  <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                </div>
+                <div class="lc-pl-row">
+                  <div class="lc-pl-collage single">
+                    <div class="lc-pl-collage-thumb"><div class="cover-ph" style="height:36px"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+                  </div>
+                  <div class="lc-pl-info"><div class="lc-pl-name">אהובים</div><div class="lc-pl-count">1 שיר</div></div>
+                  <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                </div>
+                <button class="lc-pl-new-btn">
+                  <span class="lc-pl-new-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+                  פלייליסט חדש
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: Favorites -->
+            <div class="lc-right">
+              <div class="lc-panel-title">מועדפים</div>
+              <div class="lc-fav-list">
+                <div class="lc-fav-row">
+                  <div class="lc-fav-cover"><div class="cover-ph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+                  <div class="lc-fav-info"><div class="lc-fav-title">מגע במילים</div><div class="lc-fav-lang">עברית</div></div>
+                  <div class="lc-fav-btns">
+                    <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lc-fav-row">
+                  <div class="lc-fav-cover"><div class="cover-ph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+                  <div class="lc-fav-info"><div class="lc-fav-title">שיגעון אמורפי</div><div class="lc-fav-lang">עברית</div></div>
+                  <div class="lc-fav-btns">
+                    <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lc-fav-row">
+                  <div class="lc-fav-cover"><div class="cover-ph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+                  <div class="lc-fav-info"><div class="lc-fav-title">הרגשה משונה</div><div class="lc-fav-lang">עברית</div></div>
+                  <div class="lc-fav-btns">
+                    <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lc-fav-row">
+                  <div class="lc-fav-cover"><div class="cover-ph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+                  <div class="lc-fav-info"><div class="lc-fav-title">בנהר שלי</div><div class="lc-fav-lang">עברית</div></div>
+                  <div class="lc-fav-btns">
+                    <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lc-fav-row">
+                  <div class="lc-fav-cover"><div class="cover-ph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+                  <div class="lc-fav-info"><div class="lc-fav-title">לא אמיתי</div><div class="lc-fav-lang">עברית</div></div>
+                  <div class="lc-fav-btns">
+                    <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="preview-box">
+      <span class="preview-label">Mobile (stacked)</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner">
+
+          <div class="pi-eyebrow">האוסף שלי</div>
+          <div class="pi-title" style="font-size:1.7rem">הספרייה שלי</div>
+          <div class="pi-divider"></div>
+
+          <!-- Mobile: Favorites first -->
+          <div class="lc-panel-title">מועדפים</div>
+          <div class="lc-fav-list" style="margin-bottom:20px">
+            <div class="lc-fav-row">
+              <div class="lc-fav-cover"><div class="cover-ph"></div></div>
+              <div class="lc-fav-info"><div class="lc-fav-title">מגע במילים</div><div class="lc-fav-lang">עברית</div></div>
+              <div class="lc-fav-btns"><button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+            </div>
+            <div class="lc-fav-row">
+              <div class="lc-fav-cover"><div class="cover-ph"></div></div>
+              <div class="lc-fav-info"><div class="lc-fav-title">שיגעון אמורפי</div><div class="lc-fav-lang">עברית</div></div>
+              <div class="lc-fav-btns"><button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+            </div>
+          </div>
+
+          <!-- Mobile: Playlists -->
+          <div style="height:1px;background:var(--border-s);margin-bottom:16px"></div>
+          <div class="lc-panel-title">פלייליסטים</div>
+          <div class="lc-pl-list">
+            <div class="lc-pl-row">
+              <div class="lc-pl-collage">
+                <div class="lc-pl-collage-thumb"><div class="cover-ph" style="height:18px"></div></div>
+                <div class="lc-pl-collage-thumb"><div class="cover-ph" style="height:18px"></div></div>
+                <div class="lc-pl-collage-thumb"><div class="cover-ph" style="height:18px"></div></div>
+                <div class="lc-pl-collage-thumb"><div class="cover-ph" style="height:18px"></div></div>
+              </div>
+              <div class="lc-pl-info"><div class="lc-pl-name">שירי בוקר</div><div class="lc-pl-count">4 שירים</div></div>
+              <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+            </div>
+            <button class="lc-pl-new-btn">
+              <span class="lc-pl-new-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              פלייליסט חדש
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <button class="choose-btn" onclick="alert('Layout C נבחר!')">✓ בחר Layout C</button>
+</section>
+
+
+<style>
+/* ══════════════════════════════════════════
+   LAYOUT D — Minimal Editorial
+══════════════════════════════════════════ */
+.ld-wrap { display: flex; flex-direction: column; gap: 0; }
+.ld-section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 10px; border-bottom: 1px solid var(--gold-dim); margin-bottom: 14px;
+}
+.ld-section-name {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-weight: 300; font-size: 1.1rem; color: var(--text); letter-spacing: 0.04em;
+}
+.ld-section-count { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; }
+.ld-pl-rows { display: flex; flex-direction: column; gap: 2px; margin-bottom: 22px; }
+.ld-pl-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 12px; border-radius: 6px; cursor: pointer;
+  transition: background 0.18s;
+}
+.ld-pl-row:hover { background: rgba(255,255,255,0.04); }
+.ld-pl-mini {
+  width: 32px; height: 32px; border-radius: 4px; overflow: hidden; flex-shrink: 0;
+  display: grid; grid-template-columns: repeat(2,1fr); grid-template-rows: repeat(2,1fr);
+}
+.ld-pl-mini.single { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+.ld-pl-mini-thumb { overflow: hidden; }
+.ld-pl-row-name { flex: 1; font-size: 0.82rem; color: var(--text); }
+.ld-pl-row-count { font-size: 0.6rem; color: var(--text-dim); }
+.ld-pl-new-row {
+  display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+  border-radius: 6px; cursor: pointer; color: rgba(201,168,76,0.4);
+  font-size: 0.75rem; border: 1px dashed rgba(201,168,76,0.18); background: transparent;
+  font-family: 'Frank Ruhl Libre', serif; width: 100%; letter-spacing: 0.06em;
+}
+.ld-divider { height: 1px; background: var(--border-s); margin: 4px 0 20px; }
+.ld-fav-rows { display: flex; flex-direction: column; }
+.ld-fav-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-bottom: 1px solid var(--border-s); cursor: pointer;
+  transition: background 0.18s;
+}
+.ld-fav-row:last-child { border-bottom: none; }
+.ld-fav-row:hover { background: rgba(255,255,255,0.03); }
+.ld-fav-num { font-size: 0.62rem; color: var(--text-dim); width: 18px; text-align: center; flex-shrink: 0; }
+.ld-fav-cover { width: 36px; height: 36px; flex-shrink: 0; border-radius: 3px; overflow: hidden; }
+.ld-fav-info { flex: 1; min-width: 0; }
+.ld-fav-title { font-size: 0.84rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ld-fav-lang { font-size: 0.57rem; color: rgba(201,168,76,0.45); letter-spacing: 0.1em; text-transform: uppercase; }
+.ld-fav-btns { display: flex; gap: 5px; }
+
+/* ══════════════════════════════════════════
+   LAYOUT E — Hero Playlist + Side Favs
+══════════════════════════════════════════ */
+.le-grid { display: grid; grid-template-columns: 1fr 240px; gap: 20px; }
+.le-left {}
+.le-right { border-right: 1px solid var(--border-s); padding-right: 20px; }
+.le-pl-hero {
+  border-radius: 10px; overflow: hidden; margin-bottom: 16px;
+  border: 1px solid var(--card-border); position: relative;
+}
+.le-pl-hero-cover {
+  height: 140px; background: linear-gradient(135deg,#1e1e2e,#2a1f35,#1a2035);
+  position: relative; overflow: hidden;
+  display: grid; grid-template-columns: repeat(2,1fr); grid-template-rows: repeat(2,1fr);
+}
+.le-pl-hero-thumb { overflow: hidden; }
+.le-pl-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(13,13,19,0.92) 0%, transparent 60%);
+  display: flex; align-items: flex-end; padding: 14px 16px; gap: 12px;
+}
+.le-pl-hero-info { flex: 1; }
+.le-pl-hero-name { font-family: 'Cormorant Garamond',serif; font-style: italic; font-weight: 300; font-size: 1.15rem; color: var(--text); }
+.le-pl-hero-count { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; }
+.le-pl-hero-songs { display: flex; flex-direction: column; background: var(--card-bg); }
+.le-pl-track {
+  display: flex; align-items: center; gap: 10px; padding: 8px 14px;
+  border-bottom: 1px solid var(--border-s); cursor: pointer;
+  transition: background 0.18s;
+}
+.le-pl-track:last-child { border-bottom: none; }
+.le-pl-track:hover { background: rgba(255,255,255,0.04); }
+.le-pl-track-num { font-size: 0.6rem; color: var(--text-dim); width: 16px; }
+.le-pl-track-cover { width: 30px; height: 30px; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+.le-pl-track-title { flex: 1; font-size: 0.78rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Playlist tabs (switch between playlists) */
+.le-pl-tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+.le-pl-tab {
+  padding: 4px 12px; border-radius: 20px; font-size: 0.68rem; letter-spacing: 0.06em;
+  cursor: pointer; border: 1px solid transparent; color: var(--text-dim); transition: all 0.2s;
+}
+.le-pl-tab.active { border-color: var(--gold-dim); color: var(--gold); background: rgba(201,168,76,0.06); }
+.le-pl-tab:hover:not(.active) { color: var(--text); }
+
+/* Side favorites */
+.le-side-title { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); opacity: 0.65; margin-bottom: 10px; }
+.le-fav-list { display: flex; flex-direction: column; gap: 3px; }
+.le-fav-row {
+  display: flex; align-items: center; gap: 8px; padding: 6px 8px;
+  border-radius: 5px; cursor: pointer; transition: background 0.18s;
+}
+.le-fav-row:hover { background: rgba(255,255,255,0.04); }
+.le-fav-cover { width: 30px; height: 30px; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+.le-fav-title { font-size: 0.74rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+.le-fav-play { width: 18px; height: 18px; background: none; border: none; color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+
+/* Mobile: LE stacks */
+.mobile .le-grid { grid-template-columns: 1fr; }
+.mobile .le-right { border-right: none; padding-right: 0; border-top: 1px solid var(--border-s); padding-top: 18px; margin-top: 4px; }
+
+/* ══════════════════════════════════════════
+   PLAYLIST PAGE DEMO
+══════════════════════════════════════════ */
+.pp-header {
+  background: var(--card-bg); border-radius: 10px; overflow: hidden;
+  margin-bottom: 16px; border: 1px solid var(--card-border);
+}
+.pp-header-cover {
+  height: 110px; position: relative; overflow: hidden;
+  display: grid; grid-template-columns: repeat(2,1fr); grid-template-rows: repeat(2,1fr);
+}
+.pp-cover-thumb { overflow: hidden; }
+.pp-header-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(13,13,19,0.95) 0%, transparent 55%);
+  display: flex; align-items: flex-end; padding: 14px 16px; justify-content: space-between;
+}
+.pp-header-info {}
+.pp-pl-eyebrow { font-size: 0.58rem; letter-spacing: 0.16em; color: rgba(201,168,76,0.6); text-transform: uppercase; }
+.pp-pl-name { font-family: 'Cormorant Garamond',serif; font-style: italic; font-weight: 300; font-size: 1.3rem; color: var(--text); }
+.pp-pl-count { font-size: 0.6rem; color: var(--text-dim); margin-top: 2px; }
+.pp-play-all {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid var(--gold); color: var(--gold); background: transparent;
+  padding: 6px 14px; border-radius: 20px; font-size: 0.7rem;
+  letter-spacing: 0.08em; cursor: pointer; font-family: 'Frank Ruhl Libre',serif; flex-shrink: 0;
+}
+.pp-tracks { display: flex; flex-direction: column; gap: 3px; }
+.pp-track {
+  display: flex; align-items: center; gap: 10px; height: 56px;
+  border-radius: 7px; overflow: hidden; border: 1px solid var(--card-border);
+  background: var(--card-bg); cursor: pointer; transition: background 0.2s;
+}
+.pp-track:hover { background: #1c1c2a; }
+.pp-track-cover { width: 56px; height: 56px; flex-shrink: 0; overflow: hidden; }
+.pp-track-num { font-size: 0.65rem; color: var(--text-dim); width: 20px; text-align: center; flex-shrink: 0; }
+.pp-track-info { flex: 1; min-width: 0; }
+.pp-track-title { font-size: 0.88rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pp-track-lyric { font-size: 0.62rem; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.pp-track-btns { display: flex; gap: 5px; padding-left: 10px; }
+.pp-add-btn {
+  display: flex; align-items: center; gap: 8px; margin-top: 12px;
+  padding: 10px 14px; border-radius: 7px;
+  border: 1px dashed rgba(201,168,76,0.2); background: transparent;
+  color: rgba(201,168,76,0.4); font-size: 0.72rem; letter-spacing: 0.08em;
+  cursor: pointer; font-family: 'Frank Ruhl Libre',serif; width: 100%;
+}
+
+/* Recommendation box */
+.rec-box {
+  max-width: 820px; margin: 0 auto; padding: 48px 40px;
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 12px;
+}
+.rec-eyebrow { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+.rec-title { font-family: 'Cormorant Garamond',serif; font-style: italic; font-weight: 300; font-size: 2rem; color: var(--text); margin-bottom: 20px; }
+.rec-winner {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(201,168,76,0.1); border: 1px solid var(--gold-dim);
+  border-radius: 8px; padding: 14px 20px; margin-bottom: 24px;
+}
+.rec-winner-label { font-family: 'Cormorant Garamond',serif; font-style: italic; font-size: 1.4rem; color: var(--gold); }
+.rec-winner-sub { font-size: 0.72rem; color: var(--text-mid); margin-top: 2px; }
+.rec-reasons { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.rec-reason {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 12px 16px; border-radius: 7px; background: rgba(255,255,255,0.025);
+}
+.rec-reason-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.rec-reason-text { font-size: 0.84rem; color: var(--text-mid); line-height: 1.6; }
+.rec-reason-text strong { color: var(--text); }
+.rec-others { font-size: 0.8rem; color: var(--text-dim); line-height: 1.7; }
+</style>
+
+<!-- ════════════════════════════════════════════
+     LAYOUT D — Minimal Editorial
+════════════════════════════════════════════ -->
+<section class="layout-section" id="layout-d">
+  <div class="section-header">
+    <div class="section-label">Layout D</div>
+    <h2 class="section-title">Minimal — רשימות עדינות</h2>
+    <p class="section-desc">
+      ללא כרטיסים וגרידים — פלייליסטים ומועדפים כרשימות טקסט נקיות עם קולאז׳ מיני. עיצוב אדיטוריאלי, שקט ואלגנטי.
+    </p>
+  </div>
+  <div class="preview-stage">
+
+    <!-- Desktop -->
+    <div class="preview-box">
+      <span class="preview-label">Desktop</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner">
+          <div class="pi-eyebrow">האוסף שלי</div>
+          <div class="pi-title">הספרייה שלי</div>
+          <div class="pi-divider"></div>
+
+          <div class="ld-wrap">
+            <!-- Playlists -->
+            <div class="ld-section-head">
+              <span class="ld-section-name">פלייליסטים</span>
+              <span class="ld-section-count">2 פלייליסטים</span>
+            </div>
+            <div class="ld-pl-rows">
+              <div class="ld-pl-row">
+                <div class="ld-pl-mini">
+                  <div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div>
+                  <div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div>
+                  <div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div>
+                  <div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div>
+                </div>
+                <span class="ld-pl-row-name">שירי בוקר</span>
+                <span class="ld-pl-row-count">4 שירים</span>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="ld-pl-row">
+                <div class="ld-pl-mini single">
+                  <div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:32px"></div></div>
+                </div>
+                <span class="ld-pl-row-name">אהובים</span>
+                <span class="ld-pl-row-count">1 שיר</span>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="ld-pl-row">
+                <div class="ld-pl-mini">
+                  <div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div>
+                  <div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div>
+                  <div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div>
+                  <div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div>
+                </div>
+                <span class="ld-pl-row-name">לילה ושקט</span>
+                <span class="ld-pl-row-count">3 שירים</span>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <button class="ld-pl-new-row">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                פלייליסט חדש
+              </button>
+            </div>
+
+            <div class="ld-divider"></div>
+
+            <!-- Favorites -->
+            <div class="ld-section-head">
+              <span class="ld-section-name">מועדפים</span>
+              <span class="ld-section-count">5 שירים</span>
+            </div>
+            <div class="ld-fav-rows">
+              <div class="ld-fav-row">
+                <span class="ld-fav-num">01</span>
+                <div class="ld-fav-cover"><div class="cover-ph"></div></div>
+                <div class="ld-fav-info"><div class="ld-fav-title">מגע במילים</div><div class="ld-fav-lang">עברית</div></div>
+                <div class="ld-fav-btns">
+                  <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                </div>
+              </div>
+              <div class="ld-fav-row">
+                <span class="ld-fav-num">02</span>
+                <div class="ld-fav-cover"><div class="cover-ph"></div></div>
+                <div class="ld-fav-info"><div class="ld-fav-title">שיגעון אמורפי</div><div class="ld-fav-lang">עברית</div></div>
+                <div class="ld-fav-btns">
+                  <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                </div>
+              </div>
+              <div class="ld-fav-row">
+                <span class="ld-fav-num">03</span>
+                <div class="ld-fav-cover"><div class="cover-ph"></div></div>
+                <div class="ld-fav-info"><div class="ld-fav-title">הרגשה משונה</div><div class="ld-fav-lang">עברית</div></div>
+                <div class="ld-fav-btns">
+                  <button class="ic-btn ic-ghost sm" style="color:var(--gold);border-color:var(--gold)"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="preview-box">
+      <span class="preview-label">Mobile</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner">
+          <div class="pi-eyebrow">האוסף שלי</div>
+          <div class="pi-title" style="font-size:1.7rem">הספרייה שלי</div>
+          <div class="pi-divider"></div>
+
+          <div class="ld-section-head">
+            <span class="ld-section-name">פלייליסטים</span>
+            <span class="ld-section-count">3</span>
+          </div>
+          <div class="ld-pl-rows" style="margin-bottom:16px">
+            <div class="ld-pl-row">
+              <div class="ld-pl-mini"><div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div><div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div><div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div><div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:16px"></div></div></div>
+              <span class="ld-pl-row-name">שירי בוקר</span>
+              <span class="ld-pl-row-count">4 שירים</span>
+              <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+            </div>
+            <div class="ld-pl-row">
+              <div class="ld-pl-mini single"><div class="ld-pl-mini-thumb"><div class="cover-ph" style="height:32px"></div></div></div>
+              <span class="ld-pl-row-name">אהובים</span>
+              <span class="ld-pl-row-count">1 שיר</span>
+              <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+            </div>
+            <button class="ld-pl-new-row">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              פלייליסט חדש
+            </button>
+          </div>
+
+          <div class="ld-divider"></div>
+
+          <div class="ld-section-head">
+            <span class="ld-section-name">מועדפים</span>
+            <span class="ld-section-count">5</span>
+          </div>
+          <div class="ld-fav-rows">
+            <div class="ld-fav-row">
+              <span class="ld-fav-num">01</span>
+              <div class="ld-fav-cover"><div class="cover-ph"></div></div>
+              <div class="ld-fav-info"><div class="ld-fav-title">מגע במילים</div><div class="ld-fav-lang">עברית</div></div>
+              <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+            </div>
+            <div class="ld-fav-row">
+              <span class="ld-fav-num">02</span>
+              <div class="ld-fav-cover"><div class="cover-ph"></div></div>
+              <div class="ld-fav-info"><div class="ld-fav-title">שיגעון אמורפי</div><div class="ld-fav-lang">עברית</div></div>
+              <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+            </div>
+            <div class="ld-fav-row">
+              <span class="ld-fav-num">03</span>
+              <div class="ld-fav-cover"><div class="cover-ph"></div></div>
+              <div class="ld-fav-info"><div class="ld-fav-title">הרגשה משונה</div><div class="ld-fav-lang">עברית</div></div>
+              <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="choose-btn" onclick="alert('Layout D נבחר!')">✓ בחר Layout D</button>
+</section>
+
+<!-- ════════════════════════════════════════════
+     LAYOUT E — Hero Playlist + Side Favs
+════════════════════════════════════════════ -->
+<section class="layout-section" id="layout-e">
+  <div class="section-header">
+    <div class="section-label">Layout E</div>
+    <h2 class="section-title">Hero — פלייליסט ראשי + מועדפים בצד</h2>
+    <p class="section-desc">
+      הפלייליסט הפעיל מוצג גדול עם תמונת כותרת, ניתן לעבור בין פלייליסטים עם tabs. מועדפים בעמודה צרה מימין.
+    </p>
+  </div>
+  <div class="preview-stage">
+
+    <!-- Desktop -->
+    <div class="preview-box">
+      <span class="preview-label">Desktop</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner">
+          <div class="pi-eyebrow">האוסף שלי</div>
+          <div class="pi-title">הספרייה שלי</div>
+          <div class="pi-divider"></div>
+
+          <div class="le-grid">
+            <!-- Left: Hero Playlist -->
+            <div class="le-left">
+              <div class="le-pl-tabs">
+                <div class="le-pl-tab active">שירי בוקר</div>
+                <div class="le-pl-tab">אהובים</div>
+                <div class="le-pl-tab">לילה ושקט</div>
+                <div class="le-pl-tab" style="border-color:rgba(201,168,76,0.18);color:rgba(201,168,76,0.4)">+ חדש</div>
+              </div>
+              <div class="le-pl-hero">
+                <div class="le-pl-hero-cover">
+                  <div class="le-pl-hero-thumb"><div class="cover-ph" style="height:70px"></div></div>
+                  <div class="le-pl-hero-thumb"><div class="cover-ph" style="height:70px"></div></div>
+                  <div class="le-pl-hero-thumb"><div class="cover-ph" style="height:70px"></div></div>
+                  <div class="le-pl-hero-thumb"><div class="cover-ph" style="height:70px"></div></div>
+                  <div class="le-pl-hero-overlay">
+                    <div class="le-pl-hero-info">
+                      <div class="le-pl-hero-name">שירי בוקר</div>
+                      <div class="le-pl-hero-count">4 שירים</div>
+                    </div>
+                    <button class="ic-btn ic-play"><svg width="12" height="12" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="le-pl-hero-songs">
+                  <div class="le-pl-track">
+                    <span class="le-pl-track-num">01</span>
+                    <div class="le-pl-track-cover"><div class="cover-ph"></div></div>
+                    <span class="le-pl-track-title">מגע במילים</span>
+                    <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                  <div class="le-pl-track">
+                    <span class="le-pl-track-num">02</span>
+                    <div class="le-pl-track-cover"><div class="cover-ph"></div></div>
+                    <span class="le-pl-track-title">שיגעון אמורפי</span>
+                    <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                  <div class="le-pl-track">
+                    <span class="le-pl-track-num">03</span>
+                    <div class="le-pl-track-cover"><div class="cover-ph"></div></div>
+                    <span class="le-pl-track-title">הרגשה משונה</span>
+                    <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Favorites -->
+            <div class="le-right">
+              <div class="le-side-title">♥ מועדפים</div>
+              <div class="le-fav-list">
+                <div class="le-fav-row"><div class="le-fav-cover"><div class="cover-ph"></div></div><span class="le-fav-title">מגע במילים</span><button class="le-fav-play"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="le-fav-row"><div class="le-fav-cover"><div class="cover-ph"></div></div><span class="le-fav-title">שיגעון אמורפי</span><button class="le-fav-play"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="le-fav-row"><div class="le-fav-cover"><div class="cover-ph"></div></div><span class="le-fav-title">הרגשה משונה</span><button class="le-fav-play"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="le-fav-row"><div class="le-fav-cover"><div class="cover-ph"></div></div><span class="le-fav-title">בנהר שלי</span><button class="le-fav-play"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="le-fav-row"><div class="le-fav-cover"><div class="cover-ph"></div></div><span class="le-fav-title">לא אמיתי</span><button class="le-fav-play"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="le-fav-row"><div class="le-fav-cover"><div class="cover-ph"></div></div><span class="le-fav-title">מקום בטוח</span><button class="le-fav-play"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="preview-box">
+      <span class="preview-label">Mobile</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner">
+          <div class="pi-eyebrow">האוסף שלי</div>
+          <div class="pi-title" style="font-size:1.7rem">הספרייה שלי</div>
+          <div class="pi-divider"></div>
+
+          <div class="le-pl-tabs" style="margin-bottom:10px">
+            <div class="le-pl-tab active" style="font-size:.62rem;padding:3px 10px">שירי בוקר</div>
+            <div class="le-pl-tab" style="font-size:.62rem;padding:3px 10px">אהובים</div>
+            <div class="le-pl-tab" style="font-size:.62rem;padding:3px 10px;border-color:rgba(201,168,76,.18);color:rgba(201,168,76,.4)">+ חדש</div>
+          </div>
+          <div class="le-pl-hero" style="margin-bottom:16px">
+            <div class="le-pl-hero-cover" style="height:90px">
+              <div class="le-pl-hero-thumb"><div class="cover-ph" style="height:45px"></div></div>
+              <div class="le-pl-hero-thumb"><div class="cover-ph" style="height:45px"></div></div>
+              <div class="le-pl-hero-thumb"><div class="cover-ph" style="height:45px"></div></div>
+              <div class="le-pl-hero-thumb"><div class="cover-ph" style="height:45px"></div></div>
+              <div class="le-pl-hero-overlay">
+                <div class="le-pl-hero-info"><div class="le-pl-hero-name" style="font-size:.95rem">שירי בוקר</div><div class="le-pl-hero-count">4 שירים</div></div>
+                <button class="ic-btn ic-play sm"><svg width="8" height="8" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+            <div class="le-pl-hero-songs">
+              <div class="le-pl-track"><span class="le-pl-track-num">01</span><div class="le-pl-track-cover"><div class="cover-ph"></div></div><span class="le-pl-track-title">מגע במילים</span></div>
+              <div class="le-pl-track"><span class="le-pl-track-num">02</span><div class="le-pl-track-cover"><div class="cover-ph"></div></div><span class="le-pl-track-title">שיגעון אמורפי</span></div>
+            </div>
+          </div>
+          <div class="le-side-title">♥ מועדפים</div>
+          <div class="le-fav-list">
+            <div class="le-fav-row"><div class="le-fav-cover"><div class="cover-ph"></div></div><span class="le-fav-title">מגע במילים</span></div>
+            <div class="le-fav-row"><div class="le-fav-cover"><div class="cover-ph"></div></div><span class="le-fav-title">שיגעון אמורפי</span></div>
+            <div class="le-fav-row"><div class="le-fav-cover"><div class="cover-ph"></div></div><span class="le-fav-title">הרגשה משונה</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="choose-btn" onclick="alert('Layout E נבחר!')">✓ בחר Layout E</button>
+</section>
+
+<!-- ════════════════════════════════════════════
+     PLAYLIST PAGE DEMO
+════════════════════════════════════════════ -->
+<section class="layout-section" id="playlist-page">
+  <div class="section-header">
+    <div class="section-label">עמוד פלייליסט</div>
+    <h2 class="section-title">כך נראה עמוד פלייליסט פנימי</h2>
+    <p class="section-desc">
+      כאשר לוחצים על פלייליסט — נפתח עמוד עם כרטיס כותרת (קולאז׳ תמונות), כל השירים ברשימה, וכפתור "הוסף שיר".
+    </p>
+  </div>
+  <div class="preview-stage">
+
+    <!-- Desktop -->
+    <div class="preview-box">
+      <span class="preview-label">Desktop — 4 שירים</span>
+      <div class="preview-frame desktop">
+        <div class="preview-inner">
+          <div style="font-size:.6rem;color:var(--text-dim);margin-bottom:12px;letter-spacing:.08em">
+            ← האוסף שלי &nbsp;/&nbsp; שירי בוקר
+          </div>
+
+          <div class="pp-header">
+            <div class="pp-header-cover">
+              <div class="pp-cover-thumb"><div class="cover-ph" style="height:55px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div>
+              <div class="pp-cover-thumb"><div class="cover-ph" style="height:55px"></div></div>
+              <div class="pp-cover-thumb"><div class="cover-ph" style="height:55px"></div></div>
+              <div class="pp-cover-thumb"><div class="cover-ph" style="height:55px"></div></div>
+              <div class="pp-header-overlay">
+                <div class="pp-header-info">
+                  <div class="pp-pl-eyebrow">פלייליסט</div>
+                  <div class="pp-pl-name">שירי בוקר</div>
+                  <div class="pp-pl-count">4 שירים</div>
+                </div>
+                <button class="pp-play-all">
+                  <svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
+                  נגן הכל
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pp-tracks">
+            <div class="pp-track">
+              <div class="pp-track-cover"><div class="cover-ph"></div></div>
+              <span class="pp-track-num">01</span>
+              <div class="pp-track-info"><div class="pp-track-title">מגע במילים</div><div class="pp-track-lyric">מה שהיה פעם טוב, כבר לא מרגיש אותו...</div></div>
+              <div class="pp-track-btns">
+                <button class="ic-btn ic-ghost sm"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                <button class="ic-btn ic-ghost sm"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+            </div>
+            <div class="pp-track">
+              <div class="pp-track-cover"><div class="cover-ph"></div></div>
+              <span class="pp-track-num">02</span>
+              <div class="pp-track-info"><div class="pp-track-title">שיגעון אמורפי</div><div class="pp-track-lyric">השיר 'מהיום' הוא מניפסט של טרנספורמציה...</div></div>
+              <div class="pp-track-btns">
+                <button class="ic-btn ic-ghost sm"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                <button class="ic-btn ic-ghost sm"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+            </div>
+            <div class="pp-track">
+              <div class="pp-track-cover"><div class="cover-ph"></div></div>
+              <span class="pp-track-num">03</span>
+              <div class="pp-track-info"><div class="pp-track-title">הרגשה משונה</div><div class="pp-track-lyric">אהבה לא ברורה לי, הוא ילדה עמוקה...</div></div>
+              <div class="pp-track-btns">
+                <button class="ic-btn ic-ghost sm"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                <button class="ic-btn ic-ghost sm"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+            </div>
+            <div class="pp-track">
+              <div class="pp-track-cover"><div class="cover-ph"></div></div>
+              <span class="pp-track-num">04</span>
+              <div class="pp-track-info"><div class="pp-track-title">בנהר שלי</div><div class="pp-track-lyric">הרהור 'בנהר שלי' מתמקד בתחלופת הרגעים...</div></div>
+              <div class="pp-track-btns">
+                <button class="ic-btn ic-ghost sm"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                <button class="ic-btn ic-ghost sm"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <button class="pp-add-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            הוסף שיר לפלייליסט
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="preview-box">
+      <span class="preview-label">Mobile</span>
+      <div class="preview-frame mobile">
+        <div class="preview-inner">
+          <div style="font-size:.58rem;color:var(--text-dim);margin-bottom:10px">← האוסף שלי</div>
+          <div class="pp-header">
+            <div class="pp-header-cover" style="height:80px">
+              <div class="pp-cover-thumb"><div class="cover-ph" style="height:40px"></div></div>
+              <div class="pp-cover-thumb"><div class="cover-ph" style="height:40px"></div></div>
+              <div class="pp-cover-thumb"><div class="cover-ph" style="height:40px"></div></div>
+              <div class="pp-cover-thumb"><div class="cover-ph" style="height:40px"></div></div>
+              <div class="pp-header-overlay">
+                <div class="pp-header-info">
+                  <div class="pp-pl-name" style="font-size:1rem">שירי בוקר</div>
+                  <div class="pp-pl-count">4 שירים</div>
+                </div>
+                <button class="pp-play-all" style="font-size:.62rem;padding:5px 10px">▶ נגן</button>
+              </div>
+            </div>
+          </div>
+          <div class="pp-tracks" style="margin-top:10px">
+            <div class="pp-track" style="height:48px">
+              <div class="pp-track-cover" style="width:48px;height:48px"><div class="cover-ph"></div></div>
+              <span class="pp-track-num">01</span>
+              <div class="pp-track-info"><div class="pp-track-title" style="font-size:.8rem">מגע במילים</div></div>
+              <div class="pp-track-btns"><button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+            </div>
+            <div class="pp-track" style="height:48px">
+              <div class="pp-track-cover" style="width:48px;height:48px"><div class="cover-ph"></div></div>
+              <span class="pp-track-num">02</span>
+              <div class="pp-track-info"><div class="pp-track-title" style="font-size:.8rem">שיגעון אמורפי</div></div>
+              <div class="pp-track-btns"><button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+            </div>
+            <div class="pp-track" style="height:48px">
+              <div class="pp-track-cover" style="width:48px;height:48px"><div class="cover-ph"></div></div>
+              <span class="pp-track-num">03</span>
+              <div class="pp-track-info"><div class="pp-track-title" style="font-size:.8rem">הרגשה משונה</div></div>
+              <div class="pp-track-btns"><button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+            </div>
+            <div class="pp-track" style="height:48px">
+              <div class="pp-track-cover" style="width:48px;height:48px"><div class="cover-ph"></div></div>
+              <span class="pp-track-num">04</span>
+              <div class="pp-track-info"><div class="pp-track-title" style="font-size:.8rem">בנהר שלי</div></div>
+              <div class="pp-track-btns"><button class="ic-btn ic-play sm"><svg width="7" height="7" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+            </div>
+          </div>
+          <button class="pp-add-btn" style="font-size:.65rem;margin-top:8px">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            הוסף שיר
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     RECOMMENDATION
+════════════════════════════════════════════ -->
+<section class="layout-section" id="recommendation" style="background:rgba(201,168,76,0.03)">
+  <div style="max-width:860px;margin:0 auto">
+    <div class="section-header" style="text-align:center;margin-bottom:36px">
+      <div class="section-label">המלצה</div>
+      <h2 class="section-title">האופציה המומלצת לאתר שלך</h2>
+    </div>
+
+    <div class="rec-box">
+      <div class="rec-eyebrow">הבחירה שלי</div>
+      <div class="rec-title">Layout B — ספרייה מאוחדת</div>
+
+      <div class="rec-winner">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div>
+          <div class="rec-winner-label">Layout B — ספרייה</div>
+          <div class="rec-winner-sub">פלייליסטים בסקרול אופקי + מועדפים ברשימה, הכל בעמוד אחד</div>
+        </div>
+      </div>
+
+      <div class="rec-reasons">
+        <div class="rec-reason">
+          <span class="rec-reason-icon">🎯</span>
+          <div class="rec-reason-text"><strong>עובד מצוין עם כל מספר פלייליסטים</strong> — הסקרול האופקי מאפשר 2, 5 או 20 פלייליסטים בלי שהעמוד ייראה שבור. Layout A (Tabs) לא מתאים לפלייליסטים רבים, Layout C נראה ריק עם 1-2 פלייליסטים.</div>
+        </div>
+        <div class="rec-reason">
+          <span class="rec-reason-icon">👁️</span>
+          <div class="rec-reason-text"><strong>הכל גלוי בלי לחיצה</strong> — הכניסה לעמוד מיד מראה מה יש. Layout A מסתיר חצי מהתוכן מאחורי טאב — לא אידיאלי לספרייה אישית קטנה.</div>
+        </div>
+        <div class="rec-reason">
+          <span class="rec-reason-icon">📱</span>
+          <div class="rec-reason-text"><strong>מובייל מושלם</strong> — פלייליסטים בסקרול אופקי עובד מעולה על מסך קטן. Layout C במובייל סובל מצפיפות.</div>
+        </div>
+        <div class="rec-reason">
+          <span class="rec-reason-icon">🎨</span>
+          <div class="rec-reason-text"><strong>תואם את שפת העיצוב הקיימת</strong> — כרטיסי הפלייליסט עם קולאז׳ 4 תמונות ורשימת מועדפים cinematic — שניהם כבר קיימים בקוד. ה-implementation יהיה הכי מהיר ויציב.</div>
+        </div>
+      </div>
+
+      <div class="rec-others">
+        <strong style="color:var(--text-mid)">אם היית רוצה משהו אחר:</strong><br>
+        Layout D (Minimal) — אם אתה מעדיף עיצוב אדיטוריאלי עדין יותר, פחות ויזואלי.<br>
+        Layout E (Hero) — אם הפלייליסטים הם ה"פיצ׳ר" הראשי ואתה רוצה להם נוכחות דרמטית.<br>
+        Layout C (Dashboard) — אם יש הרבה פלייליסטים ומועדפים ורוצים control panel אמיתי.
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

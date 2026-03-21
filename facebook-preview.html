@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amiado — מה קורה אצלי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Frank+Ruhl+Libre:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a10;
+  --gold: #c9a84c;
+  --gold-dim: rgba(201,168,76,0.15);
+  --gold-glow: rgba(201,168,76,0.25);
+  --text: #e8e3d8;
+  --text-dim: rgba(232,227,216,0.38);
+  --text-mid: rgba(232,227,216,0.62);
+  --card-bg: #111118;
+  --card-border: rgba(201,168,76,0.12);
+  --surface: #16161f;
+  --comment-bg: rgba(255,255,255,0.025);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Frank Ruhl Libre', serif;
+  min-height: 100vh;
+  padding: 70px 20px 100px;
+  overflow-x: hidden;
+}
+
+/* ─── Header ─── */
+header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 300;
+  color: var(--gold);
+  letter-spacing: 0.14em;
+  margin-bottom: 10px;
+}
+header p { color: var(--text-dim); font-size: 0.82rem; letter-spacing: 0.06em; }
+.divider { width: 40px; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 16px auto 0; }
+
+/* ─── View toggle ─── */
+.view-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 44px 0 52px;
+  flex-wrap: wrap;
+}
+.view-btn {
+  background: none;
+  border: 1px solid var(--card-border);
+  color: var(--text-dim);
+  padding: 9px 24px;
+  border-radius: 24px;
+  cursor: pointer;
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  transition: all 0.25s;
+}
+.view-btn:hover { border-color: rgba(201,168,76,0.3); color: var(--text-mid); }
+.view-btn.active {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201,168,76,0.06);
+}
+
+/* ══════════════════════════
+   LIST VIEW — primary layout
+══════════════════════════ */
+#view-list { max-width: 720px; margin: 0 auto; }
+#view-grid { display: none; max-width: 1200px; margin: 0 auto; }
+#view-side { display: none; max-width: 1000px; margin: 0 auto; }
+
+/* List items */
+.list-feed { display: flex; flex-direction: column; gap: 14px; }
+
+.list-item {
+  display: grid;
+  grid-template-columns: 130px 1fr 40px;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
+  animation: slideIn 0.4s ease both;
+}
+.list-item:nth-child(1) { animation-delay: 0.05s; }
+.list-item:nth-child(2) { animation-delay: 0.12s; }
+.list-item:nth-child(3) { animation-delay: 0.19s; }
+.list-item:nth-child(4) { animation-delay: 0.26s; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.list-item:hover {
+  border-color: rgba(201,168,76,0.35);
+  box-shadow: 0 0 30px rgba(201,168,76,0.07), 0 4px 24px rgba(0,0,0,0.4);
+  transform: translateX(-3px);
+}
+
+/* Thumbnail */
+.thumb {
+  width: 130px;
+  height: 90px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.thumb-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #1a0f22, #0d1828);
+}
+.thumb-bg-1 { background: linear-gradient(135deg, #1a0e20 0%, #0c1525 100%); }
+.thumb-bg-2 { background: linear-gradient(135deg, #0e1a17 0%, #141020 100%); }
+.thumb-bg-3 { background: linear-gradient(135deg, #1a150c 0%, #0c1020 100%); }
+.thumb-bg-4 { background: linear-gradient(135deg, #0c1422 0%, #1a0d18 100%); }
+
+.thumb-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to left, rgba(10,10,16,0.5) 0%, transparent 60%);
+}
+.thumb-num {
+  position: absolute;
+  bottom: 5px; right: 8px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: rgba(201,168,76,0.2);
+  line-height: 1;
+  user-select: none;
+}
+.thumb-play {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+}
+.thumb-play-circle {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(201,168,76,0.6);
+  background: rgba(201,168,76,0.08);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s;
+  backdrop-filter: blur(4px);
+}
+.list-item:hover .thumb-play-circle {
+  background: rgba(201,168,76,0.18);
+  border-color: var(--gold);
+  box-shadow: 0 0 16px rgba(201,168,76,0.3);
+  transform: scale(1.1);
+}
+.thumb-play-circle svg { width: 13px; height: 13px; margin-right: -2px; }
+
+/* List info */
+.list-info {
+  padding: 14px 16px;
+  min-width: 0;
+}
+.list-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.list-comments-preview {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.list-comment-line {
+  font-size: 0.76rem;
+  color: var(--text-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  line-height: 1.4;
+}
+.list-comment-line b { color: rgba(201,168,76,0.7); font-weight: 400; }
+
+/* Arrow */
+.list-arrow {
+  display: flex; align-items: center; justify-content: center;
+  padding-left: 16px;
+  color: var(--gold);
+  opacity: 0.25;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.list-item:hover .list-arrow { opacity: 0.7; transform: translateX(-3px); }
+.list-arrow svg { width: 16px; height: 16px; }
+
+/* ══════════════════════════
+   GRID VIEW
+══════════════════════════ */
+#view-grid .grid-feed {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+#view-grid .video-card {
+  display: grid;
+  grid-template-columns: 62fr 38fr;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.25s;
+}
+#view-grid .video-card:hover {
+  border-color: rgba(201,168,76,0.3);
+  transform: translateY(-3px);
+}
+#view-grid .video-card iframe {
+  display: block; width: 100%; height: 400px; border: none;
+}
+#view-grid .comments-section {
+  padding: 20px 16px;
+  border-right: 1px solid var(--card-border);
+  background: var(--comment-bg);
+  display: flex; flex-direction: column; justify-content: center;
+}
+
+/* ══════════════════════════
+   SIDE VIEW
+══════════════════════════ */
+#view-side .side-feed { display: flex; flex-direction: column; gap: 24px; }
+#view-side .video-card {
+  display: grid;
+  grid-template-columns: 62fr 38fr;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.25s;
+}
+#view-side .video-card:hover {
+  border-color: rgba(201,168,76,0.3);
+  transform: translateY(-3px);
+}
+#view-side .video-card iframe {
+  display: block; width: 100%; height: 450px; border: none;
+}
+#view-side .comments-section {
+  padding: 28px 22px;
+  border-right: 1px solid var(--card-border);
+  background: var(--comment-bg);
+  display: flex; flex-direction: column; justify-content: center;
+}
+
+/* ─── Shared comments style ─── */
+.comments-label {
+  font-size: 0.67rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  opacity: 0.6;
+}
+.comment {
+  display: flex; gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.comment:last-child { border-bottom: none; }
+.avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; color: var(--gold); flex-shrink: 0;
+}
+.comment-body { flex: 1; min-width: 0; }
+.comment-name { font-size: 0.74rem; color: var(--gold); margin-bottom: 2px; }
+.comment-text { font-size: 0.82rem; color: var(--text-mid); line-height: 1.55; }
+
+/* ══════════════════════════
+   MODAL
+══════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(5, 5, 10, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+.modal-overlay.open { opacity: 1; visibility: visible; }
+
+.modal-box {
+  width: 100%; max-width: 960px;
+  background: var(--card-bg);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 20px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 60fr 40fr;
+  max-height: 90vh;
+  box-shadow: 0 0 80px rgba(0,0,0,0.6), 0 0 40px rgba(201,168,76,0.04);
+  transform: scale(0.9) translateY(30px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
+
+/* Video side */
+.modal-video {
+  position: relative;
+  background: #000;
+}
+.modal-video iframe {
+  display: block; width: 100%; height: 100%; min-height: 480px; border: none;
+}
+.modal-nav {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 16px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  z-index: 5;
+}
+.modal-nav-btn {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(201,168,76,0.25);
+  color: var(--gold);
+  padding: 7px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+  backdrop-filter: blur(6px);
+}
+.modal-nav-btn:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
+.modal-nav-btn:disabled { opacity: 0.2; cursor: default; }
+.modal-nav-counter {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  color: rgba(201,168,76,0.5);
+  letter-spacing: 0.08em;
+}
+
+/* Comments side */
+.modal-comments {
+  padding: 28px 24px;
+  border-right: 1px solid var(--card-border);
+  background: var(--comment-bg);
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.modal-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+}
+.modal-divider {
+  height: 1px;
+  background: var(--card-border);
+  margin-bottom: 18px;
+}
+.modal-comments-label {
+  font-size: 0.67rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+/* Close button — top-right of comments panel */
+.modal-close {
+  position: absolute; top: 14px; right: 14px; z-index: 10;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.18);
+  color: var(--text-dim);
+  font-size: 0.78rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.modal-close:hover { background: rgba(201,168,76,0.15); color: var(--gold); border-color: var(--gold); }
+
+/* Post text */
+.modal-post-text {
+  font-size: 0.83rem;
+  color: var(--text-mid);
+  line-height: 1.75;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--card-border);
+  direction: rtl;
+}
+
+/* All comments link */
+.modal-all-comments {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--card-border);
+  font-size: 0.78rem;
+  color: var(--gold);
+  opacity: 0.6;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  letter-spacing: 0.04em;
+}
+.modal-all-comments:hover { opacity: 1; }
+.modal-all-comments svg { width: 12px; height: 12px; }
+
+/* ══════════════════════════
+   MOBILE FRAME PREVIEW
+══════════════════════════ */
+.section-label {
+  text-align: center;
+  margin: 72px 0 22px;
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+.section-label::before, .section-label::after {
+  content: '';
+  flex: 1; max-width: 80px;
+  height: 1px;
+  background: var(--card-border);
+}
+.section-label span {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+.phone-wrap {
+  display: flex;
+  justify-content: center;
+}
+.phone {
+  width: 360px;
+  background: #0d0d14;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 44px;
+  padding: 18px 0 28px;
+  box-shadow: 0 0 0 6px rgba(255,255,255,0.03), 0 30px 60px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+.phone-bar {
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px; padding: 0 20px;
+}
+.phone-notch {
+  width: 88px; height: 5px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+}
+.phone-header {
+  text-align: center;
+  padding: 0 20px 14px;
+  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 16px;
+}
+.phone-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+}
+.phone-list {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 0 14px;
+}
+.phone-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 10px 12px 10px 10px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.phone-item:hover { border-color: rgba(201,168,76,0.35); }
+.phone-thumb {
+  width: 50px; height: 50px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; overflow: hidden; position: relative;
+}
+.phone-thumb svg { width: 16px; height: 16px; position: relative; z-index: 1; }
+.phone-thumb::before {
+  content: ''; position: absolute; inset: 0;
+}
+.phone-thumb-1::before { background: linear-gradient(135deg, #1a0e20, #0c1525); }
+.phone-thumb-2::before { background: linear-gradient(135deg, #0e1a17, #141020); }
+.phone-thumb-3::before { background: linear-gradient(135deg, #1a150c, #0c1020); }
+.phone-thumb-4::before { background: linear-gradient(135deg, #0c1422, #1a0d18); }
+
+.phone-item-body { flex: 1; min-width: 0; }
+.phone-item-title {
+  font-size: 0.82rem; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+.phone-item-sub {
+  font-size: 0.69rem; color: var(--text-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.phone-item-sub b { color: rgba(201,168,76,0.65); font-weight: 400; }
+.phone-play {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.25);
+  background: rgba(201,168,76,0.06);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.phone-play svg { width: 9px; height: 9px; margin-right: -1px; }
+
+/* ─── Note ─── */
+.note {
+  max-width: 660px;
+  margin: 70px auto 0;
+  padding: 20px 26px;
+  background: rgba(201,168,76,0.04);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  line-height: 1.9;
+  text-align: center;
+}
+.note strong { color: var(--gold); }
+
+/* ─── Responsive ─── */
+@media (max-width: 720px) {
+  #view-grid .grid-feed { grid-template-columns: 1fr; }
+  #view-grid .video-card,
+  #view-side .video-card { grid-template-columns: 1fr !important; }
+  #view-grid .video-card iframe,
+  #view-side .video-card iframe { height: 280px !important; }
+  #view-grid .comments-section,
+  #view-side .comments-section { border-right: none !important; border-top: 1px solid var(--card-border) !important; }
+  .list-item { grid-template-columns: 100px 1fr 36px; }
+  .thumb { width: 100px; height: 80px; }
+  .phone { width: 100%; border-radius: 20px; }
+
+  /* ── Mobile modal = bottom sheet ── */
+  .modal-overlay { align-items: flex-end; padding: 0; }
+  .modal-box {
+    grid-template-columns: 1fr;
+    border-radius: 20px 20px 0 0;
+    max-height: 92vh;
+    width: 100%;
+    transform: translateY(100%) !important;
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1) !important;
+  }
+  .modal-overlay.open .modal-box { transform: translateY(0) !important; }
+  .modal-video iframe { min-height: 220px !important; height: 220px !important; }
+  .modal-comments {
+    max-height: 280px;
+    border-right: none !important;
+    border-top: 1px solid var(--card-border);
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>מה קורה אצלי</h1>
+  <p>תוכן ישירות מהפייסבוק — בלי לצאת מהאתר</p>
+  <div class="divider"></div>
+</header>
+
+<div class="view-toggle">
+  <button class="view-btn active" onclick="setView('list', this)">רשימה + מודל ▶</button>
+  <button class="view-btn" onclick="setView('grid', this)">גריד 2×2</button>
+  <button class="view-btn" onclick="setView('side', this)">שורות רחבות</button>
+</div>
+
+<!-- ═══════════ LIST VIEW ═══════════ -->
+<div id="view-list">
+  <div id="list-feed-cover" class="list-feed"></div>
+  <div id="list-feed-original" class="list-feed" style="margin-top:32px;"></div>
+</div>
+
+<!-- ═══════════ GRID VIEW ═══════════ -->
+<div id="view-grid">
+  <div id="grid-feed" class="grid-feed"></div>
+</div>
+
+<!-- ═══════════ SIDE VIEW ═══════════ -->
+<div id="view-side">
+  <div id="side-feed" class="side-feed"></div>
+</div>
+
+<!-- ═══════════ MODAL ═══════════ -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal-box">
+    <div class="modal-video">
+      <iframe id="modal-iframe" src="" scrolling="no" allowfullscreen
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+      </iframe>
+      <div class="modal-nav">
+        <button class="modal-nav-btn" id="btn-prev" onclick="navigate(-1)">‹ הקודם</button>
+        <span class="modal-nav-counter" id="modal-counter">1 / 4</span>
+        <button class="modal-nav-btn" id="btn-next" onclick="navigate(1)">הבא ›</button>
+      </div>
+    </div>
+    <div class="modal-comments" id="modal-comments">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MOBILE PREVIEW ═══════════ -->
+<div class="section-label"><span>תצוגת מובייל</span></div>
+<div class="phone-wrap">
+  <div class="phone">
+    <div class="phone-bar"><div class="phone-notch"></div></div>
+    <div class="phone-header"><h2>מה קורה אצלי</h2></div>
+    <div id="phone-list" class="phone-list"></div>
+  </div>
+</div>
+
+<div class="note">
+  <strong>פריוויו בלבד</strong> — לחץ על כרטיסייה ברשימה לראות את המודל עם ניווט.
+</div>
+
+<script>
+// ═══════════════════════════════
+// DATA
+// ═══════════════════════════════
+const covers = [
+  {
+    id: 219322850264239,
+    title: "Mix & Match, נטע וסיה — סלון שלי",
+    post: "Mix & Match, Neta and Sia visited my living room, So instead of coffee, I played for them a bit :)",
+    comments: [
+      { name: "אלונה",  text: "אהוב מוכשר שלנו" },
+      { name: "יובל",   text: "מהמם, אחלה שילוב ואחלה ביצוע" },
+      { name: "מאירה",  text: "ביצוע מושלם ❤️ אוהבת את הקול הנוגע שלך.." }
+    ]
+  },
+  {
+    id: 854200621969408,
+    title: "שיהיה לנו בית — קרן פלס",
+    post: "אף פעם לא היה לי את האומץ לשיר אותו כי בזמנו הוא היה כואב שורף מידי. מאז ... יש לי בית וכלב וילדים שלושה (חסרה רק החצר) אז הכל מעבר למושלם. ועכשיו שפחות שורף אני יכול לגשת לשיר המדהים הזה ולהגיש לכם אותו מתוך זיכרון ישן כואב.",
+    comments: [
+      { name: "שרית", text: "כרגיל מהמם וכיף גדול על הבוקר..." },
+      { name: "גילי",  text: "איזה מיוחד אתה..." },
+      { name: "שירה", text: "מדהים ומרגש" }
+    ]
+  },
+  {
+    id: 10158168026077054,
+    title: "חופשיה — שרית חדד",
+    post: "אז כבר יותר משבועיים הבת הקטנה שרה את השיר ״חופשייה״ בבית אחרי שראתה את הביצוע בזמר במסיכה. אז אם השיר זה תפס אותה, אבא מתיישב על הפסנתר ומנגן.",
+    comments: [
+      { name: "אלעד", text: "אתה שר כ\"כ יפה שזה מפחיד, כל מילה מקבלת אצלך משמעות. אלוף!" },
+      { name: "מגי",  text: "וואווו קול ממש מרגיש ונוגע" },
+      { name: "קארין", text: "וואו מהמםםם יש לך קול מושלם ומרגש" }
+    ]
+  },
+  {
+    id: 10158646832962054,
+    title: "יהלומים — נועה קירל",
+    post: "כשהבת הקטנה שלי כל כך אוהבת את נועה קירל, אבא לא ינגן לה שיר של נועה. קבלו טעימה קטנה ;)",
+    comments: [
+      { name: "ססיל", text: "יותר יפה מהמקור" },
+      { name: "מורן", text: "אתה שר כל כך יפה, איזה קול יש לך תענוג - מתגעגעת" },
+      { name: "אורי",  text: "זה מפתיע" }
+    ]
+  },
+  {
+    id: 10158637068292054,
+    title: "שבע בערב — דיקלה",
+    post: "",
+    comments: [
+      { name: "רונן",  text: "וואו" },
+      { name: "שרון", text: "אהבתי מאוד. והבנתי שגם דקלה אהבה ופירגנה" },
+      { name: "אור",   text: "מאוהבתתתתת" }
+    ]
+  },
+  {
+    id: 10158288402857054,
+    title: "תל אביב בלילה — עדן בן זקן",
+    post: "טוב נו סגר שלישי ואיך בא לצאת לתל אביב בלילה :)",
+    comments: [
+      { name: "אלונה", text: "חלום שלי לנסוע איתך לתל אביב מוכשררררר" },
+      { name: "שרית",  text: "פשוט זה יותר טוב בשידור חי... ממש כמו בחיים של פעם. אבל גם ככה זה יפה לשמוע. מאוד מאוד." },
+      { name: "דפנה", text: "יפה מאד!!!" }
+    ]
+  }
+];
+
+const originals = [
+  {
+    id: 10158274946972054,
+    title: "לפעמים — מקורי",
+    post: "הכי פשוט, כן ואמיתי בלי פילטר ופוטושופ. מה יותר טוב מלעשות שיחת נפש עם עצמך ועוד עם לחן! :)",
+    comments: [
+      { name: "קלייר", text: "שלמות!" },
+      { name: "קרן",   text: "אחד היפים שלך" },
+      { name: "לביא",  text: "וואוווו, מקסים!!! הקול שלך מטורף, המילים, הלחן... הפתעת" }
+    ]
+  },
+  {
+    id: 10158263611492054,
+    title: "עננים — מקורי",
+    post: "לפני 21 שנה בדיוק נכתב השיר הזה. רק כך יכולתי לבטא את עצמי. גיטרה, כמה מילים ולחן. עד היום עדיין נוגע בי.",
+    comments: [
+      { name: "מאור",  text: "אתה חייב לעשות משהו עם הכשרון הזה גבר" },
+      { name: "גיל",   text: "אלוהים אדירים הקול שלך. צמרמורות. תמיד." },
+      { name: "ואדים", text: "אתה מוכשר כל כך! כל כך!!!" }
+    ]
+  },
+  {
+    id: 10158685851287054,
+    title: "על קצות האצבעות — מקורי",
+    post: "כמה כיף להוציא מהמגירה שיר ישן שלי ולנגן על הבוקר :)",
+    comments: [
+      { name: "שרון", text: "התרגשתי לשמוע בדיוק כמו שהתרגשתי לפני 12 שנים ששמעתי אותו" },
+      { name: "נינה",  text: "עמיעדי אולי הגיע זמן לאיזה הופעה קטנה?" },
+      { name: "מורן", text: "שיר מקסים, תענוג צרוף" }
+    ]
+  },
+  {
+    id: 10157682971582054,
+    title: "השקט שלך — מקורי",
+    post: "לכל אחד יש את הקול שלו, אותו קול פנימי שלפעמים שותק ולא אומר מילה. בשעת לילה מאוחרת שיר חדש — ״השקט שלך״.",
+    comments: [
+      { name: "שרון",    text: "נו מה? זה מהמם.. אתה רק הולך ומשתבח" },
+      { name: "גוי",     text: "לרגעים מהשיר, כמו לשבת בים מותק, ממש כמו לשבת בים" },
+      { name: "בת שבע", text: "וואי איך אתה שר מהלב 💙 איזה קול לעצום עיניים ולשמוע" }
+    ]
+  },
+  {
+    id: 10157493890152054,
+    title: "Win It All — מקורי",
+    post: "אז ככה ... בין משחקים עם הילדים, מריבות, בישולים, עייפות ... התגנב לו שיר ככה בלי שארגיש. שיר ראשון על הפסנתר. מקווה שתאהבו",
+    comments: [
+      { name: "חן",    text: "עמיעד היקר אתה מוכשר ברמות!! ריגשת אותי ממש" },
+      { name: "שירלי", text: "Whatttttt????? Lady Gaga watch out!! יא אלוף אחד!! שיר מהמם ואתה שר — וואו" },
+      { name: "תמי",   text: "אשששש עלייך עמיעדוש חתיך שלנו" }
+    ]
+  },
+  {
+    id: 323047299566978,
+    title: "Diamonds — מקורי",
+    post: "אי שם לפני שש שנים כתבתי את השיר הקסום הזה והיום הוא מצא את דרכו אליי לפסנתר :)",
+    comments: [
+      { name: "אלאן",  text: "אליפות, איזו הנאה לאוזן." },
+      { name: "אלונה", text: "פשוט וואווווו" },
+      { name: "דפנה",  text: "יהלום מקסים!" }
+    ]
+  }
+];
+
+// flat array for modal navigation (covers first, then originals)
+const videos = [...covers, ...originals];
+
+// attach fbUrl + src to each
+videos.forEach(v => {
+  v.fbUrl = `https://www.facebook.com/amiad.oberman.9/videos/${v.id}/`;
+  v.src   = `https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Famiad.oberman.9%2Fvideos%2F${v.id}%2F&show_text=false&width=267&t=0`;
+});
+
+const GRADIENTS = ['thumb-bg-1','thumb-bg-2','thumb-bg-3','thumb-bg-4'];
+const PLAY_SVG = `<svg viewBox="0 0 14 14" fill="none"><path d="M4 2.5l8 4.5-8 4.5V2.5z" fill="#c9a84c"/></svg>`;
+const ARROW_SVG = `<svg viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8l5-5" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+// ═══════════════════════════════
+// RENDER HELPERS
+// ═══════════════════════════════
+function categoryLabel(text) {
+  return `<div style="font-size:0.68rem;letter-spacing:0.14em;color:var(--gold);text-transform:uppercase;opacity:0.5;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--card-border);">${text}</div>`;
+}
+
+function renderListItem(v, globalIdx, localIdx) {
+  return `
+    <div class="list-item" onclick="openModal(${globalIdx})" style="animation-delay:${localIdx * 0.07}s">
+      <div class="thumb">
+        <div class="thumb-bg ${GRADIENTS[localIdx % 4]}"></div>
+        <div class="thumb-overlay"></div>
+        <div class="thumb-num">${String(localIdx + 1).padStart(2,'0')}</div>
+        <div class="thumb-play"><div class="thumb-play-circle">${PLAY_SVG}</div></div>
+      </div>
+      <div class="list-info">
+        <div class="list-title">${v.title}</div>
+        <div class="list-comments-preview">
+          <div class="list-comment-line"><b>${v.comments[0].name}:</b> ${v.comments[0].text}</div>
+          ${v.comments[1] ? `<div class="list-comment-line"><b>${v.comments[1].name}:</b> ${v.comments[1].text}</div>` : ''}
+        </div>
+      </div>
+      <div class="list-arrow">${ARROW_SVG}</div>
+    </div>`;
+}
+
+function renderVideoCard(v) {
+  return `
+    <div class="video-card">
+      <iframe src="${v.src}" scrolling="no" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+      <div class="comments-section">
+        <div class="comments-label">תגובות נבחרות</div>
+        ${v.comments.map(c => `
+          <div class="comment">
+            <div class="avatar">${c.name[0]}</div>
+            <div class="comment-body">
+              <div class="comment-name">${c.name}</div>
+              <div class="comment-text">${c.text}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function renderPhoneItem(v, globalIdx, localIdx) {
+  return `
+    <div class="phone-item" onclick="openModal(${globalIdx})">
+      <div class="phone-thumb phone-thumb-${(localIdx % 4) + 1}">${PLAY_SVG}</div>
+      <div class="phone-item-body">
+        <div class="phone-item-title">${v.title}</div>
+        <div class="phone-item-sub"><b>${v.comments[0].name}:</b> ${v.comments[0].text.substring(0,28)}...</div>
+      </div>
+      <div class="phone-play">${PLAY_SVG}</div>
+    </div>`;
+}
+
+// ═══════════════════════════════
+// INIT — build all views
+// ═══════════════════════════════
+(function init() {
+  // List
+  document.getElementById('list-feed-cover').innerHTML =
+    categoryLabel('כיסויים') +
+    covers.map((v, i) => renderListItem(v, i, i)).join('');
+  document.getElementById('list-feed-original').innerHTML =
+    categoryLabel('מקוריים') +
+    originals.map((v, i) => renderListItem(v, covers.length + i, i)).join('');
+
+  // Grid
+  document.getElementById('grid-feed').innerHTML =
+    videos.map(v => renderVideoCard(v)).join('');
+
+  // Side
+  document.getElementById('side-feed').innerHTML =
+    videos.map(v => renderVideoCard(v)).join('');
+
+  // Phone (first 5 only to fit screen)
+  document.getElementById('phone-list').innerHTML =
+    videos.slice(0, 5).map((v, i) => renderPhoneItem(v, i, i)).join('');
+})();
+
+// ═══════════════════════════════
+// MODAL
+// ═══════════════════════════════
+let currentIndex = 0;
+
+function setView(type, btn) {
+  ['list','grid','side'].forEach(v => {
+    document.getElementById('view-' + v).style.display = v === type ? '' : 'none';
+  });
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function openModal(index) {
+  currentIndex = index;
+  loadModal();
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function loadModal() {
+  const v = videos[currentIndex];
+  document.getElementById('modal-iframe').src = v.src;
+  document.getElementById('modal-counter').textContent = `${currentIndex + 1} / ${videos.length}`;
+  document.getElementById('btn-prev').disabled = currentIndex === 0;
+  document.getElementById('btn-next').disabled = currentIndex === videos.length - 1;
+  document.getElementById('modal-comments').innerHTML = `
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">${v.title}</div>
+    ${v.post ? `<div class="modal-post-text">${v.post}</div>` : '<div class="modal-divider"></div>'}
+    <div class="modal-comments-label">תגובות נבחרות</div>
+    ${v.comments.map(c => `
+      <div class="comment">
+        <div class="avatar">${c.name[0]}</div>
+        <div class="comment-body">
+          <div class="comment-name">${c.name}</div>
+          <div class="comment-text">${c.text}</div>
+        </div>
+      </div>`).join('')}
+    <a class="modal-all-comments" href="${v.fbUrl}" target="_blank" rel="noopener">
+      לכל התגובות בפייסבוק
+      <svg viewBox="0 0 12 12" fill="none"><path d="M10 6H2M6 2L2 6l4 4" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  `;
+}
+
+function navigate(dir) {
+  const next = currentIndex + dir;
+  if (next < 0 || next >= videos.length) return;
+  currentIndex = next;
+  const iframe = document.getElementById('modal-iframe');
+  iframe.style.opacity = '0';
+  setTimeout(() => { loadModal(); iframe.style.opacity = '1'; }, 200);
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => { document.getElementById('modal-iframe').src = ''; }, 350);
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal')) closeModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowRight') navigate(-1);
+  if (e.key === 'ArrowLeft') navigate(1);
+});
+</script>
+
+</body>
+</html>

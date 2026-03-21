@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>וידאו — Amiado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Rubik:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold: #c9a84c;
+  --gold-glow: rgba(201,168,76,0.18);
+  --gold-dim: rgba(201,168,76,0.45);
+  --bg: #0a0a0a;
+  --surface: #111;
+  --text: #ece7de;
+  --dim: rgba(236,231,222,0.4);
+  --faint: rgba(236,231,222,0.08);
+  --line: rgba(236,231,222,0.07);
+}
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ════════════════════════════════
+   GRAIN OVERLAY
+════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  mix-blend-mode: overlay;
+}
+
+/* ════════════════════════════════
+   TOP NAV STRIP
+════════════════════════════════ */
+.top-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 52px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  background: rgba(10,10,10,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.top-bar-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.top-bar-brand span { color: var(--gold); }
+
+.filter-row {
+  display: flex;
+  gap: 4px;
+}
+
+.fp {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 40px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+  font-family: 'Rubik', sans-serif;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.fp:hover { color: var(--text); border-color: var(--faint); }
+.fp.active { border-color: var(--gold-dim); color: var(--gold); background: var(--gold-glow); }
+
+/* ════════════════════════════════
+   SPLIT LAYOUT
+════════════════════════════════ */
+.layout {
+  display: grid;
+  grid-template-columns: 460px 1fr;
+  height: 100vh;
+  padding-top: 60px;
+}
+
+/* ── LEFT PANEL: playlist ── */
+.panel-list {
+  border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.panel-list::-webkit-scrollbar { display: none; }
+
+.panel-header {
+  padding: 48px 40px 32px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.panel-header-eyebrow {
+  font-size: 0.55rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 16px;
+}
+
+.panel-header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.2rem, 5vw, 4.8rem);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+}
+
+.panel-header-title em {
+  font-style: italic;
+  color: var(--dim);
+  font-size: 0.65em;
+}
+
+.panel-header-count {
+  margin-top: 20px;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--dim);
+}
+
+/* ── video rows ── */
+.vrow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 40px;
+  min-height: 90px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.vrow::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+
+.vrow:hover, .vrow.active {
+  background: rgba(201,168,76,0.04);
+}
+
+.vrow.active::after, .vrow:hover::after {
+  transform: scaleY(1);
+}
+
+.vrow-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.72rem;
+  font-weight: 300;
+  color: var(--dim);
+  letter-spacing: 0.12em;
+  width: 32px;
+  flex-shrink: 0;
+}
+
+.vrow.active .vrow-num {
+  color: var(--gold);
+}
+
+.vrow-info {
+  flex: 1;
+  padding: 0 16px;
+}
+
+.vrow-cat {
+  font-size: 0.5rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 6px;
+  transition: color 0.2s;
+}
+
+.vrow:hover .vrow-cat, .vrow.active .vrow-cat {
+  color: var(--gold-dim);
+}
+
+.vrow-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+.vrow-dur {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.vrow-play-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0;
+  margin-left: 12px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+
+.vrow:hover .vrow-play-icon {
+  opacity: 1;
+  border-color: var(--gold-dim);
+}
+
+/* ── RIGHT PANEL: preview ── */
+.panel-preview {
+  position: relative;
+  overflow: hidden;
+  background: #060606;
+}
+
+.preview-bg {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.6s ease;
+}
+
+.preview-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 8s ease;
+  transform-origin: center;
+}
+
+.preview-bg.entering img { transform: scale(1.06); }
+.preview-bg.active img { transform: scale(1); }
+
+/* gradient overlays */
+.preview-grad-1 {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.0) 30%, rgba(10,10,10,0.0) 50%, rgba(10,10,10,0.85) 100%);
+  z-index: 1;
+}
+
+.preview-grad-2 {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(10,10,10,0.0) 60%, rgba(10,10,10,0.95) 100%);
+  z-index: 1;
+}
+
+/* content */
+.preview-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 48px 52px;
+}
+
+.preview-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.45s 0.1s, transform 0.45s 0.1s cubic-bezier(0.16,1,0.3,1);
+}
+
+.preview-badge-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.preview-badge-text {
+  font-size: 0.56rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.preview-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 3.2vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 32px;
+  max-width: 480px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s 0.18s, transform 0.5s 0.18s cubic-bezier(0.16,1,0.3,1);
+}
+
+.preview-play-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.3s, background 0.3s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.45s 0.25s, transform 0.45s 0.25s cubic-bezier(0.34,1.56,0.64,1), border-color 0.3s, background 0.3s;
+  flex-shrink: 0;
+  border-color: rgba(255,255,255,0.6);
+}
+
+.preview-play-btn:hover {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.18);
+}
+
+/* active state → show all */
+.panel-preview.loaded .preview-badge,
+.panel-preview.loaded .preview-title,
+.panel-preview.loaded .preview-play-btn {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* placeholder / no selection */
+.preview-placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.preview-placeholder.hidden { opacity: 0; pointer-events: none; }
+
+.preview-placeholder-icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-placeholder-text {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* gradient bg for categories when no thumbnail loads */
+.preview-bg[data-cat="clip"]     { background: radial-gradient(ellipse at 40% 60%, #1c0505 0%, #0a0a0a 70%); }
+.preview-bg[data-cat="live"]     { background: radial-gradient(ellipse at 40% 60%, #041010 0%, #0a0a0a 70%); }
+.preview-bg[data-cat="acoustic"] { background: radial-gradient(ellipse at 40% 60%, #100d03 0%, #0a0a0a 70%); }
+
+/* ── inline player ── */
+.inline-player {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.inline-player.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.inline-ratio {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  flex-shrink: 0;
+}
+
+.inline-ratio iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.inline-meta {
+  padding: 16px 28px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: rgba(236,231,222,0.6);
+  letter-spacing: 0.02em;
+}
+
+.inline-close {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 11;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.inline-close:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── filtered out ── */
+.vrow.out { display: none; }
+
+/* ════════════════════════════════
+   LIGHTBOX
+════════════════════════════════ */
+.lb {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  align-items: center; justify-content: center;
+  background: rgba(0,0,0,0);
+  transition: background 0.4s;
+}
+.lb.open { display: flex; }
+.lb.vis  { background: rgba(0,0,0,0.95); }
+
+.lb-inner {
+  width: min(860px, calc(100vw - 32px));
+  opacity: 0;
+  transform: scale(0.96) translateY(20px);
+  transition: opacity 0.4s 0.08s, transform 0.4s 0.08s cubic-bezier(0.16,1,0.3,1);
+}
+.lb.vis .lb-inner { opacity: 1; transform: scale(1) translateY(0); }
+
+.lb-ratio {
+  position: relative; padding-top: 56.25%;
+  background: #000; border-radius: 3px; overflow: hidden;
+}
+.lb-ratio iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+.lb-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 2px 0; gap: 16px;
+}
+
+.lb-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 300; color: var(--text);
+}
+
+.lb-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--line); background: transparent;
+  color: var(--dim); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+.lb-close:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ════════════════════════════════
+   ENTRANCE ANIMATION
+════════════════════════════════ */
+.top-bar   { animation: fadeDown 0.7s 0.05s cubic-bezier(0.16,1,0.3,1) both; }
+.panel-list { animation: fadeIn 0.8s 0.15s both; }
+.panel-preview { animation: fadeIn 0.9s 0.2s both; }
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ════════════════════════════════
+   RESPONSIVE
+════════════════════════════════ */
+@media (max-width: 920px) {
+  .layout { grid-template-columns: 1fr; height: auto; }
+  .panel-preview { height: 56vw; min-height: 260px; position: relative; }
+  .panel-list { overflow: visible; }
+  .top-bar { padding: 0 20px; }
+  .panel-header { padding: 32px 24px 24px; }
+  .vrow { padding: 0 24px; }
+  .preview-content { padding: 28px 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<nav class="top-bar">
+  <a class="top-bar-brand" href="#">a<span>m</span>iado</a>
+  <div class="filter-row" id="filters">
+    <button class="fp active" data-f="all">הכל</button>
+    <button class="fp" data-f="clip">קליפים</button>
+    <button class="fp" data-f="live">הופעות</button>
+    <button class="fp" data-f="acoustic">אקוסטי</button>
+  </div>
+</nav>
+
+<!-- ── Layout ── -->
+<div class="layout">
+
+  <!-- LEFT: playlist panel -->
+  <aside class="panel-list" id="panelList">
+    <div class="panel-header">
+      <div class="panel-header-eyebrow">הופעות · קליפים · רגעים</div>
+      <h1 class="panel-header-title">וידאו<br><em>Archive</em></h1>
+      <div class="panel-header-count" id="countLabel">7 סרטונים</div>
+    </div>
+    <div id="vlist"></div>
+  </aside>
+
+  <!-- RIGHT: preview panel -->
+  <section class="panel-preview" id="panelPreview">
+
+    <!-- Background layers (swapped on hover) -->
+    <div class="preview-bg" id="prevBgA"></div>
+    <div class="preview-bg" id="prevBgB" style="opacity:0"></div>
+
+    <div class="preview-grad-1"></div>
+    <div class="preview-grad-2"></div>
+
+    <!-- Placeholder -->
+    <div class="preview-placeholder" id="placeholder">
+      <div class="preview-placeholder-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(236,231,222,0.25)" stroke-width="1.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <span class="preview-placeholder-text">עבור על סרטון לתצוגה מקדימה</span>
+    </div>
+
+    <!-- Content overlay -->
+    <div class="preview-content" id="prevContent">
+      <div class="preview-badge" id="prevBadge">
+        <div class="preview-badge-dot"></div>
+        <span class="preview-badge-text" id="prevCat"></span>
+      </div>
+      <div class="preview-title" id="prevTitle"></div>
+      <button class="preview-play-btn" id="prevPlayBtn" aria-label="נגן">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+
+    <!-- Inline video player (shown when play is clicked) -->
+    <div class="inline-player" id="inlinePlayer">
+      <button class="inline-close" id="inlineClose" title="סגור">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
+        </svg>
+      </button>
+      <div class="inline-ratio">
+        <iframe id="inlineFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+      <div class="inline-meta" id="inlineMeta"></div>
+    </div>
+
+  </section>
+</div>
+
+<!-- ── Lightbox ── -->
+<div class="lb" id="lb">
+  <div class="lb-inner">
+    <div class="lb-ratio">
+      <iframe id="lbFrame" src="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="lb-bar">
+      <span class="lb-title" id="lbTitle"></span>
+      <button class="lb-close" id="lbClose">✕</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const VIDEOS = [
+  { id:'v1', title:'מגע במילים — קליפ רשמי',     cat:'clip',     dur:'3:42', yt:'pt9Kn-5nIws' },
+  { id:'v2', title:'שיגעון אמורפי — הופעה חיה',   cat:'live',     dur:'5:11', yt:'dQw4w9WgXcQ' },
+  { id:'v3', title:'לונדון — אקוסטי',              cat:'acoustic', dur:'4:02', yt:'dQw4w9WgXcQ' },
+  { id:'v4', title:'גיבור על — הופעת השקה',         cat:'live',     dur:'6:28', yt:'dQw4w9WgXcQ' },
+  { id:'v5', title:'אפשר — קליפ רשמי',             cat:'clip',     dur:'3:55', yt:'dQw4w9WgXcQ' },
+  { id:'v6', title:'בנהר שלי — סטודיו סשן',        cat:'acoustic', dur:'4:44', yt:'dQw4w9WgXcQ' },
+  { id:'v7', title:'מקום בטוח — פסטיבל',            cat:'live',     dur:'7:15', yt:'dQw4w9WgXcQ' },
+];
+
+const CAT_HE = { clip:'קליפ', live:'הופעה', acoustic:'אקוסטי' };
+const thumb  = yt => `https://img.youtube.com/vi/${yt}/maxresdefault.jpg`;
+
+// Two bg layers for crossfade
+const bgA = document.getElementById('prevBgA');
+const bgB = document.getElementById('prevBgB');
+let activeLayer = 'A';
+let currentVideo = null;
+let hoverTimeout;
+
+const placeholder = document.getElementById('placeholder');
+const panelPreview = document.getElementById('panelPreview');
+const prevBadge = document.getElementById('prevBadge');
+const prevCat   = document.getElementById('prevCat');
+const prevTitle = document.getElementById('prevTitle');
+const prevPlayBtn = document.getElementById('prevPlayBtn');
+
+// Build list
+const vlist = document.getElementById('vlist');
+VIDEOS.forEach((v, i) => {
+  const row = document.createElement('div');
+  row.className = 'vrow';
+  row.dataset.cat = v.cat;
+  row.dataset.id  = v.id;
+  row.innerHTML = `
+    <span class="vrow-num">${String(i+1).padStart(2,'0')}</span>
+    <div class="vrow-info">
+      <div class="vrow-cat">${CAT_HE[v.cat]}</div>
+      <div class="vrow-title">${v.title}</div>
+    </div>
+    <span class="vrow-dur">${v.dur}</span>
+    <div class="vrow-play-icon">
+      <svg width="10" height="10" viewBox="0 0 12 12" fill="rgba(236,231,222,0.7)"><path d="M2 1v10l9-5z"/></svg>
+    </div>`;
+
+  row.addEventListener('mouseenter', () => {
+    clearTimeout(hoverTimeout);
+    hoverTimeout = setTimeout(() => previewVideo(v, row), 80);
+  });
+
+  row.addEventListener('mouseleave', () => clearTimeout(hoverTimeout));
+
+  row.addEventListener('click', () => {
+    previewVideo(v, row);
+    setTimeout(() => playInline(v), 120);
+  });
+  vlist.appendChild(row);
+});
+
+/* ── crossfade preview ── */
+function previewVideo(v, rowEl) {
+  if (currentVideo?.id === v.id) return;
+  currentVideo = v;
+
+  // active row highlight
+  document.querySelectorAll('.vrow').forEach(r => r.classList.remove('active'));
+  rowEl.classList.add('active');
+
+  // hide placeholder
+  placeholder.classList.add('hidden');
+
+  // load new thumbnail into inactive layer
+  const inLayer  = activeLayer === 'A' ? bgB : bgA;
+  const outLayer = activeLayer === 'A' ? bgA : bgB;
+
+  inLayer.dataset.cat = v.cat;
+  inLayer.innerHTML   = `<img src="${thumb(v.yt)}" alt="" onerror="this.style.display='none'">`;
+  inLayer.style.opacity = '0';
+
+  // trigger crossfade
+  requestAnimationFrame(() => {
+    inLayer.style.transition  = 'opacity 0.7s ease';
+    outLayer.style.transition = 'opacity 0.7s ease';
+    inLayer.style.opacity     = '1';
+    outLayer.style.opacity    = '0';
+  });
+
+  activeLayer = activeLayer === 'A' ? 'B' : 'A';
+
+  // update text
+  panelPreview.classList.remove('loaded');
+  prevCat.textContent   = CAT_HE[v.cat];
+  prevTitle.textContent = v.title;
+  prevPlayBtn.dataset.id = v.id;
+
+  requestAnimationFrame(() => {
+    panelPreview.classList.add('loaded');
+  });
+}
+
+const inlinePlayer = document.getElementById('inlinePlayer');
+const inlineFrame  = document.getElementById('inlineFrame');
+const inlineMeta   = document.getElementById('inlineMeta');
+const inlineClose  = document.getElementById('inlineClose');
+
+function playInline(v) {
+  inlineFrame.src = `https://www.youtube.com/embed/${v.yt}?autoplay=1&rel=0`;
+  inlineMeta.textContent = v.title;
+  inlinePlayer.classList.add('visible');
+}
+
+function closeInline() {
+  inlinePlayer.classList.remove('visible');
+  inlineFrame.src = '';
+}
+
+inlineClose.addEventListener('click', closeInline);
+
+prevPlayBtn.addEventListener('click', () => {
+  if (currentVideo) playInline(currentVideo);
+});
+
+/* ── filter ── */
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.fp');
+  if (!btn) return;
+  document.querySelectorAll('.fp').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const f = btn.dataset.f;
+  let visible = 0;
+  document.querySelectorAll('.vrow').forEach(row => {
+    const show = f === 'all' || row.dataset.cat === f;
+    row.classList.toggle('out', !show);
+    if (show) visible++;
+  });
+
+  document.getElementById('countLabel').textContent = `${visible} סרטונים`;
+
+  // reset preview if filtered out
+  if (currentVideo && f !== 'all' && currentVideo.cat !== f) {
+    currentVideo = null;
+    panelPreview.classList.remove('loaded');
+    placeholder.classList.remove('hidden');
+    document.querySelectorAll('.vrow').forEach(r => r.classList.remove('active'));
+  }
+});
+
+/* ── lightbox ── */
+const lb      = document.getElementById('lb');
+const lbFrame = document.getElementById('lbFrame');
+const lbTitle = document.getElementById('lbTitle');
+
+function openLB(v) {
+  lbTitle.textContent = v.title;
+  lbFrame.src = `https://www.youtube.com/embed/${v.yt}?autoplay=1`;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => requestAnimationFrame(() => lb.classList.add('vis')));
+}
+
+function closeLB() {
+  lb.classList.remove('vis');
+  lbFrame.src = '';
+  setTimeout(() => { lb.classList.remove('open'); document.body.style.overflow = ''; }, 400);
+}
+
+document.getElementById('lbClose').addEventListener('click', closeLB);
+lb.addEventListener('click', e => { if (e.target === lb) closeLB(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('vis')) closeLB(); });
+</script>
+</body>
+</html>

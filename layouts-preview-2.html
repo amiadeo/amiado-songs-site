@@ -1,0 +1,2454 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פריסות חדשות — Amiado Design Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d13;
+    --card-bg: #13131e;
+    --gold: #c9a84c;
+    --text: #e8e3d8;
+    --text-dim: rgba(232,227,216,0.4);
+    --border: rgba(255,255,255,0.07);
+    --radius: 10px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 300;
+    direction: rtl;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── STICKY NAV ── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(13,13,19,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    overflow-x: auto;
+  }
+  .sticky-nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.78rem;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .sticky-nav a:hover {
+    color: var(--gold);
+    border-color: rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.06);
+  }
+  .sticky-nav .nav-sep {
+    color: var(--border);
+    font-size: 0.7rem;
+    padding: 0 2px;
+  }
+  .sticky-nav .nav-label {
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    opacity: 0.5;
+    padding: 0 4px;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    text-align: center;
+    padding: 64px 24px 48px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2.8rem;
+    color: var(--gold);
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .page-header p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    position: relative;
+  }
+
+  /* ── SECTION HEADINGS ── */
+  .section-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+  .section-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.9rem;
+    color: var(--text);
+    padding: 56px 0 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .section-heading span {
+    font-size: 0.8rem;
+    color: var(--gold);
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── LAYOUT BLOCK ── */
+  .layout-block {
+    margin-bottom: 72px;
+    scroll-margin-top: 56px;
+  }
+  .layout-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .layout-meta-left {}
+  .layout-tag {
+    display: inline-block;
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    margin-bottom: 8px;
+  }
+  .layout-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .layout-desc {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    max-width: 480px;
+    line-height: 1.7;
+  }
+  .btn-choose {
+    flex-shrink: 0;
+    padding: 10px 24px;
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+    border-radius: 6px;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+    align-self: center;
+  }
+  .btn-choose:hover {
+    background: rgba(201,168,76,0.1);
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(201,168,76,0.15);
+  }
+
+  /* ── PREVIEW AREA ── */
+  .preview-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .preview-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .preview-label {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .preview-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .preview-frame {
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    background: #0a0a10;
+    position: relative;
+  }
+  .preview-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+  }
+
+  /* Desktop frame: inner 900px, scale 0.55, container ~495px */
+  .frame-desktop {
+    width: 495px;
+    height: 400px;
+  }
+  .frame-desktop .frame-inner {
+    width: 900px;
+    transform: scale(0.55);
+    transform-origin: top right;
+  }
+
+  /* SOTW desktop: inner 860px, scale 0.6, container ~516px */
+  .frame-sotw {
+    width: 516px;
+    height: 380px;
+  }
+  .frame-sotw .frame-inner {
+    width: 860px;
+    transform: scale(0.6);
+    transform-origin: top right;
+  }
+
+  /* Mobile frame: inner 375px, scale 0.75, container ~281px */
+  .frame-mobile {
+    width: 281px;
+    height: 350px;
+  }
+  .frame-mobile .frame-inner {
+    width: 375px;
+    transform: scale(0.75);
+    transform-origin: top right;
+  }
+
+  .frame-inner {
+    background: #0d0d13;
+    padding: 20px;
+    min-height: 600px;
+  }
+
+  /* ══════════════════════════════════════════════
+     SONG SAMPLE DATA HELPERS
+  ══════════════════════════════════════════════ */
+
+  /* Gradient placeholders for covers */
+  .cover-a { background: linear-gradient(135deg, #1a0a2e 0%, #2d1657 50%, #0d1a3a 100%); }
+  .cover-b { background: linear-gradient(135deg, #0d1f2d 0%, #1a3a4a 50%, #0a1520 100%); }
+  .cover-c { background: linear-gradient(135deg, #1f0d0d 0%, #3a1515 50%, #2a0a0a 100%); }
+  .cover-d { background: linear-gradient(135deg, #0d1f0d 0%, #1a3a1a 50%, #0a2510 100%); }
+  .cover-e { background: linear-gradient(135deg, #1f1f0d 0%, #3a3515 50%, #2a2a08 100%); }
+  .cover-f { background: linear-gradient(135deg, #1f0d1f 0%, #3a1535 50%, #250a25 100%); }
+
+
+  /* ══════════════════════════════════════════════
+     LAYOUT F — CINEMATIC (קולנועי)
+  ══════════════════════════════════════════════ */
+
+  .lf-card {
+    display: flex;
+    flex-direction: row-reverse; /* RTL: image right, text left */
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    position: relative;
+    transition: box-shadow 0.3s;
+    cursor: pointer;
+  }
+  .lf-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 3px; height: 0%;
+    background: var(--gold);
+    transition: height 0.4s ease;
+  }
+  .lf-card:hover::after { height: 100%; }
+  .lf-card:hover .lf-image { filter: brightness(1.2); }
+
+  .lf-image {
+    width: 40%;
+    flex-shrink: 0;
+    transition: filter 0.3s;
+    position: relative;
+  }
+  .lf-text {
+    width: 60%;
+    padding: 28px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .lf-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .lf-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .lf-excerpt {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .lf-lang {
+    font-size: 0.68rem;
+    color: rgba(201,168,76,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  /* Mobile F */
+  .lf-card-mobile {
+    flex-direction: column;
+    height: 260px;
+  }
+  .lf-card-mobile .lf-image { width: 100%; height: 50%; }
+  .lf-card-mobile .lf-text { width: 100%; height: 50%; padding: 12px 16px; }
+  .lf-card-mobile .lf-num { font-size: 1.8rem; margin-bottom: 4px; }
+  .lf-card-mobile .lf-title { font-size: 1rem; margin-bottom: 4px; }
+
+
+  /* ══════════════════════════════════════════════
+     LAYOUT G — COMPACT DENSE (דחוס)
+  ══════════════════════════════════════════════ */
+
+  .lg-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .lg-grid-mobile {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .lg-card {
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .lg-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 16px rgba(201,168,76,0.2);
+  }
+  .lg-cover {
+    position: absolute;
+    inset: 0;
+  }
+  .lg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+  }
+  .lg-num {
+    position: absolute;
+    top: 8px; right: 8px;
+    font-size: 0.62rem;
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    opacity: 0.8;
+    background: rgba(0,0,0,0.4);
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+  .lg-title {
+    position: absolute;
+    bottom: 10px; right: 10px; left: 10px;
+    font-size: 0.82rem;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .lg-lang {
+    display: block;
+    font-size: 0.6rem;
+    color: rgba(201,168,76,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     LAYOUT H — SPOTLIGHT + LIST (זרקור + רשימה)
+  ══════════════════════════════════════════════ */
+
+  .lh-layout {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    gap: 16px;
+    height: 480px;
+  }
+  .lh-featured {
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .lh-featured-cover {
+    position: absolute;
+    inset: 0;
+  }
+  .lh-featured-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+  }
+  .lh-featured-info {
+    position: absolute;
+    bottom: 0; right: 0; left: 0;
+    padding: 28px;
+  }
+  .lh-featured-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-style: italic;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .lh-featured-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .lh-featured-excerpt {
+    font-size: 0.8rem;
+    color: rgba(232,227,216,0.65);
+    line-height: 1.6;
+  }
+
+  .lh-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .lh-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+    flex-direction: row-reverse; /* RTL */
+  }
+  .lh-item:hover { background: rgba(255,255,255,0.04); }
+  .lh-item.active {
+    background: rgba(201,168,76,0.1);
+    border-color: rgba(201,168,76,0.3);
+  }
+  .lh-item-cover {
+    width: 44px; height: 44px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .lh-item-info {
+    flex: 1;
+    text-align: right;
+  }
+  .lh-item-num {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+  .lh-item-title {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .lh-item.active .lh-item-title { color: var(--gold); }
+  .lh-item-lang {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* Mobile H: single column */
+  .lh-layout-mobile {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .lh-layout-mobile .lh-featured { height: 280px; }
+  .lh-layout-mobile .lh-list { max-height: 240px; }
+
+
+  /* ══════════════════════════════════════════════
+     LAYOUT I — ALBUM SHELF (אלבום)
+  ══════════════════════════════════════════════ */
+
+  .li-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .li-card {
+    height: 280px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    border: 4px solid rgba(255,255,255,0.05);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+  .li-card:hover {
+    transform: scale(1.05) rotate(-1deg);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.6);
+  }
+  .li-cover {
+    position: absolute;
+    inset: 0;
+  }
+  .li-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+  }
+  .li-title {
+    position: absolute;
+    bottom: 14px;
+    right: 0; left: 0;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text);
+    padding: 0 10px;
+  }
+
+  /* Mobile I: horizontal scroll */
+  .li-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+    direction: rtl;
+  }
+  .li-card-mobile {
+    width: 160px;
+    height: 220px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    border: 4px solid rgba(255,255,255,0.05);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .li-card-mobile:hover { transform: scale(1.05); }
+
+
+  /* ══════════════════════════════════════════════
+     LAYOUT J — TYPOGRAPHY FORWARD (טייפוגרפי)
+  ══════════════════════════════════════════════ */
+
+  .lj-list { list-style: none; }
+  .lj-item {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    cursor: pointer;
+    transition: all 0.25s;
+    flex-direction: row-reverse; /* RTL */
+  }
+  .lj-item:first-child { border-top: 1px solid rgba(201,168,76,0.2); }
+  .lj-item:hover .lj-title { transform: translateX(-6px); color: var(--gold); }
+  .lj-item:hover .lj-gold-dot { opacity: 1; }
+
+  .lj-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--gold);
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+  }
+  .lj-content { flex: 1; text-align: right; }
+  .lj-lang {
+    font-size: 0.65rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+    opacity: 0.7;
+  }
+  .lj-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 6px;
+    transition: transform 0.25s, color 0.25s;
+  }
+  .lj-excerpt {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lj-gold-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.25s;
+    margin-top: 4px;
+  }
+
+  /* Mobile J: slightly smaller */
+  .lj-mobile .lj-title { font-size: 1.35rem; }
+  .lj-mobile .lj-excerpt { font-size: 0.72rem; }
+  .lj-mobile .lj-item { padding: 16px 0; gap: 12px; }
+
+
+  /* ══════════════════════════════════════════════
+     SOTW OPTION 1 — CURRENT (נוכחי)
+  ══════════════════════════════════════════════ */
+
+  .sotw-section-header {
+    margin-bottom: 20px;
+  }
+  .sotw-section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .sotw-section-rule {
+    height: 1px;
+    background: linear-gradient(to left, var(--gold), transparent);
+    width: 120px;
+  }
+
+  .sotw1-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .sotw-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .sotw-card-cover {
+    height: 160px;
+    position: relative;
+  }
+  .sotw-card-cover-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13,13,19,0.7) 0%, transparent 60%);
+  }
+  .sotw-card-body {
+    padding: 16px 18px 18px;
+  }
+  .sotw-card-label {
+    font-size: 0.65rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+  .sotw-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .sotw-card-desc {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+  .sotw-card-btn {
+    display: inline-block;
+    padding: 7px 18px;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+    border-radius: 5px;
+    font-size: 0.75rem;
+    font-family: 'Frank Ruhl Libre', serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .sotw-card-btn:hover {
+    background: rgba(201,168,76,0.1);
+  }
+
+
+  /* ══════════════════════════════════════════════
+     SOTW OPTION 2 — CINEMATIC FULL-WIDTH (קולנועי)
+  ══════════════════════════════════════════════ */
+
+  .sotw2-banner {
+    position: relative;
+    height: 320px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .sotw2-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1a0a2e 0%, #2d1657 50%, #0d1a3a 100%);
+    filter: blur(0px) brightness(0.6);
+  }
+  .sotw2-badge {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(201,168,76,0.2);
+    border: 1px solid rgba(201,168,76,0.5);
+    color: var(--gold);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    z-index: 3;
+  }
+  .sotw2-divider {
+    position: absolute;
+    top: 30px; bottom: 30px;
+    right: 33.333%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    z-index: 3;
+  }
+  .sotw2-writing {
+    position: absolute;
+    top: 0; right: 0;
+    width: 33.333%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 28px 24px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255,255,255,0.15);
+    border-left: 1px solid rgba(255,255,255,0.08);
+    text-align: right;
+  }
+  .sotw2-writing-label {
+    font-size: 0.6rem;
+    color: rgba(201,168,76,0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  .sotw2-writing-cover {
+    width: 64px; height: 64px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #0d1f2d 0%, #1a3a4a 100%);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .sotw2-writing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .sotw2-writing-desc {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .sotw2-writing-btn {
+    display: inline-block;
+    padding: 5px 14px;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+    border-radius: 4px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  .sotw2-song {
+    position: absolute;
+    top: 0; left: 0;
+    width: 66.666%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 36px 40px;
+    background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, transparent 80%);
+    text-align: right;
+  }
+  .sotw2-song-label {
+    font-size: 0.6rem;
+    color: rgba(201,168,76,0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  .sotw2-song-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.1;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+  .sotw2-song-desc {
+    font-size: 0.82rem;
+    color: rgba(232,227,216,0.6);
+    margin-bottom: 18px;
+  }
+  .sotw2-play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    background: rgba(201,168,76,0.2);
+    border: 1px solid rgba(201,168,76,0.6);
+    color: var(--gold);
+    border-radius: 6px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    width: fit-content;
+  }
+  .play-icon {
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 5px 0 5px 9px;
+    border-color: transparent transparent transparent var(--gold);
+    flex-shrink: 0;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     SOTW OPTION 3 — SPLIT SCREEN (מחולק)
+  ══════════════════════════════════════════════ */
+
+  .sotw3-wrap {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    height: 280px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .sotw3-circle {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: var(--bg);
+    box-shadow: 0 0 0 4px rgba(201,168,76,0.15), 0 0 20px rgba(201,168,76,0.3);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sotw3-circle-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .sotw3-writing {
+    background: linear-gradient(135deg, #0d1a2d 0%, #0a1520 60%, #060d15 100%);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: right;
+    position: relative;
+    overflow: hidden;
+  }
+  .sotw3-writing::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.04);
+  }
+  .sotw3-writing-label {
+    font-size: 0.62rem;
+    color: rgba(201,168,76,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+  }
+  .sotw3-writing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.25;
+  }
+  .sotw3-writing-excerpt {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .sotw3-writing-link {
+    font-size: 0.72rem;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    display: inline;
+    padding-bottom: 2px;
+  }
+
+  .sotw3-song {
+    background: linear-gradient(135deg, #1a0a2e 0%, #3d1a5c 40%, #2a0d40 100%);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: right;
+    position: relative;
+    overflow: hidden;
+  }
+  .sotw3-song::before {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.06);
+  }
+  .sotw3-song-label {
+    font-size: 0.62rem;
+    color: rgba(201,168,76,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+  }
+  .sotw3-song-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.15;
+  }
+  .sotw3-play {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: rgba(201,168,76,0.18);
+    border: 1px solid rgba(201,168,76,0.5);
+    color: var(--gold);
+    border-radius: 5px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    width: fit-content;
+    margin-top: 4px;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     SOTW OPTION 4 — CARD + PULL QUOTE (כרטיס + ציטוט)
+  ══════════════════════════════════════════════ */
+
+  .sotw4-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: center;
+    padding: 20px 0;
+  }
+  .sotw4-quote-side {
+    text-align: right;
+    position: relative;
+    padding-right: 12px;
+  }
+  .sotw4-quotemark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 6rem;
+    color: var(--gold);
+    line-height: 0.7;
+    opacity: 0.35;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .sotw4-pull-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .sotw4-writing-label {
+    font-size: 0.62rem;
+    color: rgba(201,168,76,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .sotw4-writing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-dim);
+  }
+  .sotw4-rule {
+    height: 1px;
+    background: linear-gradient(to left, var(--gold), transparent);
+    width: 80px;
+    margin: 10px 0;
+  }
+  .sotw4-song-card {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+  }
+  .sotw4-song-cover {
+    height: 160px;
+    position: relative;
+  }
+  .sotw4-song-cover-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13,13,19,0.6) 0%, transparent 60%);
+  }
+  .sotw4-song-body {
+    padding: 14px 16px 16px;
+  }
+  .sotw4-song-label {
+    font-size: 0.62rem;
+    color: rgba(201,168,76,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .sotw4-song-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .sotw4-play {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+    border-radius: 5px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    width: fit-content;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PAGE CHROME
+  ══════════════════════════════════════════════ */
+
+  .divider-line {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  .page-footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+
+  /* ══════════════════════════════════════════════
+     ACTION BUTTONS (shared across all layouts)
+  ══════════════════════════════════════════════ */
+
+  /* Heart button — absolute, hidden until hover */
+  .btn-heart {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 5;
+    flex-shrink: 0;
+  }
+  /* Static heart (inline in rows) */
+  .btn-heart-inline {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.6);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Play button — gold circle (large) */
+  .btn-play {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #c9a84c;
+    border: none;
+    color: #0d0d13;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  /* Small play for list rows */
+  .btn-play-sm {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: #c9a84c;
+    border: none;
+    color: #0d0d13;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Add button */
+  .btn-add {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Share button */
+  .btn-share {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Inline button row (for text areas, list rows) */
+  .btn-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  /* Layout F — show/hide hover buttons in text area */
+  .lf-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .lf-card:hover .lf-btn-row { opacity: 1; }
+
+  /* Layout G — heart top-left on card, tiny play bottom */
+  .lg-card:hover .btn-heart { opacity: 1; }
+  .lg-card .btn-play-tiny {
+    position: absolute;
+    bottom: 8px; left: 8px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #c9a84c;
+    border: none;
+    color: #0d0d13;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .lg-card:hover .btn-play-tiny { opacity: 1; }
+
+  /* Layout H — featured card hover */
+  .lh-featured:hover .btn-heart { opacity: 1; }
+  .lh-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .lh-item:hover .lh-item-actions { opacity: 1; }
+
+  /* Layout I — heart top-left, play center-bottom on hover */
+  .li-card:hover .btn-heart,
+  .li-card-mobile:hover .btn-heart { opacity: 1; }
+  .li-play-hover {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 5;
+  }
+  .li-card:hover .li-play-hover,
+  .li-card-mobile:hover .li-play-hover { opacity: 1; }
+
+  /* Layout J — actions on right side (RTL: visual left = DOM right) */
+  .lj-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .lj-item:hover .lj-item-actions { opacity: 1; }
+
+  /* SOTW1 song card play button */
+  .sotw1-play-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── STICKY NAV ── -->
+<nav class="sticky-nav">
+  <span class="nav-label">שירים:</span>
+  <a href="#layout-f">F — קולנועי</a>
+  <a href="#layout-g">G — דחוס</a>
+  <a href="#layout-h">H — זרקור</a>
+  <a href="#layout-i">I — אלבום</a>
+  <a href="#layout-j">J — טייפוגרפי</a>
+  <span class="nav-sep">|</span>
+  <span class="nav-label">המלצה:</span>
+  <a href="#sotw-1">SOTW 1 — נוכחי</a>
+  <a href="#sotw-2">SOTW 2 — קולנועי</a>
+  <a href="#sotw-3">SOTW 3 — מחולק</a>
+  <a href="#sotw-4">SOTW 4 — ציטוט</a>
+</nav>
+
+<!-- ── PAGE HEADER ── -->
+<header class="page-header">
+  <h1>פריסות חדשות — Amiado Design Lab</h1>
+  <p>הצעות נוספות לתצוגת שירים ומדור המלצת השבוע</p>
+</header>
+
+<div class="section-wrap">
+
+  <!-- ══════════════════════════════════════════
+       PART 1: SONGS GRID
+  ══════════════════════════════════════════ -->
+  <h2 class="section-heading" id="songs-section">
+    תצוגת שירים — הצעות חדשות
+    <span>Layouts F – J</span>
+  </h2>
+
+
+  <!-- ── LAYOUT F ── -->
+  <div class="layout-block" id="layout-f">
+    <div class="layout-meta">
+      <div class="layout-meta-left">
+        <div class="layout-tag">Layout F</div>
+        <div class="layout-title">קולנועי — Cinematic</div>
+        <div class="layout-desc">כרטיס אחד בכל שורה, רוחב מלא, תמונה ממלאת 40% ימינה, טקסט שמאלה. מספר שיר גדול וזהוב, ריחוף עם קו זהב בצד.</div>
+      </div>
+      <button class="btn-choose" onclick="chooseLayout('Layout F — קולנועי')">בחר פריסה זו</button>
+    </div>
+    <div class="preview-row">
+      <!-- Desktop -->
+      <div class="preview-col">
+        <div class="preview-label">Desktop — 900px</div>
+        <div class="preview-frame frame-desktop">
+          <div class="frame-inner">
+
+            <div class="lf-card">
+              <div class="lf-image cover-a"></div>
+              <div class="lf-text">
+                <div class="lf-num">01</div>
+                <div class="lf-lang">עברית</div>
+                <div class="lf-title">שיגעון אמורפי</div>
+                <div class="lf-excerpt">ביצוע פרפורמטיבי אישי שתחליך את התפשטות הדרמה הפנימית אל מרחב הקול</div>
+                <div class="lf-btn-row">
+                  <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-heart-inline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="lf-card">
+              <div class="lf-image cover-b"></div>
+              <div class="lf-text">
+                <div class="lf-num">02</div>
+                <div class="lf-lang">English</div>
+                <div class="lf-title">Echoes of the Unnamed</div>
+                <div class="lf-excerpt">A meditation on silence and the weight of words left unsaid, echoing through corridors of memory</div>
+                <div class="lf-btn-row">
+                  <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-heart-inline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="lf-card">
+              <div class="lf-image cover-c"></div>
+              <div class="lf-text">
+                <div class="lf-num">03</div>
+                <div class="lf-lang">עברית</div>
+                <div class="lf-title">גלות פנימית</div>
+                <div class="lf-excerpt">שיר על הגירה פנימית, על ריחוק שנבנה מבפנים כחומה בין עצמי לעצמי</div>
+                <div class="lf-btn-row">
+                  <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-heart-inline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="lf-card">
+              <div class="lf-image cover-d"></div>
+              <div class="lf-text">
+                <div class="lf-num">04</div>
+                <div class="lf-lang">Français</div>
+                <div class="lf-title">La Lumière Perdue</div>
+                <div class="lf-excerpt">Une chanson sur la lumière qui disparaît et revient, sur les cycles de la perte et de la renaissance</div>
+                <div class="lf-btn-row">
+                  <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-heart-inline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="lf-card">
+              <div class="lf-image cover-e"></div>
+              <div class="lf-text">
+                <div class="lf-num">05</div>
+                <div class="lf-lang">עברית</div>
+                <div class="lf-title">רגע לפני הדממה</div>
+                <div class="lf-excerpt">אותו רגע עדין שבין הרעש לשקט, בין הנאמר לנשתק</div>
+                <div class="lf-btn-row">
+                  <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-heart-inline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="lf-card">
+              <div class="lf-image cover-f"></div>
+              <div class="lf-text">
+                <div class="lf-num">06</div>
+                <div class="lf-lang">English</div>
+                <div class="lf-title">Still Waters</div>
+                <div class="lf-excerpt">Beneath the calm surface lies the entire history of a turbulent sea, waiting to be told</div>
+                <div class="lf-btn-row">
+                  <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-heart-inline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Mobile -->
+      <div class="preview-col">
+        <div class="preview-label">Mobile — 375px</div>
+        <div class="preview-frame frame-mobile">
+          <div class="frame-inner" style="padding: 12px;">
+
+            <div class="lf-card lf-card-mobile">
+              <div class="lf-image cover-a"></div>
+              <div class="lf-text">
+                <div class="lf-num">01</div>
+                <div class="lf-title">שיגעון אמורפי</div>
+                <div class="lf-excerpt">ביצוע פרפורמטיבי אישי</div>
+                <div class="lf-btn-row">
+                  <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-heart-inline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="lf-card lf-card-mobile">
+              <div class="lf-image cover-b"></div>
+              <div class="lf-text">
+                <div class="lf-num">02</div>
+                <div class="lf-title">Echoes of the Unnamed</div>
+                <div class="lf-excerpt">A meditation on silence</div>
+                <div class="lf-btn-row">
+                  <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-heart-inline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="lf-card lf-card-mobile">
+              <div class="lf-image cover-c"></div>
+              <div class="lf-text">
+                <div class="lf-num">03</div>
+                <div class="lf-title">גלות פנימית</div>
+                <div class="lf-excerpt">שיר על הגירה פנימית</div>
+                <div class="lf-btn-row">
+                  <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-heart-inline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── LAYOUT G ── -->
+  <div class="layout-block" id="layout-g">
+    <div class="layout-meta">
+      <div class="layout-meta-left">
+        <div class="layout-tag">Layout G</div>
+        <div class="layout-title">דחוס — Compact Dense</div>
+        <div class="layout-desc">4 עמודות דסקטופ, 2 מובייל. כרטיסים קטנים ומרובעים, 180px, כמו מגזין מוזיקה. תמונה ממלאת הכל עם כותרת קבועה. גבול זהב בריחוף.</div>
+      </div>
+      <button class="btn-choose" onclick="chooseLayout('Layout G — דחוס')">בחר פריסה זו</button>
+    </div>
+    <div class="preview-row">
+      <!-- Desktop -->
+      <div class="preview-col">
+        <div class="preview-label">Desktop — 900px</div>
+        <div class="preview-frame frame-desktop">
+          <div class="frame-inner">
+
+            <div class="lg-grid">
+              <div class="lg-card">
+                <div class="lg-cover cover-a"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">01</div>
+                <div class="lg-title"><span class="lg-lang">עברית</span>שיגעון אמורפי</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="lg-card">
+                <div class="lg-cover cover-b"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">02</div>
+                <div class="lg-title"><span class="lg-lang">English</span>Echoes of the Unnamed</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="lg-card">
+                <div class="lg-cover cover-c"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">03</div>
+                <div class="lg-title"><span class="lg-lang">עברית</span>גלות פנימית</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="lg-card">
+                <div class="lg-cover cover-d"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">04</div>
+                <div class="lg-title"><span class="lg-lang">Français</span>La Lumière Perdue</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="lg-card">
+                <div class="lg-cover cover-e"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">05</div>
+                <div class="lg-title"><span class="lg-lang">עברית</span>רגע לפני הדממה</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="lg-card">
+                <div class="lg-cover cover-f"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">06</div>
+                <div class="lg-title"><span class="lg-lang">English</span>Still Waters</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Mobile -->
+      <div class="preview-col">
+        <div class="preview-label">Mobile — 375px</div>
+        <div class="preview-frame frame-mobile">
+          <div class="frame-inner" style="padding: 12px;">
+
+            <div class="lg-grid lg-grid-mobile">
+              <div class="lg-card">
+                <div class="lg-cover cover-a"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">01</div>
+                <div class="lg-title"><span class="lg-lang">עברית</span>שיגעון אמורפי</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="lg-card">
+                <div class="lg-cover cover-b"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">02</div>
+                <div class="lg-title"><span class="lg-lang">English</span>Echoes of the Unnamed</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="lg-card">
+                <div class="lg-cover cover-c"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">03</div>
+                <div class="lg-title"><span class="lg-lang">עברית</span>גלות פנימית</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="lg-card">
+                <div class="lg-cover cover-d"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">04</div>
+                <div class="lg-title"><span class="lg-lang">Français</span>La Lumière</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="lg-card">
+                <div class="lg-cover cover-e"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">05</div>
+                <div class="lg-title"><span class="lg-lang">עברית</span>רגע לפני הדממה</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+              <div class="lg-card">
+                <div class="lg-cover cover-f"></div>
+                <div class="lg-overlay"></div>
+                <div class="lg-num">06</div>
+                <div class="lg-title"><span class="lg-lang">English</span>Still Waters</div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button class="btn-play-tiny"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── LAYOUT H ── -->
+  <div class="layout-block" id="layout-h">
+    <div class="layout-meta">
+      <div class="layout-meta-left">
+        <div class="layout-tag">Layout H</div>
+        <div class="layout-title">זרקור + רשימה — Spotlight + Mini List</div>
+        <div class="layout-desc">דסקטופ: שיר מרכזי גדול 55% + רשימה קומפקטית 45% עם תמונות קטנות 44px. הפריט הראשון מסומן בזהב. מובייל: עמודה אחת.</div>
+      </div>
+      <button class="btn-choose" onclick="chooseLayout('Layout H — זרקור + רשימה')">בחר פריסה זו</button>
+    </div>
+    <div class="preview-row">
+      <!-- Desktop -->
+      <div class="preview-col">
+        <div class="preview-label">Desktop — 900px</div>
+        <div class="preview-frame frame-desktop">
+          <div class="frame-inner">
+
+            <div class="lh-layout">
+              <!-- Featured -->
+              <div class="lh-featured">
+                <div class="lh-featured-cover cover-a"></div>
+                <div class="lh-featured-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="lh-featured-info">
+                  <div class="lh-featured-num">01</div>
+                  <div class="lh-featured-title">שיגעון אמורפי</div>
+                  <div class="lh-featured-excerpt">ביצוע פרפורמטיבי אישי שתחליך את התפשטות הדרמה הפנימית אל מרחב הקול</div>
+                  <div class="btn-row">
+                    <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                    <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div>
+                </div>
+              </div>
+              <!-- List -->
+              <div class="lh-list">
+                <div class="lh-item active">
+                  <div class="lh-item-cover cover-a"></div>
+                  <div class="lh-item-info">
+                    <div class="lh-item-num">01</div>
+                    <div class="lh-item-title">שיגעון אמורפי</div>
+                    <div class="lh-item-lang">עברית</div>
+                  </div>
+                  <div class="lh-item-actions">
+                    <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lh-item">
+                  <div class="lh-item-cover cover-b"></div>
+                  <div class="lh-item-info">
+                    <div class="lh-item-num">02</div>
+                    <div class="lh-item-title">Echoes of the Unnamed</div>
+                    <div class="lh-item-lang">English</div>
+                  </div>
+                  <div class="lh-item-actions">
+                    <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lh-item">
+                  <div class="lh-item-cover cover-c"></div>
+                  <div class="lh-item-info">
+                    <div class="lh-item-num">03</div>
+                    <div class="lh-item-title">גלות פנימית</div>
+                    <div class="lh-item-lang">עברית</div>
+                  </div>
+                  <div class="lh-item-actions">
+                    <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lh-item">
+                  <div class="lh-item-cover cover-d"></div>
+                  <div class="lh-item-info">
+                    <div class="lh-item-num">04</div>
+                    <div class="lh-item-title">La Lumière Perdue</div>
+                    <div class="lh-item-lang">Français</div>
+                  </div>
+                  <div class="lh-item-actions">
+                    <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lh-item">
+                  <div class="lh-item-cover cover-e"></div>
+                  <div class="lh-item-info">
+                    <div class="lh-item-num">05</div>
+                    <div class="lh-item-title">רגע לפני הדממה</div>
+                    <div class="lh-item-lang">עברית</div>
+                  </div>
+                  <div class="lh-item-actions">
+                    <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lh-item">
+                  <div class="lh-item-cover cover-f"></div>
+                  <div class="lh-item-info">
+                    <div class="lh-item-num">06</div>
+                    <div class="lh-item-title">Still Waters</div>
+                    <div class="lh-item-lang">English</div>
+                  </div>
+                  <div class="lh-item-actions">
+                    <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Mobile -->
+      <div class="preview-col">
+        <div class="preview-label">Mobile — 375px</div>
+        <div class="preview-frame frame-mobile">
+          <div class="frame-inner" style="padding: 12px;">
+
+            <div class="lh-layout lh-layout-mobile">
+              <div class="lh-featured">
+                <div class="lh-featured-cover cover-a"></div>
+                <div class="lh-featured-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="lh-featured-info">
+                  <div class="lh-featured-num" style="font-size:1.8rem;">01</div>
+                  <div class="lh-featured-title" style="font-size:1.3rem;">שיגעון אמורפי</div>
+                  <div class="lh-featured-excerpt" style="font-size:0.7rem;">ביצוע פרפורמטיבי אישי</div>
+                  <div class="btn-row">
+                    <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                    <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div>
+                </div>
+              </div>
+              <div class="lh-list" style="max-height:200px;">
+                <div class="lh-item active">
+                  <div class="lh-item-cover cover-a"></div>
+                  <div class="lh-item-info">
+                    <div class="lh-item-title">שיגעון אמורפי</div>
+                    <div class="lh-item-lang">עברית</div>
+                  </div>
+                  <div class="lh-item-actions">
+                    <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lh-item">
+                  <div class="lh-item-cover cover-b"></div>
+                  <div class="lh-item-info">
+                    <div class="lh-item-title">Echoes of the Unnamed</div>
+                    <div class="lh-item-lang">English</div>
+                  </div>
+                  <div class="lh-item-actions">
+                    <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lh-item">
+                  <div class="lh-item-cover cover-c"></div>
+                  <div class="lh-item-info">
+                    <div class="lh-item-title">גלות פנימית</div>
+                    <div class="lh-item-lang">עברית</div>
+                  </div>
+                  <div class="lh-item-actions">
+                    <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+                <div class="lh-item">
+                  <div class="lh-item-cover cover-d"></div>
+                  <div class="lh-item-info">
+                    <div class="lh-item-title">La Lumière Perdue</div>
+                    <div class="lh-item-lang">Français</div>
+                  </div>
+                  <div class="lh-item-actions">
+                    <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── LAYOUT I ── -->
+  <div class="layout-block" id="layout-i">
+    <div class="layout-meta">
+      <div class="layout-meta-left">
+        <div class="layout-tag">Layout I</div>
+        <div class="layout-title">אלבום — Album Shelf</div>
+        <div class="layout-desc">3 עמודות דסקטופ עם כרטיסי אלבום פורטרט 3:4, גבול עבה ועיצוב sleeve וינילי. ריחוף: הגדלה וסיבוב קל. מובייל: גלילה אופקית.</div>
+      </div>
+      <button class="btn-choose" onclick="chooseLayout('Layout I — אלבום')">בחר פריסה זו</button>
+    </div>
+    <div class="preview-row">
+      <!-- Desktop -->
+      <div class="preview-col">
+        <div class="preview-label">Desktop — 900px</div>
+        <div class="preview-frame frame-desktop">
+          <div class="frame-inner">
+
+            <div class="li-grid">
+              <div class="li-card">
+                <div class="li-cover cover-a"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title">שיגעון אמורפי</div>
+              </div>
+              <div class="li-card">
+                <div class="li-cover cover-b"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title">Echoes of the Unnamed</div>
+              </div>
+              <div class="li-card">
+                <div class="li-cover cover-c"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title">גלות פנימית</div>
+              </div>
+              <div class="li-card">
+                <div class="li-cover cover-d"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title">La Lumière Perdue</div>
+              </div>
+              <div class="li-card">
+                <div class="li-cover cover-e"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title">רגע לפני הדממה</div>
+              </div>
+              <div class="li-card">
+                <div class="li-cover cover-f"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title">Still Waters</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Mobile -->
+      <div class="preview-col">
+        <div class="preview-label">Mobile — 375px (גלילה אופקית)</div>
+        <div class="preview-frame frame-mobile">
+          <div class="frame-inner" style="padding: 14px; overflow: hidden;">
+
+            <div class="li-scroll">
+              <div class="li-card-mobile">
+                <div class="li-cover cover-a" style="position:absolute;inset:0;"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title" style="position:absolute;bottom:10px;right:0;left:0;text-align:center;font-family:'Cormorant Garamond',serif;font-size:0.82rem;color:var(--text);padding:0 6px;">שיגעון אמורפי</div>
+              </div>
+              <div class="li-card-mobile">
+                <div class="li-cover cover-b" style="position:absolute;inset:0;"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title" style="position:absolute;bottom:10px;right:0;left:0;text-align:center;font-family:'Cormorant Garamond',serif;font-size:0.82rem;color:var(--text);padding:0 6px;">Echoes</div>
+              </div>
+              <div class="li-card-mobile">
+                <div class="li-cover cover-c" style="position:absolute;inset:0;"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title" style="position:absolute;bottom:10px;right:0;left:0;text-align:center;font-family:'Cormorant Garamond',serif;font-size:0.82rem;color:var(--text);padding:0 6px;">גלות פנימית</div>
+              </div>
+              <div class="li-card-mobile">
+                <div class="li-cover cover-d" style="position:absolute;inset:0;"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title" style="position:absolute;bottom:10px;right:0;left:0;text-align:center;font-family:'Cormorant Garamond',serif;font-size:0.82rem;color:var(--text);padding:0 6px;">La Lumière</div>
+              </div>
+              <div class="li-card-mobile">
+                <div class="li-cover cover-e" style="position:absolute;inset:0;"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title" style="position:absolute;bottom:10px;right:0;left:0;text-align:center;font-family:'Cormorant Garamond',serif;font-size:0.82rem;color:var(--text);padding:0 6px;">רגע לפני הדממה</div>
+              </div>
+              <div class="li-card-mobile">
+                <div class="li-cover cover-f" style="position:absolute;inset:0;"></div>
+                <div class="li-overlay"></div>
+                <button class="btn-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <div class="li-play-hover"><button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button></div>
+                <div class="li-title" style="position:absolute;bottom:10px;right:0;left:0;text-align:center;font-family:'Cormorant Garamond',serif;font-size:0.82rem;color:var(--text);padding:0 6px;">Still Waters</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── LAYOUT J ── -->
+  <div class="layout-block" id="layout-j">
+    <div class="layout-meta">
+      <div class="layout-meta-left">
+        <div class="layout-tag">Layout J</div>
+        <div class="layout-title">טייפוגרפי — Typography-Forward</div>
+        <div class="layout-desc">ללא תמונות. רשימה ספרותית: מספר שיר קטן וזהוב, כותרת גדולה 1.8rem איטלית, שפה, ציטוט. קו זהב מפריד. ריחוף: הכותרת זזה ומוזהבת.</div>
+      </div>
+      <button class="btn-choose" onclick="chooseLayout('Layout J — טייפוגרפי')">בחר פריסה זו</button>
+    </div>
+    <div class="preview-row">
+      <!-- Desktop -->
+      <div class="preview-col">
+        <div class="preview-label">Desktop — 900px</div>
+        <div class="preview-frame frame-desktop">
+          <div class="frame-inner">
+
+            <ul class="lj-list">
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">עברית · שיר</div>
+                  <div class="lj-title">שיגעון אמורפי</div>
+                  <div class="lj-excerpt">ביצוע פרפורמטיבי אישי שתחליך את התפשטות הדרמה הפנימית</div>
+                </div>
+                <div class="lj-num">01</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">English · Song</div>
+                  <div class="lj-title">Echoes of the Unnamed</div>
+                  <div class="lj-excerpt">A meditation on silence and the weight of words left unsaid</div>
+                </div>
+                <div class="lj-num">02</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">עברית · שיר</div>
+                  <div class="lj-title">גלות פנימית</div>
+                  <div class="lj-excerpt">שיר על הגירה פנימית, על ריחוק שנבנה מבפנים כחומה</div>
+                </div>
+                <div class="lj-num">03</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">Français · Chanson</div>
+                  <div class="lj-title">La Lumière Perdue</div>
+                  <div class="lj-excerpt">Une chanson sur la lumière qui disparaît et revient</div>
+                </div>
+                <div class="lj-num">04</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">עברית · שיר</div>
+                  <div class="lj-title">רגע לפני הדממה</div>
+                  <div class="lj-excerpt">אותו רגע עדין שבין הרעש לשקט, בין הנאמר לנשתק</div>
+                </div>
+                <div class="lj-num">05</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">English · Song</div>
+                  <div class="lj-title">Still Waters</div>
+                  <div class="lj-excerpt">Beneath the calm surface lies the entire history of a turbulent sea</div>
+                </div>
+                <div class="lj-num">06</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+      <!-- Mobile -->
+      <div class="preview-col">
+        <div class="preview-label">Mobile — 375px</div>
+        <div class="preview-frame frame-mobile">
+          <div class="frame-inner" style="padding: 12px;">
+
+            <ul class="lj-list lj-mobile">
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">עברית · שיר</div>
+                  <div class="lj-title">שיגעון אמורפי</div>
+                  <div class="lj-excerpt">ביצוע פרפורמטיבי אישי</div>
+                </div>
+                <div class="lj-num">01</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">English · Song</div>
+                  <div class="lj-title">Echoes of the Unnamed</div>
+                  <div class="lj-excerpt">A meditation on silence</div>
+                </div>
+                <div class="lj-num">02</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">עברית · שיר</div>
+                  <div class="lj-title">גלות פנימית</div>
+                  <div class="lj-excerpt">שיר על הגירה פנימית</div>
+                </div>
+                <div class="lj-num">03</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">Français</div>
+                  <div class="lj-title">La Lumière Perdue</div>
+                  <div class="lj-excerpt">La lumière qui disparaît</div>
+                </div>
+                <div class="lj-num">04</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">עברית · שיר</div>
+                  <div class="lj-title">רגע לפני הדממה</div>
+                  <div class="lj-excerpt">בין הרעש לשקט</div>
+                </div>
+                <div class="lj-num">05</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+              <li class="lj-item">
+                <div class="lj-gold-dot"></div>
+                <div class="lj-content">
+                  <div class="lj-lang">English · Song</div>
+                  <div class="lj-title">Still Waters</div>
+                  <div class="lj-excerpt">Beneath the calm surface</div>
+                </div>
+                <div class="lj-num">06</div>
+                <div class="lj-item-actions">
+                  <button class="btn-heart-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="btn-play-sm"><svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                  <button class="btn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                </div>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       PART 2: SOTW
+  ══════════════════════════════════════════ -->
+  <h2 class="section-heading" id="sotw-section">
+    המלצת השבוע — וריאציות
+    <span>SOTW 1 – 4</span>
+  </h2>
+
+
+  <!-- ── SOTW 1 ── -->
+  <div class="layout-block" id="sotw-1">
+    <div class="layout-meta">
+      <div class="layout-meta-left">
+        <div class="layout-tag">SOTW 1</div>
+        <div class="layout-title">נוכחי — Current Layout</div>
+        <div class="layout-desc">העתק מדויק של הפריסה הקיימת: שני כרטיסים זה לצד זה בגריד שווה. תמונה, תווית, כותרת, תיאור, כפתור.</div>
+      </div>
+      <button class="btn-choose" onclick="chooseLayout('SOTW 1 — נוכחי')">בחר פריסה זו</button>
+    </div>
+    <div class="preview-row">
+      <div class="preview-col">
+        <div class="preview-label">Desktop — 860px</div>
+        <div class="preview-frame frame-sotw">
+          <div class="frame-inner">
+
+            <div class="sotw-section-header">
+              <div class="sotw-section-title">המלצת השבוע</div>
+              <div class="sotw-section-rule"></div>
+            </div>
+
+            <div class="sotw1-row">
+              <!-- Song card -->
+              <div class="sotw-card">
+                <div class="sotw-card-cover cover-a">
+                  <div class="sotw-card-cover-overlay"></div>
+                </div>
+                <div class="sotw-card-body">
+                  <div class="sotw-card-label">שיר השבוע</div>
+                  <div class="sotw-card-title">שיגעון אמורפי</div>
+                  <div class="sotw-card-desc">ביצוע פרפורמטיבי אישי שתחליך את התפשטות הדרמה הפנימית</div>
+                  <div class="sotw1-play-row">
+                    <button class="btn-play"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg></button>
+                    <a class="sotw-card-btn">האזן לשיר</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Writing card -->
+              <div class="sotw-card">
+                <div class="sotw-card-cover cover-b">
+                  <div class="sotw-card-cover-overlay"></div>
+                </div>
+                <div class="sotw-card-body">
+                  <div class="sotw-card-label">כתיבה השבועית</div>
+                  <div class="sotw-card-title">על השתיקה כשפה</div>
+                  <div class="sotw-card-desc">מאמר על תפקיד השתיקה ביצירה האמנותית ובתהליכי היצירה</div>
+                  <a class="sotw-card-btn">קרא את המאמר</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── SOTW 2 ── -->
+  <div class="layout-block" id="sotw-2">
+    <div class="layout-meta">
+      <div class="layout-meta-left">
+        <div class="layout-tag">SOTW 2</div>
+        <div class="layout-title">קולנועי — Cinematic Full-Width Banner</div>
+        <div class="layout-desc">באנר רחב 320px. תמונת השיר ממלאת הרקע (מטושטשת, כהה). שליש ימין: כתיבה בפאנל זכוכית (glassmorphism). שני שליש שמאל: שיר עם כותרת 2.5rem. קו זהב מחלק.</div>
+      </div>
+      <button class="btn-choose" onclick="chooseLayout('SOTW 2 — קולנועי')">בחר פריסה זו</button>
+    </div>
+    <div class="preview-row">
+      <div class="preview-col">
+        <div class="preview-label">Desktop — 860px</div>
+        <div class="preview-frame frame-sotw">
+          <div class="frame-inner">
+
+            <div class="sotw-section-header">
+              <div class="sotw-section-title">המלצת השבוע</div>
+              <div class="sotw-section-rule"></div>
+            </div>
+
+            <div class="sotw2-banner">
+              <div class="sotw2-bg"></div>
+              <!-- Extra dark overlay -->
+              <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:1;"></div>
+
+              <div class="sotw2-badge">המלצת השבוע</div>
+              <div class="sotw2-divider"></div>
+
+              <!-- Writing — right panel -->
+              <div class="sotw2-writing">
+                <div class="sotw2-writing-label">כתיבה השבועית</div>
+                <div class="sotw2-writing-cover"></div>
+                <div class="sotw2-writing-title">על השתיקה כשפה</div>
+                <div class="sotw2-writing-desc">מאמר על תפקיד השתיקה ביצירה האמנותית</div>
+                <a class="sotw2-writing-btn">קרא עכשיו</a>
+              </div>
+
+              <!-- Song — left area -->
+              <div class="sotw2-song">
+                <div class="sotw2-song-label">שיר השבוע</div>
+                <div class="sotw2-song-title">שיגעון אמורפי</div>
+                <div class="sotw2-song-desc">ביצוע פרפורמטיבי אישי שתחליך את התפשטות</div>
+                <div class="sotw2-play-btn">
+                  <div class="play-icon"></div>
+                  האזן לשיר
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── SOTW 3 ── -->
+  <div class="layout-block" id="sotw-3">
+    <div class="layout-meta">
+      <div class="layout-meta-left">
+        <div class="layout-tag">SOTW 3</div>
+        <div class="layout-title">מחולק — Split Screen Drama</div>
+        <div class="layout-desc">שני חצאים ללא רווח: ימין כתיבה (גרדיאנט כהה), שמאל שיר (גרדיאנט עשיר). גובה 280px. עיגול זהב דקורטיבי במרכז. תחושת עוצמה מגזינית.</div>
+      </div>
+      <button class="btn-choose" onclick="chooseLayout('SOTW 3 — מחולק')">בחר פריסה זו</button>
+    </div>
+    <div class="preview-row">
+      <div class="preview-col">
+        <div class="preview-label">Desktop — 860px</div>
+        <div class="preview-frame frame-sotw">
+          <div class="frame-inner">
+
+            <div class="sotw-section-header">
+              <div class="sotw-section-title">המלצת השבוע</div>
+              <div class="sotw-section-rule"></div>
+            </div>
+
+            <div class="sotw3-wrap">
+              <!-- Writing half (right in RTL = first in DOM for RTL grid) -->
+              <div class="sotw3-writing">
+                <div class="sotw3-writing-label">כתיבה השבועית</div>
+                <div class="sotw3-writing-title">על השתיקה כשפה</div>
+                <div class="sotw3-writing-excerpt">מאמר על תפקיד השתיקה ביצירה האמנותית ובתהליכי היצירה הפנימיים</div>
+                <a class="sotw3-writing-link">קרא את המאמר</a>
+              </div>
+              <!-- Song half -->
+              <div class="sotw3-song">
+                <div class="sotw3-song-label">שיר השבוע</div>
+                <div class="sotw3-song-title">שיגעון אמורפי</div>
+                <div class="sotw3-play">
+                  <div class="play-icon"></div>
+                  האזן עכשיו
+                </div>
+              </div>
+              <!-- Decorative circle -->
+              <div class="sotw3-circle">
+                <div class="sotw3-circle-dot"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── SOTW 4 ── -->
+  <div class="layout-block" id="sotw-4">
+    <div class="layout-meta">
+      <div class="layout-meta-left">
+        <div class="layout-tag">SOTW 4</div>
+        <div class="layout-title">כרטיס + ציטוט — Card + Pull Quote</div>
+        <div class="layout-desc">כרטיס שיר ימין (תמונה + CTA), כתיבה שמאל ללא תמונה — רק ציטוט משיכה גדול ב-Cormorant Garamond איטלי, עם גרש ציטוט זהוב ענק (5rem). ספרותי ואלגנטי.</div>
+      </div>
+      <button class="btn-choose" onclick="chooseLayout('SOTW 4 — כרטיס + ציטוט')">בחר פריסה זו</button>
+    </div>
+    <div class="preview-row">
+      <div class="preview-col">
+        <div class="preview-label">Desktop — 860px</div>
+        <div class="preview-frame frame-sotw">
+          <div class="frame-inner">
+
+            <div class="sotw-section-header">
+              <div class="sotw-section-title">המלצת השבוע</div>
+              <div class="sotw-section-rule"></div>
+            </div>
+
+            <div class="sotw4-layout">
+              <!-- Writing / Pull Quote side (right in RTL) -->
+              <div class="sotw4-quote-side">
+                <span class="sotw4-quotemark">"</span>
+                <div class="sotw4-pull-quote">השתיקה אינה ריק — היא שפה שלמה, מלאה במה שלא נאמר.</div>
+                <div class="sotw4-rule"></div>
+                <div class="sotw4-writing-label">כתיבה השבועית</div>
+                <div class="sotw4-writing-title">על השתיקה כשפה</div>
+              </div>
+              <!-- Song Card (left in RTL) -->
+              <div class="sotw4-song-card">
+                <div class="sotw4-song-cover cover-a">
+                  <div class="sotw4-song-cover-overlay"></div>
+                </div>
+                <div class="sotw4-song-body">
+                  <div class="sotw4-song-label">שיר השבוע</div>
+                  <div class="sotw4-song-title">שיגעון אמורפי</div>
+                  <div class="sotw4-play">
+                    <div class="play-icon"></div>
+                    האזן לשיר
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /section-wrap -->
+
+<footer class="page-footer">
+  Amiado Design Lab · פריסות חדשות · 2026
+</footer>
+
+<script>
+  function chooseLayout(name) {
+    alert('בחרת: ' + name + '\n\nניתן כעת להמשיך לפיתוח פריסה זו באתר.');
+  }
+
+  // Highlight nav link on scroll
+  (function() {
+    var sections = document.querySelectorAll('.layout-block[id]');
+    var navLinks = document.querySelectorAll('.sticky-nav a');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.id;
+          navLinks.forEach(function(link) {
+            if (link.getAttribute('href') === '#' + id) {
+              link.style.color = 'var(--gold)';
+              link.style.borderColor = 'rgba(201,168,76,0.3)';
+            } else {
+              link.style.color = '';
+              link.style.borderColor = '';
+            }
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    sections.forEach(function(s) { observer.observe(s); });
+  })();
+</script>
+</body>
+</html>
