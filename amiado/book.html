@@ -133,45 +133,87 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       text-align: center;
-      padding: 4rem 3rem;
+      padding: 5rem 3rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover-photo-wrap {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 58%;
+      z-index: 0;
+    }
+    .cover-photo {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .cover-photo-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, #0d1117 0%, rgba(13,17,23,0.5) 40%, rgba(13,17,23,0.15) 65%, #0d1117 100%);
+    }
+
+    .cover-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 4rem;
     }
 
     .cover-logo {
-      width: 110px;
-      margin-bottom: 3.5rem;
-      filter: drop-shadow(0 0 24px rgba(201,168,76,0.35));
+      width: 90px;
+      margin-bottom: 2.8rem;
+      filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
     }
 
     .cover-title {
-      font-size: clamp(2.2rem, 5.5vw, 3.5rem);
-      font-weight: 900;
-      color: #c9a84c;
-      letter-spacing: 0.04em;
-      line-height: 1;
-      margin-bottom: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
     }
-
-    .cover-subtitle {
-      font-size: 1.3rem;
-      color: rgba(255,255,255,0.5);
+    .cover-title-main {
+      font-size: clamp(2.6rem, 6.5vw, 4rem);
+      font-weight: 700;
+      color: #c9a84c;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+    }
+    .cover-title-sub {
+      font-size: clamp(1.3rem, 3.2vw, 1.9rem);
       font-weight: 300;
-      font-family: 'Heebo', sans-serif;
+      color: rgba(255,255,255,0.58);
+      letter-spacing: 0.07em;
+      line-height: 1.4;
+      font-style: italic;
     }
 
     .cover-ornament {
-      width: 50px;
-      height: 2px;
+      width: 60px;
+      height: 1.5px;
       background: linear-gradient(90deg, transparent, #c9a84c, transparent);
-      margin: 2.5rem auto;
+      margin: 2rem auto;
     }
-
-    .cover-year {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.25);
+    .cover-author {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.48);
+      font-weight: 300;
       font-family: 'Heebo', sans-serif;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.08em;
+    }
+    .cover-year {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.2);
+      font-family: 'Heebo', sans-serif;
+      letter-spacing: 0.22em;
+      margin-top: 0.7rem;
     }
 
     /* ── TABLE OF CONTENTS ── */
@@ -411,11 +453,20 @@
   <div class="book" id="book">
     <!-- ── COVER ── -->
     <div class="page cover" id="cover">
-      <img class="cover-logo" src="aologo.svg" alt="עמיאדו" onerror="this.style.display='none'">
-      <div class="cover-title">מגע במילים ומילים במגע איתי</div>
-      <div class="cover-subtitle">מאת: עמיעד אידלמן אוברמן</div>
-      <div class="cover-ornament"></div>
-      <div class="cover-year" id="coverYear"></div>
+      <div class="cover-photo-wrap">
+        <img class="cover-photo" src="amiad_main.jpg" alt="" onerror="this.parentElement.style.display='none'">
+        <div class="cover-photo-gradient"></div>
+      </div>
+      <div class="cover-content">
+        <img class="cover-logo" src="aologo.svg" alt="עמיאדו" onerror="this.style.display='none'">
+        <div class="cover-title">
+          <span class="cover-title-main">מגע במילים</span>
+          <span class="cover-title-sub">ומילים במגע איתי</span>
+        </div>
+        <div class="cover-ornament"></div>
+        <div class="cover-author">מאת: עמיעד אידלמן אוברמן</div>
+        <div class="cover-year" id="coverYear"></div>
+      </div>
     </div>
 
     <!-- ── TOC ── -->
