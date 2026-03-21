@@ -128,15 +128,7 @@
       overflow: hidden;
       padding: 3rem 2rem;
     }
-    .cover-frame-svg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
     .cover-inner {
-      position: relative;
-      z-index: 1;
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -148,30 +140,21 @@
       letter-spacing: 0.38em;
       text-transform: uppercase;
       color: rgba(201,168,76,0.5);
-      margin-bottom: 2.2rem;
+      margin-bottom: 0;
     }
     .cover-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem, 8vw, 5.5rem);
-      font-weight: 300;
-      color: var(--gold);
-      letter-spacing: 0.1em;
-      line-height: 1;
-      text-shadow: 0 0 80px rgba(201,168,76,0.15);
-    }
-    .cover-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(0.9rem, 2vw, 1.1rem);
-      font-style: italic;
-      color: rgba(201,168,76,0.45);
-      margin-top: 1.4rem;
-      letter-spacing: 0.04em;
+      font-family: 'Frank Ruhl Libre', serif;
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+      font-weight: 700;
+      color: rgba(201,168,76,0.88);
+      line-height: 1.35;
+      text-shadow: 0 0 60px rgba(201,168,76,0.12);
     }
     .cover-rule {
       width: 60px;
       height: 1px;
       background: linear-gradient(90deg, transparent, rgba(201,168,76,0.6), transparent);
-      margin: 2rem auto;
+      margin: 1.5rem auto;
     }
     .cover-tagline {
       font-family: 'Cormorant Garamond', serif;
@@ -252,7 +235,7 @@
     .analysis-card-text { font-size: 0.88rem; line-height: 1.9; color: var(--text-dim); }
 
     /* ══════════════════════════════════════
-       FLIP VIEWER
+       OPEN BOOK SPREAD VIEWER
     ══════════════════════════════════════ */
     #flipView {
       display: none;
@@ -263,60 +246,50 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.2rem;
-      padding: 1.5rem 1rem;
+      gap: 1rem;
+      padding: 1.2rem 1rem 1rem;
     }
     #flipView.active { display: flex; }
 
-    /* The book stage */
-    .flip-stage {
+    /* Open book: two pages side by side */
+    .book-spread {
+      display: flex;
+      align-items: stretch;
+      width: min(860px, 96vw);
+      height: min(580px, calc(100vh - 170px));
+      box-shadow: 0 12px 60px rgba(0,0,0,0.55);
+    }
+
+    .spread-page {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--page-bg);
       position: relative;
-      width: min(480px, 90vw);
-      height: min(660px, calc(100vh - 160px));
-      perspective: 1800px;
+      min-width: 0;
+    }
+    .spread-right { border-radius: 3px 0 0 3px; }
+    .spread-left  { border-radius: 0 3px 3px 0; }
+
+    /* Spine shadow */
+    .spread-spine {
+      width: 12px;
+      flex-shrink: 0;
+      background: linear-gradient(90deg,
+        rgba(0,0,0,0.0)  0%,
+        rgba(0,0,0,0.22) 40%,
+        rgba(0,0,0,0.28) 50%,
+        rgba(0,0,0,0.22) 60%,
+        rgba(0,0,0,0.0)  100%
+      );
     }
 
-    /* Behind layer — shows the target page as static background */
-    .flip-behind {
-      position: absolute;
-      inset: 0;
-      overflow-y: auto;
-      padding: 0;
-      background: var(--page-bg);
-      box-shadow: var(--page-shadow);
-      border-radius: 2px;
-    }
-
-    /* The animated leaf */
-    .flip-leaf {
-      position: absolute;
-      inset: 0;
-      transform-style: preserve-3d;
-      will-change: transform;
-      cursor: grab;
-    }
-    .flip-leaf-front, .flip-leaf-back {
-      position: absolute;
-      inset: 0;
-      overflow-y: auto;
-      padding: 0;
-      background: var(--page-bg);
-      box-shadow: var(--page-shadow);
-      backface-visibility: hidden;
-      border-radius: 2px;
-    }
-    /* For RTL Hebrew book: hinge is on the RIGHT, back face mirrors around right axis */
-    .flip-leaf-back {
-      transform: rotateY(-180deg);
-    }
-
-    /* Padded wrapper for normal (non-cover) flip page content */
+    /* Padded wrapper for page content */
     .fp-body {
       padding: 2rem 2rem 2rem;
       min-height: 100%;
     }
 
-    /* Cover fills the entire flip container */
+    /* Cover fills the entire spread-right panel */
     .flip-cover-wrap {
       position: absolute;
       inset: 0;
@@ -326,26 +299,12 @@
       justify-content: center;
       overflow: hidden;
     }
-    .flip-cover-wrap .cover-frame-svg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-    .flip-cover-wrap .cover-inner {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
 
-    /* Compact typography inside flip pages */
+    /* Compact typography inside spread pages */
     .fp-body .lyric-line { font-size: 0.88rem; line-height: 1.78; }
     .fp-body .lyrics-section-item { margin-bottom: 0.9rem; }
     .fp-body .lyrics-block { margin-bottom: 1rem; }
-    .fp-body .song-title-h { font-size: clamp(1.25rem, 3.5vw, 1.85rem); }
+    .fp-body .song-title-h { font-size: clamp(1.1rem, 2.5vw, 1.7rem); }
     .fp-body .song-chapter-header { margin-bottom: 1.2rem; padding-bottom: 1rem; }
     .fp-body .song-qr-row { margin: 0.8rem 0 0; padding: 8px 10px; }
     .fp-body .song-qr-img { width: 52px; height: 52px; }
@@ -356,17 +315,6 @@
     .fp-body .toc-item { padding: 0.28rem 0; }
     .fp-body .toc-name { font-size: 0.85rem; }
     .fp-body .toc-heading { margin-bottom: 1.2rem; }
-
-    /* Page edge shadow to simulate depth */
-    .flip-stage::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 10;
-      box-shadow: inset -6px 0 18px rgba(0,0,0,0.12), inset 6px 0 6px rgba(0,0,0,0.05);
-      border-radius: 2px;
-    }
 
     /* Flip navigation */
     .flip-nav {
@@ -397,7 +345,6 @@
       text-align: center;
     }
 
-    /* Flip title hint */
     .flip-title-hint {
       font-family: 'Frank Ruhl Libre', serif;
       font-size: 0.82rem;
@@ -407,16 +354,10 @@
       letter-spacing: 0.03em;
     }
 
-    /* Scrollbar in flip pages */
-    .flip-leaf-front::-webkit-scrollbar,
-    .flip-leaf-back::-webkit-scrollbar,
-    .flip-behind::-webkit-scrollbar { width: 4px; }
-    .flip-leaf-front::-webkit-scrollbar-track,
-    .flip-leaf-back::-webkit-scrollbar-track,
-    .flip-behind::-webkit-scrollbar-track { background: transparent; }
-    .flip-leaf-front::-webkit-scrollbar-thumb,
-    .flip-leaf-back::-webkit-scrollbar-thumb,
-    .flip-behind::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 2px; }
+    /* Scrollbar in spread pages */
+    .spread-page::-webkit-scrollbar { width: 4px; }
+    .spread-page::-webkit-scrollbar-track { background: transparent; }
+    .spread-page::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 2px; }
 
     /* ── PRINT ── */
     @media print {
@@ -479,24 +420,10 @@
   <!-- ── SCROLL VIEW ── -->
   <div id="scrollView">
     <div class="page cover" id="pageCover">
-      <svg class="cover-frame-svg" viewBox="0 0 600 500" preserveAspectRatio="none">
-        <rect x="10" y="10" width="580" height="480" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.45"/>
-        <rect x="20" y="20" width="560" height="460" fill="none" stroke="#c9a84c" stroke-width="0.3" opacity="0.25"/>
-        <g stroke="#c9a84c" fill="none" opacity="0.85">
-          <g transform="translate(10,10)"><line x1="0" y1="28" x2="0" y2="0"/><line x1="0" y1="0" x2="28" y2="0"/><line x1="10" y1="10" x2="22" y2="10"/><line x1="10" y1="10" x2="10" y2="22"/><circle cx="10" cy="10" r="2" fill="#c9a84c"/></g>
-          <g transform="translate(590,10) scale(-1,1)"><line x1="0" y1="28" x2="0" y2="0"/><line x1="0" y1="0" x2="28" y2="0"/><line x1="10" y1="10" x2="22" y2="10"/><line x1="10" y1="10" x2="10" y2="22"/><circle cx="10" cy="10" r="2" fill="#c9a84c"/></g>
-          <g transform="translate(10,490) scale(1,-1)"><line x1="0" y1="28" x2="0" y2="0"/><line x1="0" y1="0" x2="28" y2="0"/><line x1="10" y1="10" x2="22" y2="10"/><line x1="10" y1="10" x2="10" y2="22"/><circle cx="10" cy="10" r="2" fill="#c9a84c"/></g>
-          <g transform="translate(590,490) scale(-1,-1)"><line x1="0" y1="28" x2="0" y2="0"/><line x1="0" y1="0" x2="28" y2="0"/><line x1="10" y1="10" x2="22" y2="10"/><line x1="10" y1="10" x2="10" y2="22"/><circle cx="10" cy="10" r="2" fill="#c9a84c"/></g>
-        </g>
-        <line x1="50" y1="140" x2="550" y2="140" stroke="#c9a84c" stroke-width="0.4" opacity="0.4"/>
-        <line x1="50" y1="360" x2="550" y2="360" stroke="#c9a84c" stroke-width="0.4" opacity="0.4"/>
-        <polygon points="300,135 305,140 300,145 295,140" fill="#c9a84c" opacity="0.65"/>
-        <polygon points="300,355 305,360 300,365 295,360" fill="#c9a84c" opacity="0.65"/>
-      </svg>
       <div class="cover-inner">
         <div class="cover-supra">עמיעד אידלמן אוברמן</div>
-        <div class="cover-title">amiado</div>
-        <div class="cover-sub">מגע במילים ומילים במגע</div>
+        <div class="cover-rule"></div>
+        <div class="cover-title">מגע במילים<br>ומילים במגע</div>
         <div class="cover-rule"></div>
         <div class="cover-tagline">זה המקדש הפרטי שלי</div>
         <div class="cover-count" id="coverCount"></div>
@@ -511,18 +438,15 @@
     <div id="songsContainer"></div>
   </div>
 
-  <!-- ── FLIP VIEW ── -->
+  <!-- ── FLIP VIEW (open book spread) ── -->
   <div id="flipView">
-    <div class="flip-stage" id="flipStage">
-      <div class="flip-behind" id="flipBehind"></div>
-      <div class="flip-leaf" id="flipLeaf">
-        <div class="flip-leaf-front" id="flipFront"></div>
-        <div class="flip-leaf-back" id="flipBack"></div>
-      </div>
+    <div class="book-spread">
+      <div class="spread-page spread-right" id="spreadRight"></div>
+      <div class="spread-spine"></div>
+      <div class="spread-page spread-left" id="spreadLeft"></div>
     </div>
     <div class="flip-title-hint" id="flipTitleHint"></div>
     <div class="flip-nav">
-      <!-- RTL: next is ← (arrow pointing left = go forward in Hebrew) -->
       <button class="flip-arrow" id="flipNextBtn" title="דף הבא">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
@@ -710,24 +634,19 @@
       container.appendChild(page);
     });
 
-    /* ── Page flip view ── */
+    /* ── Open book spread view ── */
     // Each entry: { html: string, isCover: bool, title: string }
     const allPages = [];
 
     function collectPages() {
-      // Page 0: cover — wraps inner content in a flex-centered absolute container
       allPages.push({
         html: `<div class="flip-cover-wrap">${document.getElementById('pageCover').innerHTML}</div>`,
-        isCover: true,
-        title: 'כריכה'
+        isCover: true, title: 'כריכה'
       });
-      // Page 1: TOC
       allPages.push({
         html: `<div class="fp-body">${document.getElementById('pageToc').innerHTML}</div>`,
-        isCover: false,
-        title: 'תוכן עניינים'
+        isCover: false, title: 'תוכן עניינים'
       });
-      // Pages 2+: songs (each song → lyrics page + optional analysis page)
       songs.forEach((song, i) => {
         const [lyricsHtml, analysisHtml] = buildFlipSongPages(song, i);
         allPages.push({ html: lyricsHtml, isCover: false, title: song.title });
@@ -737,97 +656,56 @@
     collectPages();
 
     const flipView      = document.getElementById('flipView');
-    const flipFront     = document.getElementById('flipFront');
-    const flipBack      = document.getElementById('flipBack');
-    const flipBehind    = document.getElementById('flipBehind');
-    const flipLeaf      = document.getElementById('flipLeaf');
+    const spreadRight   = document.getElementById('spreadRight');
+    const spreadLeft    = document.getElementById('spreadLeft');
     const flipCounter   = document.getElementById('flipCounter');
     const flipTitleHint = document.getElementById('flipTitleHint');
     const flipNextBtn   = document.getElementById('flipNextBtn');
     const flipPrevBtn   = document.getElementById('flipPrevBtn');
 
-    let currentPage = 0;
-    let isFlipping  = false;
-    const TOTAL     = allPages.length;
+    // Navigate 2 pages at a time (a "spread" = right page + left page)
+    const TOTAL_SPREADS = Math.ceil(allPages.length / 2);
+    let currentSpread = 0;
 
-    function applyPageBg(el, pg) {
-      el.style.background = pg.isCover ? '#090907' : '';
+    function getSpreadPages(si) {
+      return { right: allPages[si * 2] || null, left: allPages[si * 2 + 1] || null };
     }
 
     function updateUI() {
-      const pg = allPages[currentPage];
-      flipCounter.textContent = `${currentPage + 1} / ${TOTAL}`;
-      flipTitleHint.textContent = pg ? pg.title : '';
-      flipNextBtn.disabled = currentPage >= TOTAL - 1;
-      flipPrevBtn.disabled = currentPage <= 0;
+      const { right } = getSpreadPages(currentSpread);
+      flipCounter.textContent = `${currentSpread + 1} / ${TOTAL_SPREADS}`;
+      flipTitleHint.textContent = right ? right.title : '';
+      flipNextBtn.disabled = currentSpread >= TOTAL_SPREADS - 1;
+      flipPrevBtn.disabled = currentSpread <= 0;
     }
 
-    function showPage(idx) {
-      currentPage = idx;
-      const pg = allPages[idx];
-      flipFront.innerHTML = pg ? pg.html : '';
-      flipBack.innerHTML  = '';
-      flipBehind.innerHTML = '';
-      flipLeaf.style.transition = 'none';
-      flipLeaf.style.transform  = 'rotateY(0deg)';
-      applyPageBg(flipFront, pg || {});
-      flipBehind.style.background = '';
-      flipFront.scrollTop = 0;
+    function showSpread(si) {
+      currentSpread = si;
+      const { right, left } = getSpreadPages(si);
+      spreadRight.innerHTML = right ? right.html : '';
+      spreadLeft.innerHTML  = left  ? left.html  : '';
+      spreadRight.style.background = (right && right.isCover) ? '#090907' : '';
+      spreadLeft.style.background  = (left  && left.isCover)  ? '#090907'
+                                   : (right && right.isCover) ? '#0b0b09' : '';
+      spreadRight.scrollTop = 0;
+      spreadLeft.scrollTop  = 0;
       updateUI();
     }
 
-    function flipTo(targetIdx) {
-      if (isFlipping || targetIdx < 0 || targetIdx >= TOTAL) return;
-      isFlipping = true;
-
-      const forward   = targetIdx > currentPage;
-      const pgCurrent = allPages[currentPage];
-      const pgTarget  = allPages[targetIdx];
-
-      flipFront.innerHTML  = pgCurrent.html;
-      flipBack.innerHTML   = pgTarget.html;
-      flipBehind.innerHTML = pgTarget.html;
-
-      applyPageBg(flipFront,  pgCurrent);
-      applyPageBg(flipBack,   pgTarget);
-      applyPageBg(flipBehind, pgTarget);
-
-      flipFront.scrollTop  = 0;
-      flipBack.scrollTop   = 0;
-      flipBehind.scrollTop = 0;
-
-      flipLeaf.style.transition = 'none';
-      flipLeaf.style.transform  = 'rotateY(0deg)';
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          flipLeaf.style.transformOrigin = forward ? 'right center' : 'left center';
-          flipLeaf.style.transition = 'transform 0.65s cubic-bezier(0.4, 0, 0.2, 1)';
-          flipLeaf.style.transform  = forward ? 'rotateY(180deg)' : 'rotateY(-180deg)';
-
-          setTimeout(() => {
-            currentPage = targetIdx;
-            showPage(currentPage);
-            isFlipping = false;
-            updateUI();
-          }, 680);
-        });
-      });
-    }
-
-    flipNextBtn.addEventListener('click', () => flipTo(currentPage + 1));
-    flipPrevBtn.addEventListener('click', () => flipTo(currentPage - 1));
-
-    // Keyboard navigation
-    document.addEventListener('keydown', e => {
-      if (!flipView.classList.contains('active')) return;
-      if (e.key === 'ArrowLeft')  flipTo(currentPage + 1);
-      if (e.key === 'ArrowRight') flipTo(currentPage - 1);
+    flipNextBtn.addEventListener('click', () => {
+      if (currentSpread < TOTAL_SPREADS - 1) showSpread(currentSpread + 1);
+    });
+    flipPrevBtn.addEventListener('click', () => {
+      if (currentSpread > 0) showSpread(currentSpread - 1);
     });
 
-    // Touch / swipe — only trigger on clearly horizontal gestures (not vertical scroll)
-    let touchStartX = 0;
-    let touchStartY = 0;
+    document.addEventListener('keydown', e => {
+      if (!flipView.classList.contains('active')) return;
+      if (e.key === 'ArrowLeft'  && currentSpread < TOTAL_SPREADS - 1) showSpread(currentSpread + 1);
+      if (e.key === 'ArrowRight' && currentSpread > 0) showSpread(currentSpread - 1);
+    });
+
+    let touchStartX = 0, touchStartY = 0;
     flipView.addEventListener('touchstart', e => {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
@@ -835,11 +713,9 @@
     flipView.addEventListener('touchend', e => {
       const dx = touchStartX - e.changedTouches[0].clientX;
       const dy = touchStartY - e.changedTouches[0].clientY;
-      // Ignore if mostly vertical (user is scrolling text)
-      if (Math.abs(dy) > Math.abs(dx) * 0.8) return;
-      if (Math.abs(dx) < 45) return;
-      if (dx > 0) flipTo(currentPage + 1);
-      else        flipTo(currentPage - 1);
+      if (Math.abs(dy) > Math.abs(dx) * 0.8 || Math.abs(dx) < 45) return;
+      if (dx > 0 && currentSpread < TOTAL_SPREADS - 1) showSpread(currentSpread + 1);
+      else if (dx < 0 && currentSpread > 0) showSpread(currentSpread - 1);
     }, { passive: true });
 
     /* ── View toggle ── */
@@ -855,7 +731,7 @@
       btnScroll.classList.toggle('active', !isFlip);
       localStorage.setItem('book-mode', mode);
       if (isFlip) {
-        showPage(currentPage);
+        showSpread(currentSpread);
         updateUI();
       }
     }
@@ -878,7 +754,7 @@
       applyTheme(dark);
       localStorage.setItem('book-theme', dark ? 'dark' : 'light');
       // If in flip mode, re-render current page to pick up new theme
-      if (flipView.classList.contains('active')) showPage(currentPage);
+      if (flipView.classList.contains('active')) showSpread(currentSpread);
     });
     applyTheme(localStorage.getItem('book-theme') === 'dark');
 
