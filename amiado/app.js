@@ -1750,14 +1750,6 @@ MOMENTS_VIDEOS.forEach(v => {
 
 let _momentsIdx = 0;
 
-function setMomentsView(type, btn) {
-  ['list','grid','side'].forEach(v => {
-    const el = document.getElementById('moments-view-' + v);
-    if (el) el.style.display = v === type ? '' : 'none';
-  });
-  document.querySelectorAll('.moments-view-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
 
 function momentsOpenModal(index) {
   _momentsIdx = index;
@@ -1825,12 +1817,9 @@ function renderMomentsPage() {
   const ARROW = `<svg viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8l5-5" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const GRADS = ['#1a0e20,#0c1525','#0e1a17,#141020','#1a150c,#0c1020','#0c1422,#1a0d18'];
 
-  function catLabel(text) {
-    return `<div style="font-size:.68rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;opacity:.5;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--card-border);">${text}</div>`;
-  }
-  function listItem(v, gi, li) {
+  function listItem(v, gi, li, cat) {
     const [c1, c2] = GRADS[li % 4].split(',');
-    return `<div class="m-list-item" onclick="momentsOpenModal(${gi})" style="animation-delay:${li * 0.07}s">
+    return `<div class="m-list-item" data-cat="${cat}" onclick="momentsOpenModal(${gi})" style="animation-delay:${li * 0.07}s">
       <div class="m-thumb" style="background:linear-gradient(135deg,${c1},${c2})">
         <div class="m-thumb-num">${String(li + 1).padStart(2,'0')}</div>
         <div class="m-thumb-play"><div class="m-thumb-circle">${PLAY}</div></div>
@@ -1846,20 +1835,19 @@ function renderMomentsPage() {
     </div>`;
   }
 
-  const coverItems  = MOMENTS_COVERS.map((v, i) => listItem(v, i, i)).join('');
-  const origItems   = MOMENTS_ORIGINALS.map((v, i) => listItem(v, MOMENTS_COVERS.length + i, i)).join('');
+  const coverItems  = MOMENTS_COVERS.map((v, i) => listItem(v, i, i, 'cover')).join('');
+  const origItems   = MOMENTS_ORIGINALS.map((v, i) => listItem(v, MOMENTS_COVERS.length + i, i, 'original')).join('');
 
   return `<style>
 .moments-page{max-width:760px;margin:0 auto;padding:0 0 80px}
 .moments-page h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:300;color:var(--gold);letter-spacing:.14em;text-align:center}
 .m-sub{color:var(--text-dim);font-size:.82rem;letter-spacing:.06em;text-align:center;margin-top:8px}
 .m-divider-line{width:40px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:14px auto 0}
-.moments-view-toggle{display:flex;justify-content:center;gap:8px;margin:36px 0 44px;flex-wrap:wrap}
-.moments-view-btn{background:none;border:1px solid var(--card-border);color:var(--text-dim);padding:9px 22px;border-radius:24px;cursor:pointer;font-family:'Frank Ruhl Libre',serif;font-size:.82rem;letter-spacing:.05em;transition:all .25s}
-.moments-view-btn:hover{border-color:rgba(201,168,76,.3);color:var(--text-mid)}
-.moments-view-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.06)}
+.moments-filter{display:flex;justify-content:center;gap:8px;margin:36px 0 44px;flex-wrap:wrap}
+.moments-filter-btn{background:none;border:1px solid var(--card-border);color:var(--text-dim);padding:9px 22px;border-radius:24px;cursor:pointer;font-family:'Frank Ruhl Libre',serif;font-size:.82rem;letter-spacing:.05em;transition:all .25s}
+.moments-filter-btn:hover{border-color:rgba(201,168,76,.3);color:var(--text-mid)}
+.moments-filter-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.06)}
 #moments-view-list{max-width:720px;margin:0 auto}
-#moments-view-grid,#moments-view-side{display:none;max-width:1100px;margin:0 auto}
 .m-list-feed{display:flex;flex-direction:column;gap:12px}
 .m-list-item{display:grid;grid-template-columns:130px 1fr 40px;align-items:center;background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .3s,box-shadow .3s,transform .25s;animation:mSlideIn .4s ease both}
 @keyframes mSlideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -1933,29 +1921,16 @@ function renderMomentsPage() {
     <div class="m-divider-line"></div>
   </header>
 
-  <div class="moments-view-toggle">
-    <button class="moments-view-btn active" onclick="setMomentsView('list',this)">רשימה + מודל ▶</button>
-    <button class="moments-view-btn" onclick="setMomentsView('grid',this)">גריד 2×2</button>
-    <button class="moments-view-btn" onclick="setMomentsView('side',this)">שורות רחבות</button>
+  <div class="moments-filter">
+    <button class="moments-filter-btn" data-filter="cover">כיסויים</button>
+    <button class="moments-filter-btn active" data-filter="all">הכל</button>
+    <button class="moments-filter-btn" data-filter="original">מקוריים</button>
   </div>
 
   <div id="moments-view-list">
-    <div class="m-list-feed">
-      ${catLabel('כיסויים')}
-      ${coverItems}
+    <div class="m-list-feed" id="moments-list-feed">
+      ${coverItems}${origItems}
     </div>
-    <div class="m-list-feed" style="margin-top:32px;">
-      ${catLabel('מקוריים')}
-      ${origItems}
-    </div>
-  </div>
-
-  <div id="moments-view-grid">
-    <div class="m-grid-feed" id="moments-grid-feed"></div>
-  </div>
-
-  <div id="moments-view-side">
-    <div class="m-side-feed" id="moments-side-feed"></div>
   </div>
 
   <div class="m-modal-overlay" id="moments-modal" onclick="momentsHandleOverlayClick(event)">
@@ -1977,22 +1952,17 @@ function renderMomentsPage() {
 }
 
 function initMomentsPage() {
-  const PLAY = `<svg viewBox="0 0 14 14" fill="none"><path d="M4 2.5l8 4.5-8 4.5V2.5z" fill="#c9a84c"/></svg>`;
-
-  function videoCard(v) {
-    return `<div class="m-video-card">
-      <iframe src="${v.src}" scrolling="no" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-      <div class="m-card-comments">
-        <div class="m-comments-label-sm">תגובות נבחרות</div>
-        ${v.comments.map(c => `<div class="m-comment"><div class="m-avatar">${c.name[0]}</div><div class="m-comment-body"><div class="m-comment-name">${c.name}</div><div class="m-comment-text">${c.text}</div></div></div>`).join('')}
-      </div>
-    </div>`;
-  }
-
-  const gridEl = document.getElementById('moments-grid-feed');
-  if (gridEl) gridEl.innerHTML = MOMENTS_VIDEOS.map(v => videoCard(v)).join('');
-  const sideEl = document.getElementById('moments-side-feed');
-  if (sideEl) sideEl.innerHTML = MOMENTS_VIDEOS.map(v => videoCard(v)).join('');
+  // Filter tabs
+  document.querySelectorAll('.moments-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.moments-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.filter;
+      document.querySelectorAll('#moments-list-feed .m-list-item').forEach(item => {
+        item.style.display = (cat === 'all' || item.dataset.cat === cat) ? '' : 'none';
+      });
+    });
+  });
 
   if (window._momentsKeydown) document.removeEventListener('keydown', window._momentsKeydown);
   window._momentsKeydown = function(e) {
