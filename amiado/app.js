@@ -1495,6 +1495,9 @@ function route() {
   const hash = window.location.hash || '#/';
   const app = document.getElementById('app');
 
+  // Always reset body scroll lock on navigation
+  document.body.style.overflow = '';
+
   // Update nav active state
   document.querySelectorAll('.nav-link').forEach(link => {
     link.classList.remove('active');
