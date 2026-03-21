@@ -1920,18 +1920,18 @@ function renderMomentsPage() {
 .m-comment-body{flex:1;min-width:0}
 .m-comment-name{font-size:.74rem;color:var(--gold);margin-bottom:2px}
 .m-comment-text{font-size:.82rem;color:var(--text-mid);line-height:1.55}
-.m-modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(5,5,10,.88);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.m-modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(5,5,10,.88);backdrop-filter:blur(16px);display:flex;align-items:flex-start;justify-content:center;padding:40px 20px 60px;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 .m-modal-overlay.open{opacity:1;visibility:visible}
-.m-modal-box{width:100%;max-width:960px;background:var(--card-bg);border:1px solid rgba(201,168,76,.2);border-radius:20px;overflow:hidden;display:grid;grid-template-columns:60fr 40fr;max-height:90vh;box-shadow:0 0 80px rgba(0,0,0,.6);transform:scale(.9) translateY(30px);transition:transform .4s cubic-bezier(.34,1.4,.64,1)}
+.m-modal-box{width:100%;max-width:680px;background:var(--card-bg);border:1px solid rgba(201,168,76,.2);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 80px rgba(0,0,0,.6);transform:scale(.9) translateY(30px);transition:transform .4s cubic-bezier(.34,1.4,.64,1)}
 .m-modal-overlay.open .m-modal-box{transform:scale(1) translateY(0)}
-.m-modal-video{position:relative;background:#000}
-.m-modal-video iframe{display:block;width:100%;height:100%;min-height:480px;border:none}
+.m-modal-video{position:relative;background:#000;width:100%;flex-shrink:0}
+.m-modal-video iframe{display:block;width:100%;aspect-ratio:16/9;height:auto;min-height:unset;border:none}
 .m-modal-nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);z-index:5}
 .m-nav-btn{background:rgba(0,0,0,.4);border:1px solid rgba(201,168,76,.25);color:var(--gold);padding:7px 16px;border-radius:20px;cursor:pointer;font-family:'Frank Ruhl Libre',serif;font-size:.78rem;letter-spacing:.05em;transition:all .2s;backdrop-filter:blur(6px)}
 .m-nav-btn:hover{background:rgba(201,168,76,.15);border-color:var(--gold)}
 .m-nav-btn:disabled{opacity:.2;cursor:default}
 .m-counter{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:rgba(201,168,76,.5);letter-spacing:.08em}
-.m-modal-comments{padding:28px 24px;border-right:1px solid var(--card-border);background:rgba(255,255,255,.025);display:flex;flex-direction:column;overflow-y:auto;position:relative}
+.m-modal-comments{padding:24px 20px;border-top:1px solid var(--card-border);background:rgba(255,255,255,.025);display:flex;flex-direction:column;position:relative}
 .m-close{position:absolute;top:14px;left:14px;z-index:10;width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);color:var(--text-dim);font-size:.78rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .m-close:hover{background:rgba(201,168,76,.15);color:var(--gold);border-color:var(--gold)}
 .m-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:300;color:var(--text);margin-bottom:6px;line-height:1.4;padding-top:2px}
@@ -1944,13 +1944,9 @@ function renderMomentsPage() {
 @media(max-width:720px){
   .m-list-item{grid-template-columns:100px 1fr auto 36px}
   .m-thumb{width:100px;height:80px}
-  .m-modal-overlay{align-items:flex-end;padding:0}
-  .m-modal-box{grid-template-columns:1fr;border-radius:20px 20px 0 0;max-height:92vh;width:100%;overflow-y:auto;transform:translateY(100%)!important;transition:transform .4s cubic-bezier(.32,.72,0,1)!important}
+  .m-modal-overlay{align-items:flex-end;padding:0;overflow-y:hidden}
+  .m-modal-box{border-radius:20px 20px 0 0;max-height:92vh;overflow-y:auto;transform:translateY(100%)!important;transition:transform .4s cubic-bezier(.32,.72,0,1)!important}
   .m-modal-overlay.open .m-modal-box{transform:translateY(0)!important}
-  .m-modal-video{position:relative;width:100%;padding-bottom:177.7%;height:0!important}
-  .m-modal-video iframe{position:absolute;inset:0;width:100%!important;height:100%!important;min-height:unset!important}
-  .m-modal-nav{position:absolute;bottom:0;left:0;right:0}
-  .m-modal-comments{max-height:none;overflow-y:visible;border-right:none!important;border-top:1px solid var(--card-border)}
 }
 </style>
 <div class="page-enter moments-page">
@@ -2579,8 +2575,31 @@ function buildAudioPanel(song, idx) {
     </div>`;
   }
 
-  // Single source — Suno only
-  if (hasSuno) return buildSunoEmbed(song);
+  // Suno only — show "coming soon" tab for personal version
+  if (hasSuno) {
+    return `
+    <div class="audio-switcher">
+      <div class="ast-tabs">
+        <button class="ast-tab" data-ast="mine">
+          <svg width="11" height="11" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11L12 7z"/></svg>
+          ביצוע שלי
+        </button>
+        <button class="ast-tab active" data-ast="suno">
+          <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 1 0 0 16A8 8 0 0 0 10 2zM8 7l6 3-6 3V7z"/></svg>
+          ביצוע Suno
+        </button>
+      </div>
+      <div class="ast-panel ast-hidden" data-ast-panel="mine">
+        <div class="sidebar-coming-soon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <div class="coming-soon-text">הביצוע שלי יעלה בקרוב</div>
+        </div>
+      </div>
+      <div class="ast-panel" data-ast-panel="suno">
+        ${buildSunoEmbedInner(song)}
+      </div>
+    </div>`;
+  }
 
   // Single source — YouTube only
   if (hasYT) return buildYoutubeEmbed(song);
@@ -3276,7 +3295,7 @@ function renderBioPage() {
             <p>
               אני כותב ומלחין מוזיקה בעברית ובאנגלית. עבורי, הכתיבה היא הניסיון הנצחי לגשר על הפער שבין המילים למציאות,
               ולמצוא את המרווח המדויק שבו רגש הופך לצליל.
-              האתר הזה הוא אוסף מח��בות, סיפורים, רגעים, שירים ותחנות בדרך שלי.
+              האתר הזה הוא אוסף מחשבות, סיפורים, רגעים, שירים ותחנות בדרך שלי.
               אני כותב כדי להבין, כדי לזכור, וכדי לתת לצבעים של היומיום ביטוי על הדף.
               אני מאמין שביצירה, כמו בחיים, תמיד לאתגר את עצמך והישאר סקרן ונאמן לעצמך.
             </p>
