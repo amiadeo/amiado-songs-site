@@ -1,4 +1,4 @@
-const CACHE = 'amiado-v14';
+const CACHE = 'amiado-v15';
 const STATIC = [
   './',
   './index.html',
