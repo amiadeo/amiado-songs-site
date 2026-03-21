@@ -56,7 +56,7 @@ function getCover(id) {
 const SONGS = [
   {
     id: 'maga-bamilim', title: 'מגע במילים', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/maga-bamilim/audio.mp3' },
+    audio: { type: 'file', src: 'songs/maga-bamilim/audio.mp3' },
     links: {
       spotify: 'https://open.spotify.com/track/3RmIU0o0sO31gX9reWodek?si=3c7413a9523447a9',
       suno: 'https://suno.com/s/veaP24BCdZI87l9H'
@@ -97,7 +97,7 @@ const SONGS = [
   },
   {
     id: 'shigaon-amorfi', title: 'שיגעון אמורפי', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/shigaon-amorfi/audio.mp3' },
+    audio: { type: 'file', src: 'songs/shigaon-amorfi/audio.mp3' },
     links: { suno: 'https://suno.com/s/veaP24BCdZI87l9H' },
     sunoEmbedId: '4a01e659-5d82-4a29-9b11-ac6fd1c76c31',
     chords: [],
@@ -134,7 +134,7 @@ const SONGS = [
   },
   {
     id: 'hargasha-meshuna', title: 'הרגשה משונה', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/hargasha-meshuna/audio.mp3' },
+    audio: { type: 'file', src: 'songs/hargasha-meshuna/audio.mp3' },
     links: { suno: 'https://suno.com/s/b89qWPn1QbxdBVG1' },
     sunoEmbedId: '4a441bf9-e85a-419b-bf8e-abd5d0f054df',
     chords: [],
@@ -171,7 +171,7 @@ const SONGS = [
   },
   {
     id: 'al-ktsot-hatsbaot', title: 'על קצות האצבעות', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/al-ktsot-hatsbaot/audio.mp3' },
+    audio: { type: 'file', src: 'songs/al-ktsot-hatsbaot/audio.mp3' },
     links: { suno: 'https://suno.com/s/nHAQkbcoDqxlr20p' },
     sunoEmbedId: 'd7170979-b4c4-4c4b-8ba7-c58f14b47249',
     chords: [],
@@ -206,7 +206,7 @@ const SONGS = [
   },
   {
     id: 'banahar-sheli', title: 'בנהר שלי', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/banahar-sheli/audio.mp3' },
+    audio: { type: 'file', src: 'songs/banahar-sheli/audio.mp3' },
     links: { suno: 'https://suno.com/s/ka2Rz9DUQiTLadpq' },
     sunoEmbedId: '918820c2-c7f7-4b24-8bf7-a693aab12584',
     chords: [],
@@ -238,7 +238,7 @@ const SONGS = [
   },
   {
     id: 'lo-amiti', title: 'לא אמיתי', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/lo-amiti/audio.mp3' },
+    audio: { type: 'file', src: 'songs/lo-amiti/audio.mp3' },
     links: { suno: 'https://suno.com/s/CzIEo9m0U4664YmT' },
     sunoEmbedId: '5ab3aad7-3868-42ef-bda8-93b6e9402682',
     chords: [],
@@ -275,7 +275,7 @@ const SONGS = [
   },
   {
     id: 'makom-batuach', title: 'מקום בטוח', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/makom-batuach/audio.mp3' },
+    audio: { type: 'file', src: 'songs/makom-batuach/audio.mp3' },
     links: { suno: 'https://suno.com/s/owkAkw13FaiaGpvn' },
     sunoEmbedId: 'f461a913-a0c2-40d9-8994-331f71d825c6',
     chords: [],
@@ -312,7 +312,7 @@ const SONGS = [
   },
   {
     id: 'london', title: 'לונדון', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/london/audio.mp3' },
+    audio: { type: 'file', src: 'songs/london/audio.mp3' },
     links: { suno: 'https://suno.com/s/loZ4xATBgkiLjXgP' },
     sunoEmbedId: '7941e64c-e715-4a14-b186-8a8801ece479',
     chords: [],
@@ -348,7 +348,7 @@ const SONGS = [
   },
   {
     id: 'efshar', title: 'אפשר', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/efshar/audio.mp3' },
+    audio: { type: 'file', src: 'songs/efshar/audio.mp3' },
     links: { suno: 'https://suno.com/s/AChDQ0BECJxk5xgV' },
     sunoEmbedId: '13e63159-a1e8-4168-9f95-56c0534dfec0',
     chords: [],
@@ -388,7 +388,7 @@ const SONGS = [
   },
   {
     id: 'porkan-mini-zol', title: 'פורקן מיני זול', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/porkan-mini-zol/audio.mp3' },
+    audio: { type: 'file', src: 'songs/porkan-mini-zol/audio.mp3' },
     links: { suno: 'https://suno.com/s/GPfCSVUQjnR0yBPj' },
     sunoEmbedId: '61982dd7-4486-43f3-a856-1ef89704bfc9',
     chords: [],
@@ -431,7 +431,7 @@ const SONGS = [
   },
   {
     id: 'simanim-shel-bots', title: 'סימנים של בוץ', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/simanim-shel-bots/audio.mp3' },
+    audio: { type: 'file', src: 'songs/simanim-shel-bots/audio.mp3' },
     links: {
       spotify: 'https://open.spotify.com/track/0Vc3uoOSQHeQykOdj9BET7?si=0b8d9b5eccdc4135',
       suno: 'https://suno.com/s/rQ3RWNsdGb7Dt3bh'
@@ -476,7 +476,7 @@ const SONGS = [
   },
   {
     id: 'gibor-al', title: 'גיבור על', language: 'he',
-    audio: { type: 'file', src: 'amiado/songs/gibor-al/audio.mp3' },
+    audio: { type: 'file', src: 'songs/gibor-al/audio.mp3' },
     youtubeVideoId: '35zFmxPcgdc',
     links: { youtube: 'https://youtu.be/35zFmxPcgdc?si=5FarfUC2UZG6r6kU' },
 chords: {
@@ -1117,6 +1117,7 @@ chords: {
   },
   {
     id: 'chozer-elay', title: 'חוזר אליי', language: 'he',
+    audio: { type: 'file', src: 'songs/chozer-elay/audio.mp3' },
     chords: [],
     lyrics: [
       { section: 'בית 1', lines: [
@@ -1155,6 +1156,7 @@ chords: {
   },
   {
     id: 'kimeat-shakuf', title: 'כמעט שקוף', language: 'he',
+    audio: { type: 'file', src: 'songs/kimeat-shakuf/audio.mp3' },
     chords: [],
     lyrics: [
       { section: 'בית 1', lines: [
@@ -2030,23 +2032,27 @@ function renderHomePage() {
     const isFav = favs.includes(song.id);
     const num = String(i + 1).padStart(2, '0');
     const langLabel = song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית';
+    const excerpt = song.analysis?.abstract
+      ? song.analysis.abstract.replace(/\s+/g,' ').trim().slice(0, 90) + '…'
+      : '';
     return `
     <div class="song-cine-card" data-id="${song.id}" data-title="${song.title}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}">
       <div class="song-cine-img">${getCover(song.id)}<div class="song-cine-num">${num}</div></div>
       <div class="song-cine-text">
         <div class="song-cine-lang">${langLabel}</div>
         <div class="song-cine-title">${song.title}</div>
-        <div class="song-cine-btns">
-          <button class="song-cine-play-btn" data-play-idx="${i}" title="נגן">
-            <svg width="12" height="12" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
-          </button>
-          <button class="track-fav-btn song-cine-fav-btn${isFav ? ' active' : ''}" data-song-id="${song.id}" title="מועדפים">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </button>
-          <button class="track-add-btn song-cine-add-btn" data-song-id="${song.id}" title="הוסף לפלייליסט">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
+        ${excerpt ? `<div class="song-cine-excerpt">${excerpt}</div>` : ''}
+      </div>
+      <div class="song-cine-btns">
+        <button class="song-cine-play-btn" data-play-idx="${i}" title="נגן">
+          <svg width="12" height="12" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
+        </button>
+        <button class="track-fav-btn song-cine-fav-btn${isFav ? ' active' : ''}" data-song-id="${song.id}" title="מועדפים">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="track-add-btn song-cine-add-btn" data-song-id="${song.id}" title="הוסף לפלייליסט">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
       </div>
     </div>`;
   }).join('');
@@ -2678,15 +2684,10 @@ let _suggData = null;
 function buildSuggestedPlaylists() {
   const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
   const defs = [
-    { id:'sugg-all',      name:'כל השירים',    desc:'הקולקציה המלאה',          grad:['#1a0e20','#0c1525'], songs: SONGS },
-    { id:'sugg-play',     name:'שמע עכשיו',    desc:'שירים עם אודיו זמין',     grad:['#0e1a12','#141020'], songs: SONGS.filter(s => s.audio?.src || s.sunoEmbedId) },
-    { id:'sugg-he',       name:'בעברית',       desc:'שירים בעברית',            grad:['#1a150c','#0c1020'], songs: SONGS.filter(s => !s.language || s.language === 'he') },
-    { id:'sugg-en',       name:'English',      desc:'Songs in English',         grad:['#0c1422','#1a0d18'], songs: SONGS.filter(s => s.language === 'en') },
-    { id:'sugg-es',       name:'Español',      desc:'Canciones en español',     grad:['#1a0a0a','#0c1a0a'], songs: SONGS.filter(s => s.language === 'es') },
-    { id:'sugg-lyrics',   name:'עם מילים',     desc:'שירים עם מילים מלאות',    grad:['#1a1208','#0c1a14'], songs: SONGS.filter(s => s.lyrics?.length > 0) },
-    { id:'sugg-analysis', name:'עם ניתוח',     desc:'ניתוח ספרותי',            grad:['#0a0f1a','#1a0a10'], songs: SONGS.filter(s => s.analysis?.abstract) },
-    { id:'sugg-shuffle',  name:'מיקס מפתיע',   desc:'10 שירים אקראיים',        grad:['#12100a','#0a1212'], songs: shuffle(SONGS).slice(0, 10) },
-    { id:'sugg-recent',   name:'חדש באוסף',    desc:'השירים האחרונים',         grad:['#0f1520','#1a0f0a'], songs: [...SONGS].slice(-8).reverse() },
+    { id:'sugg-recent',   name:'נוספו לאחרונה', desc:'השירים האחרונים שנוספו',  songs: [...SONGS].slice(-8).reverse() },
+    { id:'sugg-shuffle',  name:'מיקס מפתיע',    desc:'בחירה אקראית',            songs: shuffle(SONGS).slice(0, 10) },
+    { id:'sugg-ballads',  name:'בלדות לנשמה',   desc:'שירים עם עומק ורגש',      songs: SONGS.filter(s => s.analysis?.abstract || s.lyrics?.length > 0) },
+    { id:'sugg-beat',     name:'תנו לי בקצב',   desc:'שירים עם הפקה מלאה',      songs: SONGS.filter(s => s.sunoEmbedId || s.youtubeVideoId || s.audio?.src) },
   ];
   return defs.filter(d => d.songs.length > 0);
 }
@@ -2694,13 +2695,11 @@ function buildSuggestedPlaylists() {
 function renderSuggestedSection() {
   _suggData = buildSuggestedPlaylists();
   const cards = _suggData.map(pl => {
-    const covers = pl.songs.slice(0, 4);
-    const gridCols = Math.min(covers.length, 2);
-    const thumbs = covers.map(s => `<div class="sugg-thumb">${getCover(s.id)}</div>`).join('');
+    const coverSong = pl.songs[0];
     return `
       <div class="sugg-card" data-sugg-id="${pl.id}">
-        <div class="sugg-card-art" style="background:linear-gradient(135deg,${pl.grad[0]},${pl.grad[1]})">
-          <div class="sugg-cover-grid" style="grid-template-columns:repeat(${gridCols},1fr)">${thumbs}</div>
+        <div class="sugg-card-art">
+          <div class="sugg-card-cover">${coverSong ? getCover(coverSong.id) : ''}</div>
           <div class="sugg-card-play">
             <svg viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
           </div>
@@ -2727,22 +2726,20 @@ function openSuggPlaylist(id) {
   const modal = document.getElementById('suggModal');
   if (!modal) return;
 
-  const covers = pl.songs.slice(0, 4);
-  const gridCols = Math.min(covers.length, 2);
-  const headerThumbs = covers.map(s => `<div class="sugg-mh-thumb">${getCover(s.id)}</div>`).join('');
+  const coverSong = pl.songs[0];
   const firstIdx = pl.songs.length > 0 ? SONGS.indexOf(pl.songs[0]) : -1;
 
   const songRows = pl.songs.map((song, i) => {
     const idx = SONGS.indexOf(song);
     return `
-      <div class="sugg-song-row">
+      <div class="sugg-song-row" data-song-id="${song.id}">
         <span class="sugg-song-num">${String(i + 1).padStart(2, '0')}</span>
         <div class="sugg-song-cover">${getCover(song.id)}</div>
         <div class="sugg-song-info">
           <div class="sugg-song-title">${song.title}</div>
           <div class="sugg-song-lang">${song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית'}</div>
         </div>
-        <button class="sugg-song-play-btn" data-play-idx="${idx}">
+        <button class="sugg-song-play-btn" data-play-idx="${idx}" title="נגן">
           <svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
         </button>
       </div>`;
@@ -2755,8 +2752,8 @@ function openSuggPlaylist(id) {
 
   document.getElementById('suggModalContent').innerHTML = `
     <div class="sugg-mh">
-      <div class="sugg-mh-art" style="background:linear-gradient(135deg,${pl.grad[0]},${pl.grad[1]})">
-        <div class="sugg-mh-grid" style="grid-template-columns:repeat(${gridCols},1fr)">${headerThumbs}</div>
+      <div class="sugg-mh-art">
+        <div class="sugg-mh-cover">${coverSong ? getCover(coverSong.id) : ''}</div>
       </div>
       <div class="sugg-mh-info">
         <div class="sugg-mh-eyebrow">פלייליסט מוצע</div>
@@ -2829,10 +2826,18 @@ function openSuggPlaylist(id) {
   });
 
   modal.querySelectorAll('.sugg-song-play-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
       const idx = parseInt(btn.dataset.playIdx, 10);
       navContext = { type: 'playlist', ids: pl.songs.map(s => s.id) };
       playSong(idx);
+    });
+  });
+
+  modal.querySelectorAll('.sugg-song-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const songId = row.dataset.songId;
+      if (songId) { closeSuggModal(); location.hash = '#/songs/' + songId; }
     });
   });
 }
