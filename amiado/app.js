@@ -2302,7 +2302,6 @@ function renderHomePage() {
             <div class="songs-tabs" id="songsTabs">
               <button class="songs-tab active" data-tab="all">הכל</button>
               <button class="songs-tab" data-tab="he">עברית</button>
-              <button class="songs-tab" data-tab="mine">ביצוע שלי</button>
               <button class="songs-tab" data-tab="en">English</button>
             </div>
             <div class="songs-chapter-controls">
@@ -4471,8 +4470,7 @@ function bindPageEvents() {
   // Helper: get song IDs matching the currently active tab filter
   function getTabFilteredIds() {
     const tab = document.querySelector('.songs-tab.active')?.dataset.tab || 'all';
-    if (tab === 'all')  return SONGS.map(s => s.id);
-    if (tab === 'mine') return SONGS.filter(s => !!s.audio?.src).map(s => s.id);
+    if (tab === 'all') return SONGS.map(s => s.id);
     return SONGS.filter(s => s.language === tab && !s.cover).map(s => s.id);
   }
 
@@ -4519,7 +4517,8 @@ function bindPageEvents() {
   // Home page — Category tabs
   const tabBtns = document.querySelectorAll('.songs-tab');
   const songsEmptyState = document.getElementById('songsEmptyState');
-  const savedTab = localStorage.getItem('amiado_songs_tab') || 'all';
+  const _rawTab = localStorage.getItem('amiado_songs_tab') || 'all';
+  const savedTab = _rawTab === 'mine' ? 'all' : _rawTab;
 
   function updateSpotFeatured(song, idx) {
     const spotFeatured = document.getElementById('spotFeatured');
@@ -4561,8 +4560,6 @@ function bindPageEvents() {
     let visibleCount = 0;
     const matches = el => {
       if (tab === 'all') return true;
-      if (tab === 'mine') return el.dataset.hasFile === '1';
-      if (tab === 'cover') return el.dataset.cover === '1';
       return el.dataset.lang === tab && el.dataset.cover !== '1';
     };
     cines.forEach(el => { const m = matches(el); el.style.display = m ? '' : 'none'; if (m) visibleCount++; });
