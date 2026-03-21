@@ -1222,6 +1222,7 @@ chords: {
     }
   }
 ];
+window.SONGS = SONGS;
 
 // ─────────────────────────────────────────
 // AUDIO PLAYER STATE
