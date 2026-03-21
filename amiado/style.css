@@ -5280,17 +5280,75 @@ body {
 .book-print-btn:hover { background: rgba(201,168,76,.2); }
 
 .book-cover {
-  margin: 24px 32px 32px;
-  background: linear-gradient(160deg, #0d1117 0%, #111820 100%);
-  border: 1px solid rgba(201,168,76,.15);
-  border-radius: 16px;
-  padding: 60px 40px;
-  text-align: center;
+  position: relative;
+  margin: 24px 32px 40px;
+  background: #090907;
+  border-radius: 4px;
+  overflow: hidden;
+  aspect-ratio: 10 / 7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.book-cover-sub { font-size: .8rem; letter-spacing: .15em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px; }
-.book-cover-title { font-family: var(--font-serif); font-size: clamp(2.8rem, 6vw, 4.5rem); font-weight: 600; color: var(--gold); letter-spacing: .06em; line-height: 1; }
-.book-cover-tagline { font-size: .9rem; color: var(--text-dim); margin-top: 14px; font-style: italic; }
-.book-cover-count { font-size: .75rem; color: var(--text-faint); margin-top: 24px; letter-spacing: .1em; }
+.book-cover-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.book-cover-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 20px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.book-cover-sup {
+  font-family: var(--font-serif);
+  font-size: clamp(.6rem, 1.2vw, .8rem);
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.55);
+  margin-bottom: 18px;
+  font-weight: 400;
+}
+.book-cover-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3.2rem, 7vw, 5.5rem);
+  font-weight: 300;
+  color: var(--gold);
+  letter-spacing: .12em;
+  line-height: 1;
+  text-shadow: 0 0 60px rgba(201,168,76,.18);
+}
+.book-cover-tagline {
+  font-family: var(--font-serif);
+  font-size: clamp(.75rem, 1.4vw, .95rem);
+  color: rgba(201,168,76,.5);
+  margin-top: 18px;
+  font-style: italic;
+  letter-spacing: .04em;
+}
+.book-cover-temple {
+  font-family: var(--font-serif);
+  font-size: clamp(.6rem, 1.1vw, .75rem);
+  color: rgba(201,168,76,.3);
+  margin-top: 26px;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  font-style: normal;
+}
+.book-cover-count {
+  font-size: clamp(.55rem, 1vw, .68rem);
+  color: rgba(201,168,76,.2);
+  margin-top: 22px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  font-family: var(--font-serif);
+}
 
 .book-songs { padding: 0 32px; }
 .book-song-page {
@@ -5473,9 +5531,9 @@ body {
   .book-analysis-label { color: #c9a84c; }
   .book-qr { filter: none; }
   .book-qr-label { color: #888; }
-  .book-cover { background: #fff; border: 1px solid #ddd; page-break-after: always; }
-  .book-cover-title { color: #c9a84c; }
-  .book-cover-sub, .book-cover-tagline, .book-cover-count { color: #888; }
+  .book-cover { background: #090907; border: 1px solid #c9a84c; page-break-after: always; }
+  .book-cover-title { color: #c9a84c; text-shadow: none; }
+  .book-cover-sup, .book-cover-tagline, .book-cover-temple, .book-cover-count { color: rgba(201,168,76,.6); }
 }
 
 @media (max-width: 600px) {
@@ -5489,7 +5547,8 @@ body {
   .bio-book-teaser { flex-wrap: wrap; padding: 14px 16px; }
   .book-top-bar { padding: 16px 16px 20px; }
   .book-songs { padding: 0 16px; }
-  .book-cover { margin: 16px; padding: 40px 24px; }
+  .book-cover { margin: 16px; }
+  .book-cover-inner { padding: 16px 32px; }
   .book-song-body { flex-direction: column-reverse; gap: 16px; }
   .book-qr-col { display: flex; align-items: center; gap: 10px; }
 }

@@ -3558,10 +3558,41 @@ function renderBookPage() {
         </button>
       </div>
       <div class="book-cover no-print">
+        <svg class="book-cover-frame" viewBox="0 0 600 420" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="584" height="404" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+          <rect x="18" y="18" width="564" height="384" fill="none" stroke="#c9a84c" stroke-width="0.4" opacity="0.3"/>
+          <g transform="translate(8,8)" stroke="#c9a84c" fill="none" opacity="0.9">
+            <line x1="0" y1="30" x2="0" y2="0"/><line x1="0" y1="0" x2="30" y2="0"/>
+            <line x1="12" y1="12" x2="26" y2="12"/><line x1="12" y1="12" x2="12" y2="26"/>
+            <circle cx="12" cy="12" r="2.5" fill="#c9a84c"/>
+          </g>
+          <g transform="translate(592,8) scale(-1,1)" stroke="#c9a84c" fill="none" opacity="0.9">
+            <line x1="0" y1="30" x2="0" y2="0"/><line x1="0" y1="0" x2="30" y2="0"/>
+            <line x1="12" y1="12" x2="26" y2="12"/><line x1="12" y1="12" x2="12" y2="26"/>
+            <circle cx="12" cy="12" r="2.5" fill="#c9a84c"/>
+          </g>
+          <g transform="translate(8,412) scale(1,-1)" stroke="#c9a84c" fill="none" opacity="0.9">
+            <line x1="0" y1="30" x2="0" y2="0"/><line x1="0" y1="0" x2="30" y2="0"/>
+            <line x1="12" y1="12" x2="26" y2="12"/><line x1="12" y1="12" x2="12" y2="26"/>
+            <circle cx="12" cy="12" r="2.5" fill="#c9a84c"/>
+          </g>
+          <g transform="translate(592,412) scale(-1,-1)" stroke="#c9a84c" fill="none" opacity="0.9">
+            <line x1="0" y1="30" x2="0" y2="0"/><line x1="0" y1="0" x2="30" y2="0"/>
+            <line x1="12" y1="12" x2="26" y2="12"/><line x1="12" y1="12" x2="12" y2="26"/>
+            <circle cx="12" cy="12" r="2.5" fill="#c9a84c"/>
+          </g>
+          <line x1="50" y1="118" x2="550" y2="118" stroke="#c9a84c" stroke-width="0.5" opacity="0.45"/>
+          <line x1="50" y1="302" x2="550" y2="302" stroke="#c9a84c" stroke-width="0.5" opacity="0.45"/>
+          <g transform="translate(300,118)" fill="#c9a84c" opacity="0.75"><polygon points="0,-5 4,0 0,5 -4,0"/></g>
+          <g transform="translate(300,302)" fill="#c9a84c" opacity="0.75"><polygon points="0,-5 4,0 0,5 -4,0"/></g>
+          <line x1="180" y1="118" x2="180" y2="302" stroke="#c9a84c" stroke-width="0.2" opacity="0.15"/>
+          <line x1="420" y1="118" x2="420" y2="302" stroke="#c9a84c" stroke-width="0.2" opacity="0.15"/>
+        </svg>
         <div class="book-cover-inner">
-          <div class="book-cover-sub">עמיעד אידלמן אוברמן</div>
+          <div class="book-cover-sup">עמיעד אידלמן אוברמן</div>
           <div class="book-cover-title">amiado</div>
           <div class="book-cover-tagline">מגע במילים ומילים במגע</div>
+          <div class="book-cover-temple">זה המקדש הפרטי שלי</div>
           <div class="book-cover-count">${SONGS.length} שירים</div>
         </div>
       </div>
