@@ -135,27 +135,31 @@
       align-items: center;
       justify-content: flex-start;
       text-align: center;
-      padding: 5rem 3rem 0;
+      padding: 0;
       position: relative;
       overflow: hidden;
     }
 
     .cover-photo-wrap {
       position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 58%;
+      inset: 0;
       z-index: 0;
     }
     .cover-photo {
       width: 100%; height: 100%;
       object-fit: cover;
-      object-position: top center;
+      object-position: center top;
       display: block;
     }
     .cover-photo-gradient {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, #0d1117 0%, rgba(13,17,23,0.5) 40%, rgba(13,17,23,0.15) 65%, #0d1117 100%);
+      background: linear-gradient(to bottom,
+        rgba(13,17,23,0.72) 0%,
+        rgba(13,17,23,0.25) 30%,
+        rgba(13,17,23,0.25) 60%,
+        rgba(13,17,23,0.88) 100%
+      );
     }
 
     .cover-content {
@@ -164,12 +168,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: space-between;
+      flex: 1;
+      width: 100%;
       padding-bottom: 4rem;
     }
 
     .cover-logo {
-      width: 90px;
-      margin-bottom: 2.8rem;
+      width: 80px;
+      margin-bottom: 0;
       filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
     }
 
@@ -193,6 +200,13 @@
       letter-spacing: 0.07em;
       line-height: 1.4;
       font-style: italic;
+    }
+
+    .cover-top {
+      padding: 3.5rem 3rem 0;
+    }
+    .cover-bottom {
+      padding: 0 3rem 3.5rem;
     }
 
     .cover-ornament {
@@ -458,14 +472,18 @@
         <div class="cover-photo-gradient"></div>
       </div>
       <div class="cover-content">
-        <img class="cover-logo" src="aologo.svg" alt="עמיאדו" onerror="this.style.display='none'">
-        <div class="cover-title">
-          <span class="cover-title-main">מגע במילים</span>
-          <span class="cover-title-sub">ומילים במגע איתי</span>
+        <div class="cover-top">
+          <img class="cover-logo" src="aologo.svg" alt="עמיאדו" onerror="this.style.display='none'">
         </div>
-        <div class="cover-ornament"></div>
-        <div class="cover-author">מאת: עמיעד אידלמן אוברמן</div>
-        <div class="cover-year" id="coverYear"></div>
+        <div class="cover-bottom">
+          <div class="cover-title">
+            <span class="cover-title-main">מגע במילים</span>
+            <span class="cover-title-sub">ומילים במגע איתי</span>
+          </div>
+          <div class="cover-ornament"></div>
+          <div class="cover-author">מאת: עמיעד אידלמן אוברמן</div>
+          <div class="cover-year" id="coverYear"></div>
+        </div>
       </div>
     </div>
 
