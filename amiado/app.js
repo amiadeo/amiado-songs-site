@@ -512,10 +512,10 @@ chords: {
     },
     lyrics: [
       { section: 'בית 1', lines: [
-        'חצות, שוב צעקות מתחתיי',
-        'כלב בוכה, שוב הבעל מלא חזק',
-        'ריצה במדרגות, הילד בורם',
-        'מסתתר מאחורי שיחם',
+        'חצות, שוב צעקות בקומה מתחתיי',
+        'כלב בוכה, ירח מלא, שוב הבעל מלא חזק',
+        'ריצה במדרגות, הילד בורח',
+        'מסתתר מאחורי שיח',
         'מתחת לחלון שלנו'
       ]},
       { section: 'בית 2', lines: [
@@ -535,7 +535,7 @@ chords: {
         'יונתן חזר הביתה, אמא קוראת לך',
         'הכל בסדר עכשיו, אבא נרגע ונרדם',
         'יונתן אל תהיה עקשן, אמא קוראת לך',
-        'הלילה היא שוב מגמר, איך הכל יגמר מבטיחה'
+        'הלילה הכל ייגמר, איך היא שוב מבטיחה'
       ]}
     ],
     analysis: {
@@ -1129,7 +1129,7 @@ chords: {
       { section: 'בית 2', lines: [
         'בפינת רחוב כל בוקר באותה שעה',
         'אני משתדל להתייפייף נורא',
-        'אולי ילד ישחק עם הכלבה',
+        'אולי הילד ישחק עם הכלבה',
         'ותחייך אלי בבושה'
       ]},
       { section: 'פזמון', lines: [
@@ -2853,12 +2853,6 @@ function openSuggPlaylist(id) {
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  // Auto-play
-  if (firstIdx >= 0) {
-    navContext = { type: 'playlist', ids: pl.songs.map(s => s.id) };
-    playSong(firstIdx);
-  }
-
   // Handlers
   document.getElementById('suggPlayAll')?.addEventListener('click', () => {
     if (firstIdx >= 0) { navContext = { type: 'playlist', ids: pl.songs.map(s => s.id) }; playSong(firstIdx); }
@@ -2908,7 +2902,7 @@ function openSuggPlaylist(id) {
   modal.querySelectorAll('.sugg-song-row').forEach(row => {
     row.addEventListener('click', () => {
       const songId = row.dataset.songId;
-      if (songId) { closeSuggModal(); location.hash = '#/songs/' + songId; }
+      if (songId) { closeSuggModal(); location.hash = '#/song/' + songId; }
     });
   });
 }
