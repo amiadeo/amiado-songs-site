@@ -406,6 +406,39 @@
       color: var(--text-dim);
     }
 
+    /* ── QR ── */
+    .song-qr-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 2rem;
+      padding: 14px 16px;
+      background: var(--analysis-bg);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .song-qr-img {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      border-radius: 4px;
+    }
+    .song-qr-text { flex: 1; }
+    .song-qr-label {
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #c9a84c;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .song-qr-sub {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
     /* ── PRINT ── */
     @media print {
       @page {
@@ -622,6 +655,15 @@
           analysisHtml += `</div>`;
         }
 
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent('https://amiado.vercel.app/#/song/' + song.id)}&bgcolor=ffffff&color=1a0d00&margin=6&qzone=1`;
+        const qrHtml = `<div class="song-qr-row">
+          <img class="song-qr-img" src="${qrUrl}" alt="QR — ${song.title}" loading="lazy">
+          <div class="song-qr-text">
+            <div class="song-qr-label">סרוק להאזנה</div>
+            <div class="song-qr-sub">סרקו את הקוד כדי לנגן את השיר באתר</div>
+          </div>
+        </div>`;
+
         page.innerHTML = `
           <div class="song-chapter-header">
             <div class="song-meta">
@@ -631,6 +673,7 @@
             ${coverHtml}
           </div>
           ${lyricsHtml}
+          ${qrHtml}
           ${analysisHtml}
         `;
 

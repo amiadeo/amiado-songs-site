@@ -4383,7 +4383,7 @@ function bindPageEvents() {
   }
 
   // Song of the week — play button
-  const sotwBtn = document.querySelector('.sotw-play-btn');
+  const sotwBtn = document.querySelector('.sotw3-play-btn');
   if (sotwBtn) {
     sotwBtn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -4468,24 +4468,36 @@ function bindPageEvents() {
     });
   });
 
-  // Home page — Play All (sets navContext to all songs in order)
+  // Helper: get song IDs matching the currently active tab filter
+  function getTabFilteredIds() {
+    const tab = document.querySelector('.songs-tab.active')?.dataset.tab || 'all';
+    if (tab === 'all')  return SONGS.map(s => s.id);
+    if (tab === 'mine') return SONGS.filter(s => !!s.audio?.src).map(s => s.id);
+    return SONGS.filter(s => s.language === tab && !s.cover).map(s => s.id);
+  }
+
+  // Home page — Play All (respects active tab filter)
   const homePlayAll = document.getElementById('homePlayAllBtn');
   if (homePlayAll) {
     homePlayAll.addEventListener('click', (e) => {
       e.stopPropagation();
-      navContext = { type: 'playlist', ids: SONGS.map(s => s.id), plId: null };
-      playSong(0);
+      const ids = getTabFilteredIds();
+      if (!ids.length) return;
+      navContext = { type: 'playlist', ids, plId: null };
+      playSong(SONGS.findIndex(s => s.id === ids[0]));
     });
   }
 
-  // Home page — Shuffle
+  // Home page — Shuffle (respects active tab filter)
   const homeShuffle = document.getElementById('homeShuffleBtn');
   if (homeShuffle) {
     homeShuffle.addEventListener('click', () => {
-      const shuffled = [...SONGS].sort(() => Math.random() - 0.5);
-      navContext = { type: 'playlist', ids: shuffled.map(s => s.id), plId: null };
+      const ids = getTabFilteredIds();
+      if (!ids.length) return;
+      const shuffled = [...ids].sort(() => Math.random() - 0.5);
+      navContext = { type: 'playlist', ids: shuffled, plId: null };
       homeShuffle.classList.add('active');
-      playSong(SONGS.indexOf(shuffled[0]));
+      playSong(SONGS.findIndex(s => s.id === shuffled[0]));
     });
   }
 
@@ -4576,12 +4588,12 @@ function bindPageEvents() {
     });
   });
 
-  // Home page — Cinematic play buttons
+  // Home page — Cinematic play buttons (respects active tab filter)
   document.querySelectorAll('.song-cine-play-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
       const idx = parseInt(btn.dataset.playIdx, 10);
-      if (!isNaN(idx)) { navContext = { type: 'playlist', ids: SONGS.map(s => s.id), plId: null }; playSong(idx); }
+      if (!isNaN(idx)) { navContext = { type: 'playlist', ids: getTabFilteredIds(), plId: null }; playSong(idx); }
     });
   });
 
@@ -4594,7 +4606,7 @@ function bindPageEvents() {
       if (playBtn) {
         e.preventDefault(); e.stopPropagation();
         const idx = parseInt(playBtn.dataset.playIdx, 10);
-        if (!isNaN(idx)) { navContext = { type: 'playlist', ids: SONGS.map(s => s.id), plId: null }; playSong(idx); }
+        if (!isNaN(idx)) { navContext = { type: 'playlist', ids: getTabFilteredIds(), plId: null }; playSong(idx); }
         return;
       }
       // Fav / add buttons — let bubble to .track-fav-btn / .track-add-btn handlers
