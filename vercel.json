@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/amiado", "destination": "/", "permanent": true },
+    { "source": "/amiado/", "destination": "/", "permanent": true }
+  ]
+}

@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="amiado">
   <link rel="apple-touch-icon" href="aologo.svg">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="amiado/manifest.json">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <title>Amiado</title>
   <meta property="og:title" content="Amiado">
@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Poppins:wght@300;400;500&family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="amiado/style.css?v=20260319">
+  <link rel="stylesheet" href="amiado/style.css?v=20260321">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -31,15 +31,9 @@
     <a href="#/" class="nav-logo"><img src="aologo.svg" alt="amiado" class="nav-logo-img"></a>
     <div class="nav-links">
       <a href="#/bio" class="nav-link" data-route="bio">קצת עליי</a>
-      <a href="#/songs" class="nav-link" data-route="home">שירים</a>
+      <a href="#/" class="nav-link" data-route="home">שירים</a>
       <a href="#/writings" class="nav-link" data-route="writings">כתבים</a>
-      <div class="nav-dropdown" id="navCollectionDropdown">
-        <button class="nav-link nav-dropdown-trigger" data-route="favorites">האוסף שלי</button>
-        <div class="nav-dropdown-menu">
-          <a href="#/favorites" class="nav-dropdown-item">המועדפים</a>
-          <a href="#/playlists" class="nav-dropdown-item">הפלייליסטים</a>
-        </div>
-      </div>
+      <a href="#/collection" class="nav-link" data-route="collection">האוסף שלי</a>
     </div>
     <div class="nav-socials">
       <a href="https://open.spotify.com/artist/7402OgTntEjhGoKYp8rWCO?si=G20H4d8YR8ulstT4EiOsBg" target="_blank" rel="noopener" class="nav-social-link" title="Spotify" aria-label="Spotify">
@@ -94,7 +88,7 @@
 
   <audio id="audioEl" preload="metadata"></audio>
 
-  <script src="amiado/app.js?v=20260319"></script>
+  <script src="amiado/app.js?v=20260321"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

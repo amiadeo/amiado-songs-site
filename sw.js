@@ -1,11 +1,11 @@
-const CACHE = 'amiado-v1';
+const CACHE = 'amiado-v4';
 const STATIC = [
   './',
   './index.html',
-  './style.css',
-  './app.js',
+  './amiado/style.css',
+  './amiado/app.js',
   './aologo.svg',
-  './songs/index.json'
+  './amiado/songs/index.json'
 ];
 
 self.addEventListener('install', e => {
