@@ -1932,10 +1932,12 @@ function renderMomentsPage() {
   .m-list-item{grid-template-columns:100px 1fr auto 36px}
   .m-thumb{width:100px;height:80px}
   .m-modal-overlay{align-items:flex-end;padding:0}
-  .m-modal-box{grid-template-columns:1fr;border-radius:20px 20px 0 0;max-height:92vh;width:100%;transform:translateY(100%)!important;transition:transform .4s cubic-bezier(.32,.72,0,1)!important}
+  .m-modal-box{grid-template-columns:1fr;border-radius:20px 20px 0 0;max-height:92vh;width:100%;overflow-y:auto;transform:translateY(100%)!important;transition:transform .4s cubic-bezier(.32,.72,0,1)!important}
   .m-modal-overlay.open .m-modal-box{transform:translateY(0)!important}
-  .m-modal-video iframe{min-height:220px!important;height:220px!important}
-  .m-modal-comments{max-height:300px;border-right:none!important;border-top:1px solid var(--card-border)}
+  .m-modal-video{position:relative;width:100%;padding-bottom:177.7%;height:0!important}
+  .m-modal-video iframe{position:absolute;inset:0;width:100%!important;height:100%!important;min-height:unset!important}
+  .m-modal-nav{position:absolute;bottom:0;left:0;right:0}
+  .m-modal-comments{max-height:none;overflow-y:visible;border-right:none!important;border-top:1px solid var(--card-border)}
 }
 </style>
 <div class="page-enter moments-page">
@@ -2668,6 +2670,178 @@ function buildPlHeroHTML(pl) {
     </div>`;
 }
 
+// ─────────────────────────────────────────
+// SUGGESTED PLAYLISTS
+// ─────────────────────────────────────────
+let _suggData = null;
+
+function buildSuggestedPlaylists() {
+  const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
+  const defs = [
+    { id:'sugg-all',      name:'כל השירים',    desc:'הקולקציה המלאה',          grad:['#1a0e20','#0c1525'], songs: SONGS },
+    { id:'sugg-play',     name:'שמע עכשיו',    desc:'שירים עם אודיו זמין',     grad:['#0e1a12','#141020'], songs: SONGS.filter(s => s.audio?.src || s.sunoEmbedId) },
+    { id:'sugg-he',       name:'בעברית',       desc:'שירים בעברית',            grad:['#1a150c','#0c1020'], songs: SONGS.filter(s => !s.language || s.language === 'he') },
+    { id:'sugg-en',       name:'English',      desc:'Songs in English',         grad:['#0c1422','#1a0d18'], songs: SONGS.filter(s => s.language === 'en') },
+    { id:'sugg-es',       name:'Español',      desc:'Canciones en español',     grad:['#1a0a0a','#0c1a0a'], songs: SONGS.filter(s => s.language === 'es') },
+    { id:'sugg-lyrics',   name:'עם מילים',     desc:'שירים עם מילים מלאות',    grad:['#1a1208','#0c1a14'], songs: SONGS.filter(s => s.lyrics?.length > 0) },
+    { id:'sugg-analysis', name:'עם ניתוח',     desc:'ניתוח ספרותי',            grad:['#0a0f1a','#1a0a10'], songs: SONGS.filter(s => s.analysis?.abstract) },
+    { id:'sugg-shuffle',  name:'מיקס מפתיע',   desc:'10 שירים אקראיים',        grad:['#12100a','#0a1212'], songs: shuffle(SONGS).slice(0, 10) },
+    { id:'sugg-recent',   name:'חדש באוסף',    desc:'השירים האחרונים',         grad:['#0f1520','#1a0f0a'], songs: [...SONGS].slice(-8).reverse() },
+  ];
+  return defs.filter(d => d.songs.length > 0);
+}
+
+function renderSuggestedSection() {
+  _suggData = buildSuggestedPlaylists();
+  const cards = _suggData.map(pl => {
+    const covers = pl.songs.slice(0, 4);
+    const gridCols = Math.min(covers.length, 2);
+    const thumbs = covers.map(s => `<div class="sugg-thumb">${getCover(s.id)}</div>`).join('');
+    return `
+      <div class="sugg-card" data-sugg-id="${pl.id}">
+        <div class="sugg-card-art" style="background:linear-gradient(135deg,${pl.grad[0]},${pl.grad[1]})">
+          <div class="sugg-cover-grid" style="grid-template-columns:repeat(${gridCols},1fr)">${thumbs}</div>
+          <div class="sugg-card-play">
+            <svg viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
+          </div>
+        </div>
+        <div class="sugg-card-name">${pl.name}</div>
+        <div class="sugg-card-meta">${pl.songs.length} שירים</div>
+      </div>`;
+  }).join('');
+
+  return `
+    <section class="sugg-section">
+      <div class="sugg-section-header">
+        <h2 class="sugg-section-title">נבנה בשבילך</h2>
+        <p class="sugg-section-sub">פלייליסטים שנוצרו מהאוסף</p>
+      </div>
+      <div class="sugg-scroll">${cards}</div>
+    </section>`;
+}
+
+function openSuggPlaylist(id) {
+  const pl = _suggData?.find(p => p.id === id);
+  if (!pl) return;
+
+  const modal = document.getElementById('suggModal');
+  if (!modal) return;
+
+  const covers = pl.songs.slice(0, 4);
+  const gridCols = Math.min(covers.length, 2);
+  const headerThumbs = covers.map(s => `<div class="sugg-mh-thumb">${getCover(s.id)}</div>`).join('');
+  const firstIdx = pl.songs.length > 0 ? SONGS.indexOf(pl.songs[0]) : -1;
+
+  const songRows = pl.songs.map((song, i) => {
+    const idx = SONGS.indexOf(song);
+    return `
+      <div class="sugg-song-row">
+        <span class="sugg-song-num">${String(i + 1).padStart(2, '0')}</span>
+        <div class="sugg-song-cover">${getCover(song.id)}</div>
+        <div class="sugg-song-info">
+          <div class="sugg-song-title">${song.title}</div>
+          <div class="sugg-song-lang">${song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית'}</div>
+        </div>
+        <button class="sugg-song-play-btn" data-play-idx="${idx}">
+          <svg width="10" height="10" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
+        </button>
+      </div>`;
+  }).join('');
+
+  const playlists = getPlaylists();
+  const saveItems = playlists.map(p =>
+    `<button class="sugg-save-item" data-pl-id="${p.id}">${p.name}</button>`
+  ).join('');
+
+  document.getElementById('suggModalContent').innerHTML = `
+    <div class="sugg-mh">
+      <div class="sugg-mh-art" style="background:linear-gradient(135deg,${pl.grad[0]},${pl.grad[1]})">
+        <div class="sugg-mh-grid" style="grid-template-columns:repeat(${gridCols},1fr)">${headerThumbs}</div>
+      </div>
+      <div class="sugg-mh-info">
+        <div class="sugg-mh-eyebrow">פלייליסט מוצע</div>
+        <h2 class="sugg-mh-name">${pl.name}</h2>
+        <p class="sugg-mh-desc">${pl.songs.length} שירים • ${pl.desc}</p>
+        <div class="sugg-mh-actions">
+          <button class="sugg-play-all" id="suggPlayAll">
+            <svg width="13" height="13" viewBox="0 0 18 18" fill="currentColor"><path d="M4 2.5v13l11-6.5z"/></svg>
+            נגן הכל
+          </button>
+          <div class="sugg-save-wrap">
+            <button class="sugg-save-trigger" id="suggSaveTrigger">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              שמור לפלייליסט
+            </button>
+            <div class="sugg-save-dropdown hidden" id="suggSaveDropdown">
+              ${saveItems}
+              <button class="sugg-save-new-pl" id="suggSaveNewPl">+ פלייליסט חדש</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sugg-modal-list">${songRows}</div>`;
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Auto-play
+  if (firstIdx >= 0) {
+    navContext = { type: 'playlist', ids: pl.songs.map(s => s.id) };
+    playSong(firstIdx);
+  }
+
+  // Handlers
+  document.getElementById('suggPlayAll')?.addEventListener('click', () => {
+    if (firstIdx >= 0) { navContext = { type: 'playlist', ids: pl.songs.map(s => s.id) }; playSong(firstIdx); }
+  });
+
+  document.getElementById('suggSaveTrigger')?.addEventListener('click', () => {
+    document.getElementById('suggSaveDropdown').classList.toggle('hidden');
+  });
+
+  modal.querySelectorAll('.sugg-save-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pls = getPlaylists();
+      const target = pls.find(p => p.id === btn.dataset.plId);
+      if (target) {
+        pl.songs.forEach(s => { if (!target.songIds.includes(s.id)) target.songIds.push(s.id); });
+        savePlaylists(pls);
+        btn.textContent = '✓ נשמר!';
+        setTimeout(() => closeSuggModal(), 900);
+      }
+    });
+  });
+
+  document.getElementById('suggSaveNewPl')?.addEventListener('click', () => {
+    const name = prompt('שם הפלייליסט:');
+    if (name?.trim()) {
+      const newPl = createPlaylist(name.trim());
+      const pls = getPlaylists();
+      const target = pls.find(p => p.id === newPl.id);
+      if (target) {
+        pl.songs.forEach(s => { if (!target.songIds.includes(s.id)) target.songIds.push(s.id); });
+        savePlaylists(pls);
+      }
+      document.getElementById('suggSaveTrigger').textContent = '✓ נשמר!';
+      setTimeout(() => closeSuggModal(), 900);
+    }
+  });
+
+  modal.querySelectorAll('.sugg-song-play-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.playIdx, 10);
+      navContext = { type: 'playlist', ids: pl.songs.map(s => s.id) };
+      playSong(idx);
+    });
+  });
+}
+
+function closeSuggModal() {
+  document.getElementById('suggModal')?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 function renderCollectionPage() {
   const playlists = getPlaylists();
   const favIds    = getFavorites();
@@ -2684,6 +2858,7 @@ function renderCollectionPage() {
         <h1 class="col-title">הספרייה שלי</h1>
         <div class="col-divider"></div>
       </div>
+      ${renderSuggestedSection()}
       <div class="col-empty-page">
         <div class="col-empty-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
@@ -2702,6 +2877,12 @@ function renderCollectionPage() {
             <button class="col-new-pl-cancel" id="colNewPlCancel">ביטול</button>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="sugg-modal-overlay" id="suggModal" onclick="if(event.target===this)closeSuggModal()">
+      <div class="sugg-modal-box">
+        <button class="sugg-modal-close" onclick="closeSuggModal()">✕</button>
+        <div id="suggModalContent"></div>
       </div>
     </div>`;
   }
@@ -2761,6 +2942,7 @@ function renderCollectionPage() {
         <h1 class="col-title">הספרייה שלי</h1>
         <div class="col-divider"></div>
       </div>
+      ${renderSuggestedSection()}
       <div class="col-body">
 
         <!-- Left: Playlists -->
@@ -2793,6 +2975,12 @@ function renderCollectionPage() {
           </div>
         </div>
 
+      </div>
+    </div>
+    <div class="sugg-modal-overlay" id="suggModal" onclick="if(event.target===this)closeSuggModal()">
+      <div class="sugg-modal-box">
+        <button class="sugg-modal-close" onclick="closeSuggModal()">✕</button>
+        <div id="suggModalContent"></div>
       </div>
     </div>`;
 }
@@ -4243,6 +4431,12 @@ function initCollectionPage() {
       if (e.key === 'Escape') newCancel.click();
     });
   }
+
+  // Suggested playlists card clicks
+  document.querySelector('.sugg-scroll')?.addEventListener('click', e => {
+    const card = e.target.closest('.sugg-card');
+    if (card) openSuggPlaylist(card.dataset.suggId);
+  });
 }
 
 function attachCollectionHeroHandlers(heroEl) {
