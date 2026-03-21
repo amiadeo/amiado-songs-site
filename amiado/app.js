@@ -1871,7 +1871,7 @@ const MOMENTS_ORIGINALS = [
 const MOMENTS_VIDEOS = [...MOMENTS_COVERS, ...MOMENTS_ORIGINALS];
 MOMENTS_VIDEOS.forEach(v => {
   v.fbUrl = `https://www.facebook.com/amiad.oberman.9/videos/${v.id}/`;
-  v.src   = `https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Famiad.oberman.9%2Fvideos%2F${v.id}%2F&show_text=false&width=267&t=0`;
+  v.src   = `https://www.facebook.com/plugins/video.php?height=534&href=https%3A%2F%2Fwww.facebook.com%2Famiad.oberman.9%2Fvideos%2F${v.id}%2F&show_text=false&width=300&t=0`;
 });
 
 let _momentsIdx = 0;
@@ -2033,33 +2033,39 @@ function renderMomentsPage() {
 .m-comment-body{flex:1;min-width:0}
 .m-comment-name{font-size:.74rem;color:var(--gold);margin-bottom:2px}
 .m-comment-text{font-size:.82rem;color:var(--text-mid);line-height:1.55}
-.m-modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(5,5,10,.88);backdrop-filter:blur(16px);display:flex;align-items:flex-start;justify-content:center;padding:40px 20px 60px;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.m-modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(5,5,10,.9);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 .m-modal-overlay.open{opacity:1;visibility:visible}
-.m-modal-box{width:100%;max-width:680px;background:var(--card-bg);border:1px solid rgba(201,168,76,.2);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 80px rgba(0,0,0,.6);transform:scale(.9) translateY(30px);transition:transform .4s cubic-bezier(.34,1.4,.64,1)}
+/* Two-column layout: portrait video on right, reviews on left */
+.m-modal-box{width:100%;max-width:860px;max-height:90vh;background:var(--card-bg);border:1px solid rgba(201,168,76,.2);border-radius:20px;overflow:hidden;display:flex;flex-direction:row;align-items:stretch;box-shadow:0 0 80px rgba(0,0,0,.7);transform:scale(.94) translateY(20px);transition:transform .4s cubic-bezier(.34,1.4,.64,1)}
 .m-modal-overlay.open .m-modal-box{transform:scale(1) translateY(0)}
-.m-modal-video{position:relative;background:#000;width:100%;flex-shrink:0}
-.m-modal-video iframe{display:block;width:100%;aspect-ratio:16/9;height:auto;min-height:unset;border:none}
-.m-modal-nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);z-index:5}
-.m-nav-btn{background:rgba(0,0,0,.4);border:1px solid rgba(201,168,76,.25);color:var(--gold);padding:7px 16px;border-radius:20px;cursor:pointer;font-family:'Frank Ruhl Libre',serif;font-size:.78rem;letter-spacing:.05em;transition:all .2s;backdrop-filter:blur(6px)}
+/* Video column — portrait (9:16) */
+.m-modal-video{position:relative;background:#000;flex-shrink:0;width:min(300px,45vw);display:flex;flex-direction:column}
+.m-modal-video iframe{display:block;width:100%;aspect-ratio:9/16;height:auto;border:none;flex:1}
+.m-modal-nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:linear-gradient(to top,rgba(0,0,0,.75),transparent);z-index:5}
+.m-nav-btn{background:rgba(0,0,0,.4);border:1px solid rgba(201,168,76,.25);color:var(--gold);padding:6px 13px;border-radius:20px;cursor:pointer;font-family:'Frank Ruhl Libre',serif;font-size:.75rem;letter-spacing:.05em;transition:all .2s;backdrop-filter:blur(6px)}
 .m-nav-btn:hover{background:rgba(201,168,76,.15);border-color:var(--gold)}
 .m-nav-btn:disabled{opacity:.2;cursor:default}
-.m-counter{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:rgba(201,168,76,.5);letter-spacing:.08em}
-.m-modal-comments{padding:24px 20px;border-top:1px solid var(--card-border);background:rgba(255,255,255,.025);display:flex;flex-direction:column;position:relative}
-.m-close{position:absolute;top:14px;left:14px;z-index:10;width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);color:var(--text-dim);font-size:.78rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.m-counter{font-family:'Cormorant Garamond',serif;font-size:.82rem;color:rgba(201,168,76,.5);letter-spacing:.08em}
+/* Reviews column */
+.m-modal-comments{flex:1;padding:24px 20px;border-right:1px solid var(--card-border);background:rgba(255,255,255,.018);display:flex;flex-direction:column;position:relative;overflow-y:auto;min-width:0}
+.m-close{position:absolute;top:12px;left:12px;z-index:10;width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);color:var(--text-dim);font-size:.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .m-close:hover{background:rgba(201,168,76,.15);color:var(--gold);border-color:var(--gold)}
-.m-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:300;color:var(--text);margin-bottom:6px;line-height:1.4;padding-top:2px}
-.m-post{font-size:.83rem;color:var(--text-mid);line-height:1.75;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--card-border);direction:rtl}
-.m-divider{height:1px;background:var(--card-border);margin-bottom:18px}
-.m-comments-label{font-size:.67rem;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:.6}
+.m-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;color:var(--text);margin-bottom:6px;line-height:1.4;padding-top:2px}
+.m-post{font-size:.82rem;color:var(--text-mid);line-height:1.75;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--card-border);direction:rtl}
+.m-divider{height:1px;background:var(--card-border);margin-bottom:16px}
+.m-comments-label{font-size:.65rem;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:14px;opacity:.6}
 .m-all-comments{display:flex;align-items:center;gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid var(--card-border);font-size:.78rem;color:var(--gold);opacity:.6;text-decoration:none;transition:opacity .2s;letter-spacing:.04em}
 .m-all-comments:hover{opacity:1}
 .m-all-comments svg{width:12px;height:12px}
+/* Mobile: stack vertically, video portrait centered */
 @media(max-width:720px){
   .m-list-item{grid-template-columns:100px 1fr auto 36px}
   .m-thumb{width:100px;height:80px}
-  .m-modal-overlay{align-items:flex-end;padding:0;overflow-y:hidden}
-  .m-modal-box{border-radius:20px 20px 0 0;max-height:92vh;overflow-y:auto;transform:translateY(100%)!important;transition:transform .4s cubic-bezier(.32,.72,0,1)!important}
+  .m-modal-overlay{align-items:flex-end;padding:0}
+  .m-modal-box{flex-direction:column;border-radius:20px 20px 0 0;max-height:94vh;max-width:100%;transform:translateY(100%)!important;transition:transform .4s cubic-bezier(.32,.72,0,1)!important}
   .m-modal-overlay.open .m-modal-box{transform:translateY(0)!important}
+  .m-modal-video{width:100%;max-width:280px;margin:0 auto;align-self:center}
+  .m-modal-comments{border-right:none;border-top:1px solid var(--card-border);overflow-y:auto;max-height:45vh}
 }
 </style>
 <div class="page-enter moments-page">
@@ -2522,10 +2528,6 @@ function renderSongPage(id) {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             <span>שתף</span>
           </button>
-          <button class="shma-btn btn-book-view" data-song-id="${song.id}" title="תצוגת ספר">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            <span>ספר</span>
-          </button>
           ${song.audio?.type === 'file' ? `<button class="shma-btn btn-karaoke-song" data-song-id="${song.id}" title="קריוקי">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
             <span>קריוקי</span>
@@ -2585,10 +2587,6 @@ function renderSongPage(id) {
               <button class="btn-share-song" data-song-id="${song.id}" data-song-title="${song.title}" title="שתף שיר">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                 שתף
-              </button>
-              <button class="btn-book-view" data-song-id="${song.id}" title="תצוגת ספר">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                ספר
               </button>
               ${linksHTML}
               ${song.audio?.type === 'file' ? `<button class="btn-karaoke-song" data-song-id="${song.id}" title="מצב קריוקי">
