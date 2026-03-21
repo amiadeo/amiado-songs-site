@@ -4592,7 +4592,6 @@ body {
 /* Hero */
 .col-pl-hero {
   border-radius: 10px;
-  overflow: hidden;
   border: 1px solid rgba(201,168,76,0.1);
   background: var(--bg-card);
   margin-bottom: 10px;
@@ -4603,6 +4602,7 @@ body {
   grid-template-rows: repeat(2,1fr);
   position: relative;
   overflow: hidden;
+  border-radius: 10px 10px 0 0;
 }
 .col-hero-thumb { overflow: hidden; }
 .col-hero-thumb img, .col-hero-thumb svg {
