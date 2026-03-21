@@ -363,6 +363,7 @@
 
     /* ── PRINT ── */
     @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
       .toolbar, #flipView { display: none !important; }
       body { padding-top: 0; }
       #scrollView { padding: 0; max-width: none; }
@@ -449,12 +450,12 @@
     </div>
     <div class="flip-title-hint" id="flipTitleHint"></div>
     <div class="flip-nav">
-      <!-- RTL Hebrew: ← = prev (go back toward cover), → = next (deeper into book) -->
-      <button class="flip-arrow" id="flipPrevBtn" title="דף קודם">
+      <!-- RTL Hebrew: ← (left) = next/forward deeper into book, → (right) = prev/back toward cover -->
+      <button class="flip-arrow" id="flipNextBtn" title="דף הבא">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <span class="flip-counter" id="flipCounter">1 / 1</span>
-      <button class="flip-arrow" id="flipNextBtn" title="דף הבא">
+      <button class="flip-arrow" id="flipPrevBtn" title="דף קודם">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
@@ -704,8 +705,8 @@
 
     document.addEventListener('keydown', e => {
       if (!flipView.classList.contains('active')) return;
-      if (e.key === 'ArrowRight' && currentSpread < TOTAL_SPREADS - 1) showSpread(currentSpread + 1);
-      if (e.key === 'ArrowLeft'  && currentSpread > 0) showSpread(currentSpread - 1);
+      if (e.key === 'ArrowLeft'  && currentSpread < TOTAL_SPREADS - 1) showSpread(currentSpread + 1);
+      if (e.key === 'ArrowRight' && currentSpread > 0) showSpread(currentSpread - 1);
     });
 
     let touchStartX = 0, touchStartY = 0;
@@ -717,8 +718,8 @@
       const dx = touchStartX - e.changedTouches[0].clientX;
       const dy = touchStartY - e.changedTouches[0].clientY;
       if (Math.abs(dy) > Math.abs(dx) * 0.8 || Math.abs(dx) < 45) return;
-      if (dx < 0 && currentSpread < TOTAL_SPREADS - 1) showSpread(currentSpread + 1);
-      else if (dx > 0 && currentSpread > 0) showSpread(currentSpread - 1);
+      if (dx > 0 && currentSpread < TOTAL_SPREADS - 1) showSpread(currentSpread + 1);
+      else if (dx < 0 && currentSpread > 0) showSpread(currentSpread - 1);
     }, { passive: true });
 
     /* ── View toggle ── */
