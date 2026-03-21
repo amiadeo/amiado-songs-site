@@ -1514,6 +1514,11 @@ function route() {
     document.querySelector('[data-route="collection"]')?.classList.add('active');
     app.innerHTML = renderCollectionPage();
     initCollectionPage();
+  } else if (hash === '#/moments') {
+    document.title = 'Amiado — מה קורה אצלי';
+    document.querySelector('[data-route="moments"]')?.classList.add('active');
+    app.innerHTML = renderMomentsPage();
+    initMomentsPage();
   } else if (hash === '#/bio') {
     document.title = 'Amiado';
     document.querySelector('[data-route="bio"]')?.classList.add('active');
@@ -1528,6 +1533,11 @@ function route() {
     document.title = 'Amiado';
     document.querySelector('[data-route="writings"]')?.classList.add('active');
     app.innerHTML = renderWritingsPage();
+  } else if (hash === '#/moments') {
+    document.title = 'Amiado — מה קורה אצלי';
+    document.querySelector('[data-route="moments"]')?.classList.add('active');
+    app.innerHTML = renderMomentsPage();
+    initMomentsPage();
   } else if (hash === '#/songs') {
     document.title = 'Amiado';
     document.querySelector('[data-route="home"]')?.classList.add('active');
@@ -1685,6 +1695,314 @@ function bc(items) {
     <nav class="breadcrumb" aria-label="ניווט">
       ${parts.join('<span class="bc-sep">›</span>')}
     </nav>`;
+}
+
+// ─────────────────────────────────────────
+// PAGE: MOMENTS (מה קורה אצלי)
+// ─────────────────────────────────────────
+const MOMENTS_COVERS = [
+  { id: 219322850264239, title: "Mix & Match, נטע וסיה — סלון שלי",
+    post: "Mix & Match, Neta and Sia visited my living room, So instead of coffee, I played for them a bit :)",
+    comments: [{ name:"אלונה", text:"אהוב מוכשר שלנו" }, { name:"יובל", text:"מהמם, אחלה שילוב ואחלה ביצוע" }, { name:"מאירה", text:"ביצוע מושלם ❤️ אוהבת את הקול הנוגע שלך.." }] },
+  { id: 854200621969408, title: "שיהיה לנו בית — קרן פלס",
+    post: "אף פעם לא היה לי את האומץ לשיר אותו כי בזמנו הוא היה כואב שורף מידי. מאז ... יש לי בית וכלב וילדים שלושה (חסרה רק החצר) אז הכל מעבר למושלם. ועכשיו שפחות שורף אני יכול לגשת לשיר המדהים הזה ולהגיש לכם אותו מתוך זיכרון ישן כואב.",
+    comments: [{ name:"שרית", text:"כרגיל מהמם וכיף גדול על הבוקר..." }, { name:"גילי", text:"איזה מיוחד אתה..." }, { name:"שירה", text:"מדהים ומרגש" }] },
+  { id: 10158168026077054, title: "חופשיה — שרית חדד",
+    post: "אז כבר יותר משבועיים הבת הקטנה שרה את השיר ״חופשייה״ בבית אחרי שראתה את הביצוע בזמר במסיכה. אז אם השיר זה תפס אותה, אבא מתיישב על הפסנתר ומנגן.",
+    comments: [{ name:"אלעד", text:'אתה שר כ"כ יפה שזה מפחיד, כל מילה מקבלת אצלך משמעות. אלוף!' }, { name:"מגי", text:"וואווו קול ממש מרגיש ונוגע" }, { name:"קארין", text:"וואו מהמםםם יש לך קול מושלם ומרגש" }] },
+  { id: 10158646832962054, title: "יהלומים — נועה קירל",
+    post: "כשהבת הקטנה שלי כל כך אוהבת את נועה קירל, אבא לא ינגן לה שיר של נועה. קבלו טעימה קטנה ;)",
+    comments: [{ name:"ססיל", text:"יותר יפה מהמקור" }, { name:"מורן", text:"אתה שר כל כך יפה, איזה קול יש לך תענוג - מתגעגעת" }, { name:"אורי", text:"זה מפתיע" }] },
+  { id: 10158637068292054, title: "שבע בערב — דיקלה",
+    post: "",
+    comments: [{ name:"רונן", text:"וואו" }, { name:"שרון", text:"אהבתי מאוד. והבנתי שגם דקלה אהבה ופירגנה" }, { name:"אור", text:"מאוהבתתתתת" }] },
+  { id: 10158288402857054, title: "תל אביב בלילה — עדן בן זקן",
+    post: "טוב נו סגר שלישי ואיך בא לצאת לתל אביב בלילה :)",
+    comments: [{ name:"אלונה", text:"חלום שלי לנסוע איתך לתל אביב מוכשררררר" }, { name:"שרית", text:"פשוט זה יותר טוב בשידור חי... ממש כמו בחיים של פעם. אבל גם ככה זה יפה לשמוע. מאוד מאוד." }, { name:"דפנה", text:"יפה מאד!!!" }] }
+];
+
+const MOMENTS_ORIGINALS = [
+  { id: 10158274946972054, title: "לפעמים — מקורי",
+    post: "הכי פשוט, כן ואמיתי בלי פילטר ופוטושופ. מה יותר טוב מלעשות שיחת נפש עם עצמך ועוד עם לחן! :)",
+    comments: [{ name:"קלייר", text:"שלמות!" }, { name:"קרן", text:"אחד היפים שלך" }, { name:"לביא", text:"וואוווו, מקסים!!! הקול שלך מטורף, המילים, הלחן... הפתעת" }] },
+  { id: 10158263611492054, title: "עננים — מקורי",
+    post: "לפני 21 שנה בדיוק נכתב השיר הזה. רק כך יכולתי לבטא את עצמי. גיטרה, כמה מילים ולחן. עד היום עדיין נוגע בי.",
+    comments: [{ name:"מאור", text:"אתה חייב לעשות משהו עם הכשרון הזה גבר" }, { name:"גיל", text:"אלוהים אדירים הקול שלך. צמרמורות. תמיד." }, { name:"ואדים", text:"אתה מוכשר כל כך! כל כך!!!" }] },
+  { id: 10158685851287054, title: "על קצות האצבעות — מקורי",
+    post: "כמה כיף להוציא מהמגירה שיר ישן שלי ולנגן על הבוקר :)",
+    comments: [{ name:"שרון", text:"התרגשתי לשמוע בדיוק כמו שהתרגשתי לפני 12 שנים ששמעתי אותו" }, { name:"נינה", text:"עמיעדי אולי הגיע זמן לאיזה הופעה קטנה?" }, { name:"מורן", text:"שיר מקסים, תענוג צרוף" }] },
+  { id: 10157682971582054, title: "השקט שלך — מקורי",
+    post: "לכל אחד יש את הקול שלו, אותו קול פנימי שלפעמים שותק ולא אומר מילה. בשעת לילה מאוחרת שיר חדש — ״השקט שלך״.",
+    comments: [{ name:"שרון", text:"נו מה? זה מהמם.. אתה רק הולך ומשתבח" }, { name:"גוי", text:"לרגעים מהשיר, כמו לשבת בים מותק, ממש כמו לשבת בים" }, { name:"בת שבע", text:"וואי איך אתה שר מהלב 💙 איזה קול לעצום עיניים ולשמוע" }] },
+  { id: 10157493890152054, title: "Win It All — מקורי",
+    post: "אז ככה ... בין משחקים עם הילדים, מריבות, בישולים, עייפות ... התגנב לו שיר ככה בלי שארגיש. שיר ראשון על הפסנתר. מקווה שתאהבו",
+    comments: [{ name:"חן", text:"עמיעד היקר אתה מוכשר ברמות!! ריגשת אותי ממש" }, { name:"שירלי", text:"Whatttttt????? Lady Gaga watch out!! יא אלוף אחד!! שיר מהמם ואתה שר — וואו" }, { name:"תמי", text:"אשששש עלייך עמיעדוש חתיך שלנו" }] },
+  { id: 323047299566978, title: "Diamonds — מקורי",
+    post: "אי שם לפני שש שנים כתבתי את השיר הקסום הזה והיום הוא מצא את דרכו אליי לפסנתר :)",
+    comments: [{ name:"אלאן", text:"אליפות, איזו הנאה לאוזן." }, { name:"אלונה", text:"פשוט וואווווו" }, { name:"דפנה", text:"יהלום מקסים!" }] }
+];
+
+const MOMENTS_VIDEOS = [...MOMENTS_COVERS, ...MOMENTS_ORIGINALS];
+MOMENTS_VIDEOS.forEach(v => {
+  v.fbUrl = `https://www.facebook.com/amiad.oberman.9/videos/${v.id}/`;
+  v.src   = `https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Famiad.oberman.9%2Fvideos%2F${v.id}%2F&show_text=false&width=267&t=0`;
+});
+
+let _momentsIdx = 0;
+
+function setMomentsView(type, btn) {
+  ['list','grid','side'].forEach(v => {
+    const el = document.getElementById('moments-view-' + v);
+    if (el) el.style.display = v === type ? '' : 'none';
+  });
+  document.querySelectorAll('.moments-view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function momentsOpenModal(index) {
+  _momentsIdx = index;
+  momentsLoadModal();
+  document.getElementById('moments-modal')?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function momentsLoadModal() {
+  const v = MOMENTS_VIDEOS[_momentsIdx];
+  const iframe = document.getElementById('moments-iframe');
+  const counter = document.getElementById('moments-counter');
+  const btnPrev = document.getElementById('moments-btn-prev');
+  const btnNext = document.getElementById('moments-btn-next');
+  const comments = document.getElementById('moments-modal-comments');
+  if (!iframe || !counter || !comments) return;
+  iframe.src = v.src;
+  counter.textContent = `${_momentsIdx + 1} / ${MOMENTS_VIDEOS.length}`;
+  btnPrev.disabled = _momentsIdx === 0;
+  btnNext.disabled = _momentsIdx === MOMENTS_VIDEOS.length - 1;
+  comments.innerHTML = `
+    <button class="m-close" onclick="momentsCloseModal()">✕</button>
+    <div class="m-title">${v.title}</div>
+    ${v.post ? `<div class="m-post">${v.post}</div>` : '<div class="m-divider"></div>'}
+    <div class="m-comments-label">תגובות נבחרות</div>
+    ${v.comments.map(c => `
+      <div class="m-comment">
+        <div class="m-avatar">${c.name[0]}</div>
+        <div class="m-comment-body">
+          <div class="m-comment-name">${c.name}</div>
+          <div class="m-comment-text">${c.text}</div>
+        </div>
+      </div>`).join('')}
+    <a class="m-all-comments" href="${v.fbUrl}" target="_blank" rel="noopener">
+      לכל התגובות בפייסבוק
+      <svg viewBox="0 0 12 12" fill="none"><path d="M10 6H2M6 2L2 6l4 4" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>`;
+}
+
+function momentsNavigate(dir) {
+  const next = _momentsIdx + dir;
+  if (next < 0 || next >= MOMENTS_VIDEOS.length) return;
+  _momentsIdx = next;
+  const iframe = document.getElementById('moments-iframe');
+  if (!iframe) return;
+  iframe.style.opacity = '0';
+  setTimeout(() => { momentsLoadModal(); iframe.style.opacity = '1'; }, 200);
+}
+
+function momentsCloseModal() {
+  document.getElementById('moments-modal')?.classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    const iframe = document.getElementById('moments-iframe');
+    if (iframe) iframe.src = '';
+  }, 350);
+}
+
+function momentsHandleOverlayClick(e) {
+  if (e.target === document.getElementById('moments-modal')) momentsCloseModal();
+}
+
+function renderMomentsPage() {
+  const PLAY = `<svg viewBox="0 0 14 14" fill="none"><path d="M4 2.5l8 4.5-8 4.5V2.5z" fill="#c9a84c"/></svg>`;
+  const ARROW = `<svg viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8l5-5" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const GRADS = ['#1a0e20,#0c1525','#0e1a17,#141020','#1a150c,#0c1020','#0c1422,#1a0d18'];
+
+  function catLabel(text) {
+    return `<div style="font-size:.68rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;opacity:.5;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--card-border);">${text}</div>`;
+  }
+  function listItem(v, gi, li) {
+    const [c1, c2] = GRADS[li % 4].split(',');
+    return `<div class="m-list-item" onclick="momentsOpenModal(${gi})" style="animation-delay:${li * 0.07}s">
+      <div class="m-thumb" style="background:linear-gradient(135deg,${c1},${c2})">
+        <div class="m-thumb-num">${String(li + 1).padStart(2,'0')}</div>
+        <div class="m-thumb-play"><div class="m-thumb-circle">${PLAY}</div></div>
+      </div>
+      <div class="m-list-info">
+        <div class="m-list-title">${v.title}</div>
+        <div class="m-comments-preview">
+          <div class="m-comment-line"><b>${v.comments[0].name}:</b> ${v.comments[0].text}</div>
+          ${v.comments[1] ? `<div class="m-comment-line"><b>${v.comments[1].name}:</b> ${v.comments[1].text}</div>` : ''}
+        </div>
+      </div>
+      <div class="m-list-arrow">${ARROW}</div>
+    </div>`;
+  }
+
+  const coverItems  = MOMENTS_COVERS.map((v, i) => listItem(v, i, i)).join('');
+  const origItems   = MOMENTS_ORIGINALS.map((v, i) => listItem(v, MOMENTS_COVERS.length + i, i)).join('');
+
+  return `<style>
+.moments-page{max-width:760px;margin:0 auto;padding:0 0 80px}
+.moments-page h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:300;color:var(--gold);letter-spacing:.14em;text-align:center}
+.m-sub{color:var(--text-dim);font-size:.82rem;letter-spacing:.06em;text-align:center;margin-top:8px}
+.m-divider-line{width:40px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:14px auto 0}
+.moments-view-toggle{display:flex;justify-content:center;gap:8px;margin:36px 0 44px;flex-wrap:wrap}
+.moments-view-btn{background:none;border:1px solid var(--card-border);color:var(--text-dim);padding:9px 22px;border-radius:24px;cursor:pointer;font-family:'Frank Ruhl Libre',serif;font-size:.82rem;letter-spacing:.05em;transition:all .25s}
+.moments-view-btn:hover{border-color:rgba(201,168,76,.3);color:var(--text-mid)}
+.moments-view-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.06)}
+#moments-view-list{max-width:720px;margin:0 auto}
+#moments-view-grid,#moments-view-side{display:none;max-width:1100px;margin:0 auto}
+.m-list-feed{display:flex;flex-direction:column;gap:12px}
+.m-list-item{display:grid;grid-template-columns:130px 1fr 40px;align-items:center;background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .3s,box-shadow .3s,transform .25s;animation:mSlideIn .4s ease both}
+@keyframes mSlideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.m-list-item:hover{border-color:rgba(201,168,76,.35);box-shadow:0 0 30px rgba(201,168,76,.07),0 4px 24px rgba(0,0,0,.4);transform:translateX(-3px)}
+.m-thumb{width:130px;height:90px;position:relative;overflow:hidden;flex-shrink:0}
+.m-thumb-num{position:absolute;bottom:5px;right:8px;font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:rgba(201,168,76,.2);line-height:1;user-select:none}
+.m-thumb-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.m-thumb-circle{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(201,168,76,.6);background:rgba(201,168,76,.08);display:flex;align-items:center;justify-content:center;transition:all .25s;backdrop-filter:blur(4px)}
+.m-list-item:hover .m-thumb-circle{background:rgba(201,168,76,.18);border-color:var(--gold);box-shadow:0 0 16px rgba(201,168,76,.3);transform:scale(1.1)}
+.m-thumb-circle svg{width:13px;height:13px;margin-right:-2px}
+.m-list-info{padding:14px 16px;min-width:0}
+.m-list-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;color:var(--text);margin-bottom:8px;letter-spacing:.02em}
+.m-comments-preview{display:flex;flex-direction:column;gap:4px}
+.m-comment-line{font-size:.76rem;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
+.m-comment-line b{color:rgba(201,168,76,.7);font-weight:400}
+.m-list-arrow{display:flex;align-items:center;justify-content:center;padding-left:16px;color:var(--gold);opacity:.25;transition:opacity .2s,transform .2s}
+.m-list-item:hover .m-list-arrow{opacity:.7;transform:translateX(-3px)}
+.m-list-arrow svg{width:16px;height:16px}
+.m-grid-feed{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.m-video-card{display:grid;grid-template-columns:62fr 38fr;background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;overflow:hidden;transition:border-color .3s,transform .25s}
+.m-video-card:hover{border-color:rgba(201,168,76,.3);transform:translateY(-3px)}
+.m-video-card iframe{display:block;width:100%;height:380px;border:none}
+.m-card-comments{padding:18px 14px;border-right:1px solid var(--card-border);background:rgba(255,255,255,.025);display:flex;flex-direction:column;justify-content:center}
+.m-side-feed{display:flex;flex-direction:column;gap:20px}
+.m-comments-label-sm{font-size:.67rem;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;opacity:.6}
+.m-comment{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.m-comment:last-child{border-bottom:none}
+.m-avatar{width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--gold);flex-shrink:0}
+.m-comment-body{flex:1;min-width:0}
+.m-comment-name{font-size:.74rem;color:var(--gold);margin-bottom:2px}
+.m-comment-text{font-size:.82rem;color:var(--text-mid);line-height:1.55}
+.m-modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(5,5,10,.88);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.m-modal-overlay.open{opacity:1;visibility:visible}
+.m-modal-box{width:100%;max-width:960px;background:var(--card-bg);border:1px solid rgba(201,168,76,.2);border-radius:20px;overflow:hidden;display:grid;grid-template-columns:60fr 40fr;max-height:90vh;box-shadow:0 0 80px rgba(0,0,0,.6);transform:scale(.9) translateY(30px);transition:transform .4s cubic-bezier(.34,1.4,.64,1)}
+.m-modal-overlay.open .m-modal-box{transform:scale(1) translateY(0)}
+.m-modal-video{position:relative;background:#000}
+.m-modal-video iframe{display:block;width:100%;height:100%;min-height:480px;border:none}
+.m-modal-nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);z-index:5}
+.m-nav-btn{background:rgba(0,0,0,.4);border:1px solid rgba(201,168,76,.25);color:var(--gold);padding:7px 16px;border-radius:20px;cursor:pointer;font-family:'Frank Ruhl Libre',serif;font-size:.78rem;letter-spacing:.05em;transition:all .2s;backdrop-filter:blur(6px)}
+.m-nav-btn:hover{background:rgba(201,168,76,.15);border-color:var(--gold)}
+.m-nav-btn:disabled{opacity:.2;cursor:default}
+.m-counter{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:rgba(201,168,76,.5);letter-spacing:.08em}
+.m-modal-comments{padding:28px 24px;border-right:1px solid var(--card-border);background:rgba(255,255,255,.025);display:flex;flex-direction:column;overflow-y:auto;position:relative}
+.m-close{position:absolute;top:14px;right:14px;z-index:10;width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);color:var(--text-dim);font-size:.78rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.m-close:hover{background:rgba(201,168,76,.15);color:var(--gold);border-color:var(--gold)}
+.m-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:300;color:var(--text);margin-bottom:6px;line-height:1.4;padding-top:2px}
+.m-post{font-size:.83rem;color:var(--text-mid);line-height:1.75;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--card-border);direction:rtl}
+.m-divider{height:1px;background:var(--card-border);margin-bottom:18px}
+.m-comments-label{font-size:.67rem;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:.6}
+.m-all-comments{display:flex;align-items:center;gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid var(--card-border);font-size:.78rem;color:var(--gold);opacity:.6;text-decoration:none;transition:opacity .2s;letter-spacing:.04em}
+.m-all-comments:hover{opacity:1}
+.m-all-comments svg{width:12px;height:12px}
+@media(max-width:720px){
+  .m-list-item{grid-template-columns:100px 1fr 36px}
+  .m-thumb{width:100px;height:80px}
+  .m-grid-feed{grid-template-columns:1fr}
+  .m-video-card{grid-template-columns:1fr!important}
+  .m-video-card iframe{height:250px!important}
+  .m-card-comments{border-right:none!important;border-top:1px solid var(--card-border)!important}
+  .m-modal-overlay{align-items:flex-end;padding:0}
+  .m-modal-box{grid-template-columns:1fr;border-radius:20px 20px 0 0;max-height:92vh;width:100%;transform:translateY(100%)!important;transition:transform .4s cubic-bezier(.32,.72,0,1)!important}
+  .m-modal-overlay.open .m-modal-box{transform:translateY(0)!important}
+  .m-modal-video iframe{min-height:220px!important;height:220px!important}
+  .m-modal-comments{max-height:300px;border-right:none!important;border-top:1px solid var(--card-border)}
+}
+</style>
+<div class="page-enter moments-page">
+  <header style="text-align:center;margin-bottom:8px;">
+    <h1>מה קורה אצלי</h1>
+    <p class="m-sub">תוכן ישירות מהפייסבוק — בלי לצאת מהאתר</p>
+    <div class="m-divider-line"></div>
+  </header>
+
+  <div class="moments-view-toggle">
+    <button class="moments-view-btn active" onclick="setMomentsView('list',this)">רשימה + מודל ▶</button>
+    <button class="moments-view-btn" onclick="setMomentsView('grid',this)">גריד 2×2</button>
+    <button class="moments-view-btn" onclick="setMomentsView('side',this)">שורות רחבות</button>
+  </div>
+
+  <div id="moments-view-list">
+    <div class="m-list-feed">
+      ${catLabel('כיסויים')}
+      ${coverItems}
+    </div>
+    <div class="m-list-feed" style="margin-top:32px;">
+      ${catLabel('מקוריים')}
+      ${origItems}
+    </div>
+  </div>
+
+  <div id="moments-view-grid">
+    <div class="m-grid-feed" id="moments-grid-feed"></div>
+  </div>
+
+  <div id="moments-view-side">
+    <div class="m-side-feed" id="moments-side-feed"></div>
+  </div>
+
+  <div class="m-modal-overlay" id="moments-modal" onclick="momentsHandleOverlayClick(event)">
+    <div class="m-modal-box">
+      <div class="m-modal-video">
+        <iframe id="moments-iframe" src="" scrolling="no" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+        <div class="m-modal-nav">
+          <button class="m-nav-btn" id="moments-btn-prev" onclick="momentsNavigate(-1)">‹ הקודם</button>
+          <span class="m-counter" id="moments-counter">1 / ${MOMENTS_VIDEOS.length}</span>
+          <button class="m-nav-btn" id="moments-btn-next" onclick="momentsNavigate(1)">הבא ›</button>
+        </div>
+      </div>
+      <div class="m-modal-comments" id="moments-modal-comments">
+        <button class="m-close" onclick="momentsCloseModal()">✕</button>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function initMomentsPage() {
+  const PLAY = `<svg viewBox="0 0 14 14" fill="none"><path d="M4 2.5l8 4.5-8 4.5V2.5z" fill="#c9a84c"/></svg>`;
+
+  function videoCard(v) {
+    return `<div class="m-video-card">
+      <iframe src="${v.src}" scrolling="no" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+      <div class="m-card-comments">
+        <div class="m-comments-label-sm">תגובות נבחרות</div>
+        ${v.comments.map(c => `<div class="m-comment"><div class="m-avatar">${c.name[0]}</div><div class="m-comment-body"><div class="m-comment-name">${c.name}</div><div class="m-comment-text">${c.text}</div></div></div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  const gridEl = document.getElementById('moments-grid-feed');
+  if (gridEl) gridEl.innerHTML = MOMENTS_VIDEOS.map(v => videoCard(v)).join('');
+  const sideEl = document.getElementById('moments-side-feed');
+  if (sideEl) sideEl.innerHTML = MOMENTS_VIDEOS.map(v => videoCard(v)).join('');
+
+  if (window._momentsKeydown) document.removeEventListener('keydown', window._momentsKeydown);
+  window._momentsKeydown = function(e) {
+    const modal = document.getElementById('moments-modal');
+    if (!modal || !modal.classList.contains('open')) return;
+    if (e.key === 'Escape') momentsCloseModal();
+    if (e.key === 'ArrowRight') momentsNavigate(-1);
+    if (e.key === 'ArrowLeft') momentsNavigate(1);
+  };
+  document.addEventListener('keydown', window._momentsKeydown);
 }
 
 // ─────────────────────────────────────────
@@ -2281,6 +2599,176 @@ function buildLinksHTML(song) {
     </a>`);
   }
   return btns.join('');
+}
+
+// ─────────────────────────────────────────
+// PAGE: MOMENTS (מה קורה אצלי — Facebook videos)
+// ─────────────────────────────────────────
+const MOMENTS_COVERS = [
+  { id: 219322850264239, title: "Mix & Match, נטע וסיה — סלון שלי", post: "Mix & Match, Neta and Sia visited my living room, So instead of coffee, I played for them a bit :)", comments: [{ name: "אלונה", text: "אהוב מוכשר שלנו" }, { name: "יובל", text: "מהמם, אחלה שילוב ואחלה ביצוע" }, { name: "מאירה", text: "ביצוע מושלם ❤️ אוהבת את הקול הנוגע שלך.." }] },
+  { id: 854200621969408, title: "שיהיה לנו בית — קרן פלס", post: "אף פעם לא היה לי את האומץ לשיר אותו כי בזמנו הוא היה כואב שורף מידי. מאז ... יש לי בית וכלב וילדים שלושה (חסרה רק החצר) אז הכל מעבר למושלם.", comments: [{ name: "שרית", text: "כרגיל מהמם וכיף גדול על הבוקר..." }, { name: "גילי", text: "איזה מיוחד אתה..." }, { name: "שירה", text: "מדהים ומרגש" }] },
+  { id: 10158168026077054, title: "חופשיה — שרית חדד", post: "אז כבר יותר משבועיים הבת הקטנה שרה את השיר ״חופשייה״ בבית אחרי שראתה את הביצוע בזמר במסיכה.", comments: [{ name: "אלעד", text: "אתה שר כ\"כ יפה שזה מפחיד, כל מילה מקבלת אצלך משמעות. אלוף!" }, { name: "מגי", text: "וואווו קול ממש מרגיש ונוגע" }, { name: "קארין", text: "וואו מהמםםם יש לך קול מושלם ומרגש" }] },
+  { id: 10158646832962054, title: "יהלומים — נועה קירל", post: "כשהבת הקטנה שלי כל כך אוהבת את נועה קירל, אבא לא ינגן לה שיר של נועה. קבלו טעימה קטנה ;)", comments: [{ name: "ססיל", text: "יותר יפה מהמקור" }, { name: "מורן", text: "אתה שר כל כך יפה, איזה קול יש לך תענוג - מתגעגעת" }, { name: "אורי", text: "זה מפתיע" }] },
+  { id: 10158637068292054, title: "שבע בערב — דיקלה", post: "", comments: [{ name: "רונן", text: "וואו" }, { name: "שרון", text: "אהבתי מאוד. והבנתי שגם דקלה אהבה ופירגנה" }, { name: "אור", text: "מאוהבתתתתת" }] },
+  { id: 10158288402857054, title: "תל אביב בלילה — עדן בן זקן", post: "טוב נו סגר שלישי ואיך בא לצאת לתל אביב בלילה :)", comments: [{ name: "אלונה", text: "חלום שלי לנסוע איתך לתל אביב מוכשררררר" }, { name: "שרית", text: "פשוט זה יותר טוב בשידור חי..." }, { name: "דפנה", text: "יפה מאד!!!" }] }
+];
+const MOMENTS_ORIGINALS = [
+  { id: 10158274946972054, title: "לפעמים — מקורי", post: "הכי פשוט, כן ואמיתי בלי פילטר ופוטושופ. מה יותר טוב מלעשות שיחת נפש עם עצמך ועוד עם לחן!", comments: [{ name: "קלייר", text: "שלמות!" }, { name: "קרן", text: "אחד היפים שלך" }, { name: "לביא", text: "וואוווו, מקסים!!! הקול שלך מטורף, המילים, הלחן... הפתעת" }] },
+  { id: 10158263611492054, title: "עננים — מקורי", post: "לפני 21 שנה בדיוק נכתב השיר הזה. רק כך יכולתי לבטא את עצמי. גיטרה, כמה מילים ולחן.", comments: [{ name: "מאור", text: "אתה חייב לעשות משהו עם הכשרון הזה גבר" }, { name: "גיל", text: "אלוהים אדירים הקול שלך. צמרמורות. תמיד." }, { name: "ואדים", text: "אתה מוכשר כל כך! כל כך!!!" }] },
+  { id: 10158685851287054, title: "על קצות האצבעות — מקורי", post: "כמה כיף להוציא מהמגירה שיר ישן שלי ולנגן על הבוקר :)", comments: [{ name: "שרון", text: "התרגשתי לשמוע בדיוק כמו שהתרגשתי לפני 12 שנים ששמעתי אותו" }, { name: "נינה", text: "עמיעדי אולי הגיע זמן לאיזה הופעה קטנה?" }, { name: "מורן", text: "שיר מקסים, תענוג צרוף" }] },
+  { id: 10157682971582054, title: "השקט שלך — מקורי", post: "לכל אחד יש את הקול שלו, אותו קול פנימי שלפעמים שותק ולא אומר מילה. בשעת לילה מאוחרת שיר חדש — ״השקט שלך״.", comments: [{ name: "שרון", text: "נו מה? זה מהמם.. אתה רק הולך ומשתבח" }, { name: "גוי", text: "ממש כמו לשבת בים מותק" }, { name: "בת שבע", text: "וואי איך אתה שר מהלב 💙 איזה קול לעצום עיניים ולשמוע" }] },
+  { id: 10157493890152054, title: "Win It All — מקורי", post: "אז ככה ... בין משחקים עם הילדים, מריבות, בישולים, עייפות ... התגנב לו שיר ככה בלי שארגיש.", comments: [{ name: "חן", text: "עמיעד היקר אתה מוכשר ברמות!! ריגשת אותי ממש" }, { name: "שירלי", text: "Whatttttt????? Lady Gaga watch out!!" }, { name: "תמי", text: "אשששש עלייך עמיעדוש" }] },
+  { id: 323047299566978, title: "Diamonds — מקורי", post: "אי שם לפני שש שנים כתבתי את השיר הקסום הזה והיום הוא מצא את דרכו אליי לפסנתר :)", comments: [{ name: "אלאן", text: "אליפות, איזו הנאה לאוזן." }, { name: "אלונה", text: "פשוט וואווווו" }, { name: "דפנה", text: "יהלום מקסים!" }] }
+];
+
+(function() {
+  const base = 'https://www.facebook.com/amiad.oberman.9/videos/';
+  const embed = 'https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Famiad.oberman.9%2Fvideos%2F';
+  [...MOMENTS_COVERS, ...MOMENTS_ORIGINALS].forEach(v => {
+    v.fbUrl = base + v.id + '/';
+    v.src = embed + v.id + '%2F&show_text=false&width=267&t=0';
+  });
+})();
+
+function renderMomentsPage() {
+  const GRADIENTS = ['mom-bg-1','mom-bg-2','mom-bg-3','mom-bg-4'];
+  const PLAY_SVG = `<svg viewBox="0 0 14 14" fill="none"><path d="M4 2.5l8 4.5-8 4.5V2.5z" fill="#c9a84c"/></svg>`;
+  const ARROW_SVG = `<svg viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8l5-5" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const allVideos = [...MOMENTS_COVERS, ...MOMENTS_ORIGINALS];
+
+  function catLabel(t) {
+    return `<div class="mom-cat-label">${t}</div>`;
+  }
+
+  function listItem(v, idx, localIdx) {
+    return `<div class="mom-list-item" data-mom-idx="${idx}" style="animation-delay:${localIdx * 0.07}s">
+      <div class="mom-thumb">
+        <div class="mom-thumb-bg ${GRADIENTS[localIdx % 4]}"></div>
+        <div class="mom-thumb-overlay"></div>
+        <div class="mom-thumb-num">${String(localIdx + 1).padStart(2,'0')}</div>
+        <div class="mom-thumb-play"><div class="mom-thumb-circle">${PLAY_SVG}</div></div>
+      </div>
+      <div class="mom-list-info">
+        <div class="mom-list-title">${v.title}</div>
+        <div class="mom-comments-preview">
+          <div class="mom-comment-line"><b>${v.comments[0].name}:</b> ${v.comments[0].text}</div>
+          ${v.comments[1] ? `<div class="mom-comment-line"><b>${v.comments[1].name}:</b> ${v.comments[1].text}</div>` : ''}
+        </div>
+      </div>
+      <div class="mom-list-arrow">${ARROW_SVG}</div>
+    </div>`;
+  }
+
+  const coversHTML = MOMENTS_COVERS.map((v, i) => listItem(v, i, i)).join('');
+  const originalsHTML = MOMENTS_ORIGINALS.map((v, i) => listItem(v, MOMENTS_COVERS.length + i, i)).join('');
+
+  const modalComments = (v) => `
+    <button class="mom-modal-close" id="momModalClose">✕</button>
+    <div class="mom-modal-title">${v.title}</div>
+    ${v.post ? `<div class="mom-modal-post">${v.post}</div>` : '<div class="mom-modal-divider"></div>'}
+    <div class="mom-comments-label">תגובות נבחרות</div>
+    ${v.comments.map(c => `<div class="mom-comment"><div class="mom-avatar">${c.name[0]}</div><div class="mom-comment-body"><div class="mom-comment-name">${c.name}</div><div class="mom-comment-text">${c.text}</div></div></div>`).join('')}
+    <a class="mom-modal-fb" href="${v.fbUrl}" target="_blank" rel="noopener">לכל התגובות בפייסבוק <svg viewBox="0 0 12 12" fill="none"><path d="M10 6H2M6 2L2 6l4 4" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>`;
+
+  return `<div class="page-enter moments-page">
+    ${bc([{label:'שירים',href:'#/'},{label:'מה קורה אצלי',href:'#/moments'}])}
+    <div class="mom-header">
+      <h1 class="mom-title">מה קורה אצלי</h1>
+      <p class="mom-subtitle">תוכן ישירות מהפייסבוק — בלי לצאת מהאתר</p>
+      <div class="mom-divider"></div>
+    </div>
+
+    <div class="mom-list-feed">
+      ${catLabel('כיסויים')}${coversHTML}
+      <div style="margin-top:28px">${catLabel('מקוריים')}${originalsHTML}</div>
+    </div>
+
+    <!-- Modal -->
+    <div class="mom-modal-overlay hidden" id="momModal">
+      <div class="mom-modal-box">
+        <div class="mom-modal-video">
+          <iframe id="momIframe" src="" scrolling="no" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+          <div class="mom-modal-nav">
+            <button class="mom-modal-nav-btn" id="momPrev">‹ הקודם</button>
+            <span class="mom-modal-counter" id="momCounter">1 / ${allVideos.length}</span>
+            <button class="mom-modal-nav-btn" id="momNext">הבא ›</button>
+          </div>
+        </div>
+        <div class="mom-modal-comments" id="momComments">
+          ${modalComments(allVideos[0])}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function initMomentsPage() {
+  const allVideos = [...MOMENTS_COVERS, ...MOMENTS_ORIGINALS];
+  let currentIdx = 0;
+
+  const modal   = document.getElementById('momModal');
+  const iframe  = document.getElementById('momIframe');
+  const counter = document.getElementById('momCounter');
+  const prevBtn = document.getElementById('momPrev');
+  const nextBtn = document.getElementById('momNext');
+  const commentsEl = document.getElementById('momComments');
+
+  function loadModal() {
+    const v = allVideos[currentIdx];
+    iframe.src = v.src;
+    counter.textContent = `${currentIdx + 1} / ${allVideos.length}`;
+    prevBtn.disabled = currentIdx === 0;
+    nextBtn.disabled = currentIdx === allVideos.length - 1;
+    commentsEl.innerHTML = `
+      <button class="mom-modal-close" id="momModalClose">✕</button>
+      <div class="mom-modal-title">${v.title}</div>
+      ${v.post ? `<div class="mom-modal-post">${v.post}</div>` : '<div class="mom-modal-divider"></div>'}
+      <div class="mom-comments-label">תגובות נבחרות</div>
+      ${v.comments.map(c => `<div class="mom-comment"><div class="mom-avatar">${c.name[0]}</div><div class="mom-comment-body"><div class="mom-comment-name">${c.name}</div><div class="mom-comment-text">${c.text}</div></div></div>`).join('')}
+      <a class="mom-modal-fb" href="${v.fbUrl}" target="_blank" rel="noopener">לכל התגובות בפייסבוק</a>`;
+    document.getElementById('momModalClose').addEventListener('click', closeModal);
+  }
+
+  function openModal(idx) {
+    currentIdx = idx;
+    loadModal();
+    modal.classList.remove('hidden');
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    setTimeout(() => { iframe.src = ''; }, 350);
+  }
+
+  // List item clicks
+  document.querySelector('.mom-list-feed').addEventListener('click', e => {
+    const item = e.target.closest('.mom-list-item');
+    if (item) openModal(parseInt(item.dataset.momIdx, 10));
+  });
+
+  // Modal nav
+  prevBtn.addEventListener('click', () => {
+    if (currentIdx > 0) { currentIdx--; iframe.style.opacity='0'; setTimeout(() => { loadModal(); iframe.style.opacity='1'; }, 200); }
+  });
+  nextBtn.addEventListener('click', () => {
+    if (currentIdx < allVideos.length - 1) { currentIdx++; iframe.style.opacity='0'; setTimeout(() => { loadModal(); iframe.style.opacity='1'; }, 200); }
+  });
+
+  // Close on overlay click
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+  // Keyboard
+  const keyHandler = e => {
+    if (!document.getElementById('momModal')) { document.removeEventListener('keydown', keyHandler); return; }
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowRight') prevBtn.click();
+    if (e.key === 'ArrowLeft')  nextBtn.click();
+  };
+  document.addEventListener('keydown', keyHandler);
 }
 
 // ─────────────────────────────────────────
@@ -3933,7 +4421,10 @@ function initCollectionPage() {
 }
 
 function attachCollectionHeroHandlers(heroEl) {
-  // Play track / play-all
+  // Guard: only attach once — event delegation handles dynamic content
+  if (heroEl.dataset.handlersAttached === '1') return;
+  heroEl.dataset.handlersAttached = '1';
+
   heroEl.addEventListener('click', e => {
     const playBtn = e.target.closest('.col-track-play, .col-hero-play-all');
     if (playBtn) {
