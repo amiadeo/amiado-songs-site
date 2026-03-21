@@ -775,6 +775,7 @@ body {
   height: 320px;
   cursor: pointer;
   background: var(--bg-card);
+  border-radius: 10px;
 }
 .song-grid-card-cover {
   position: absolute;
@@ -948,7 +949,7 @@ body {
   flex-shrink: 0;
   width: 54px;
   height: 54px;
-  border-radius: 5px;
+  border-radius: 8px;
   overflow: hidden;
   display: block;
   align-self: center;
@@ -1262,6 +1263,7 @@ body {
   min-height: 380px;
   max-height: 640px;
   overflow: hidden;
+  border-radius: 12px;
 }
 .song-hero-cover {
   position: absolute;
@@ -1281,6 +1283,10 @@ body {
   from { transform: scale(1.0); }
   to   { transform: scale(1.12); }
 }
+/* hidden on desktop, shown inside mobile media query */
+.song-hero-mobile-actions { display: none; }
+.shma-btn { display: none; }
+
 .song-hero-overlay {
   position: absolute;
   inset: 0;
@@ -2698,6 +2704,7 @@ body {
   height: 320px;
   cursor: pointer;
   background: var(--bg-card);
+  border-radius: 10px;
 }
 .fav-card:hover .fav-card-cover svg {
   transform: scale(1.04);
@@ -2903,6 +2910,7 @@ body {
   overflow: hidden;
   cursor: pointer;
   background: var(--bg-card);
+  border-radius: 10px;
 }
 .pl-card-covers {
   position: absolute;
@@ -2913,6 +2921,7 @@ body {
 }
 .pl-card-thumb {
   overflow: hidden;
+  border-radius: 6px;
 }
 .pl-card-thumb svg {
   width: 100%;
@@ -3115,6 +3124,52 @@ body {
 
   /* Nav dropdown — keep inside screen */
   .nav-dropdown-menu { right: auto; left: 0; min-width: 120px; }
+
+  /* ── Mobile song hero action buttons (Suno-style) ── */
+  .song-hero {
+    height: 72vw;
+    min-height: 320px;
+    max-height: 460px;
+    border-radius: 0;
+  }
+
+  .song-hero-mobile-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    position: absolute;
+    left: 14px;
+    bottom: 60px;
+    z-index: 4;
+  }
+
+  .shma-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.85);
+    transition: color 0.2s, transform 0.2s;
+    padding: 0;
+  }
+
+  .shma-btn span {
+    font-family: var(--font-he);
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .shma-btn:active { transform: scale(0.9); }
+
+  .shma-btn.track-fav-btn.active { color: var(--gold); }
+  .shma-btn.track-fav-btn.active span { color: var(--gold); }
+  .shma-btn.track-fav-btn.active svg { fill: var(--gold); stroke: var(--gold); }
 }
 
 /* ══════════════════════════════════════════
@@ -3219,7 +3274,7 @@ body {
 .pl-track-cover {
   width: 52px;
   height: 52px;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
 }
 .pl-track-cover img, .pl-track-cover svg {
@@ -3488,7 +3543,7 @@ body {
 .pl-add-song-cover {
   width: 44px;
   height: 44px;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
 }
