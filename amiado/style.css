@@ -4498,7 +4498,7 @@ body {
 /* ══════════════════════════════════════════
    Collection Page — Layout E
 ══════════════════════════════════════════ */
-.collection-page { padding-bottom: 80px; }
+.collection-page { padding: 0 40px 80px; }
 
 .col-header {
   padding: 48px 0 24px;
@@ -4989,6 +4989,7 @@ body {
 
 /* ── Mobile ─────────────────────────── */
 @media (max-width: 768px) {
+  .collection-page { padding: 0 16px 80px; }
   .col-body { grid-template-columns: 1fr; gap: 0; }
   .col-right {
     border-right: none;
@@ -5008,7 +5009,7 @@ body {
 .sugg-section-header { margin-bottom: 18px; }
 .sugg-section-title { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 300; color: var(--text); letter-spacing: .06em; margin: 0 0 4px; }
 .sugg-section-sub { font-size: .74rem; color: var(--text-dim); margin: 0; letter-spacing: .04em; }
-.sugg-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; direction: rtl; }
+.sugg-scroll { display: flex; gap: 14px; overflow-x: auto; padding: 4px 0 10px; scrollbar-width: none; direction: rtl; }
 .sugg-scroll::-webkit-scrollbar { display: none; }
 .sugg-card { flex-shrink: 0; width: 156px; cursor: pointer; transition: transform .22s; }
 .sugg-card:hover { transform: translateY(-4px); }

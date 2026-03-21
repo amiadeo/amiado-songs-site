@@ -2692,13 +2692,21 @@ function buildSuggestedPlaylists() {
     { id:'sugg-ballads',  name:'בלדות לנשמה',   desc:'שירים עם עומק ורגש',      songs: SONGS.filter(s => s.analysis?.abstract || s.lyrics?.length > 0) },
     { id:'sugg-beat',     name:'תנו לי בקצב',   desc:'שירים עם הפקה מלאה',      songs: SONGS.filter(s => s.sunoEmbedId || s.youtubeVideoId || s.audio?.src) },
   ];
-  return defs.filter(d => d.songs.length > 0);
+  const playlists = defs.filter(d => d.songs.length > 0);
+  // Ensure each playlist shows a unique cover song
+  const usedIds = new Set();
+  playlists.forEach(pl => {
+    const pick = pl.songs.find(s => !usedIds.has(s.id)) || pl.songs[0];
+    pl.coverSong = pick;
+    usedIds.add(pick.id);
+  });
+  return playlists;
 }
 
 function renderSuggestedSection() {
   _suggData = buildSuggestedPlaylists();
   const cards = _suggData.map(pl => {
-    const coverSong = pl.songs[0];
+    const coverSong = pl.coverSong;
     return `
       <div class="sugg-card" data-sugg-id="${pl.id}">
         <div class="sugg-card-art">
@@ -2729,7 +2737,7 @@ function openSuggPlaylist(id) {
   const modal = document.getElementById('suggModal');
   if (!modal) return;
 
-  const coverSong = pl.songs[0];
+  const coverSong = pl.coverSong || pl.songs[0];
   const firstIdx = pl.songs.length > 0 ? SONGS.indexOf(pl.songs[0]) : -1;
 
   const songRows = pl.songs.map((song, i) => {
