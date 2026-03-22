@@ -48,6 +48,9 @@ const COVERS = {
   'give-up':                 `<img src="songs39.jpeg" alt="Give Up"               style="width:100%;height:100%;object-fit:cover;display:block">`,
   'hey':                     `<img src="songs40.jpeg" alt="Hey"                   style="width:100%;height:100%;object-fit:cover;display:block">`,
   'dusty-star':              `<img src="songs41.jpeg" alt="Dusty Star"            style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'isha-livyatan':           `<img src="songs44.jpeg" alt="אישה לויתן"            style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'badad':                   `<img src="songs42.jpeg" alt="בדד"                   style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'chandelier-cuckoo':       `<img src="songs43.jpeg" alt="Chandelier & Cuckoo"  style="width:100%;height:100%;object-fit:cover;display:block">`,
 };
 
 function getCover(id) {
@@ -1227,6 +1230,121 @@ chords: {
       psychological: 'השיר חושף דמות שחווה חרדות קטנות ושליטה עצמית גבוהה. האהובה בשיר אינה רק מושא לאהבה, היא פונקציה פסיכולוגית של "הכלה" – היא אוהבת את מה שהוא דוחה, ובכך מאפשרת לו לקבל את עצמו.',
       academic: 'היצירה משתמשת בזרם תודעה יומיומי כדי לבנות תמה של "גאולה דרך האחר". השימוש בפרטים בנאליים (אוטובוס, עיתון) הופך את השיר לנגיש ואנושי. המילה "למחול" מעידה שהדובר מרגיש אשם, והאהבה נתפסת כחסד המטהר אותו מהמועקות הקטנות.'
     }
+  },
+  // ── Covers ────────────────────────────────────────────────────────
+  {
+    id: 'isha-livyatan', title: 'אישה לויתן', language: 'he',
+    cover: true,
+    originalArtist: 'עברי לידר',
+    coverCredits: 'מילים ולחן: עברי לידר',
+    sunoEmbedId: 'd9b44de5-ec0e-4e58-bd57-acd9bd1f8b56',
+    chords: [],
+    lyrics: [
+      { section: 'בית 1', lines: [
+        'עדיין חולמת ועדיין רוצה',
+        'כבר כמה שנים שהיא לא מרוצה',
+        'ויש לה הסכם עם עצמה',
+        'תמיד כשנשברת עולה לקחת אויר',
+        'מי אמר שאישה לויתן זה דבר לא שביר'
+      ]},
+      { section: 'פזמון', lines: [
+        'ואולי החום יעשה את שלו ואולי הקור יגמור אותי',
+        '',
+        'ויש בעולם מקומות נפלאים',
+        'הייתי רוצה להיות שם',
+        'למצוא את עצמי שוחה חופשיה בעומקים מתאימים לי',
+        'לפעמים מרגישה חזקה',
+        'לפעמים מתפרקת בלי כוח לדחוף את עצמי',
+        'מהדחף שלי לשחות אל החוף'
+      ]},
+      { section: 'סיום', lines: [
+        'ואולי החום יעשה את שלו ואולי הקור יגמור אותי'
+      ]}
+    ],
+    analysis: null
+  },
+  {
+    id: 'badad', title: 'בדד', language: 'he',
+    cover: true,
+    originalArtist: 'זוהר ארגוב',
+    coverCredits: 'מילים: עמשי לוין | לחן: עוזי מלמד',
+    sunoEmbedId: '6ff5f4e6-9ac6-454f-a8ca-7acf0d173002',
+    chords: [],
+    lyrics: [
+      { section: 'בית 1', lines: [
+        'בדד, במשעול אל האין',
+        'בדד, בנתיב ללא כלום',
+        'בדד, עם הזמן הבורח',
+        'והזמן לא שוכח להציב את הגבול'
+      ]},
+      { section: 'בית 2', lines: [
+        'בדד, בלי כף יד מלטפת',
+        'בדד, ללא שכם ידיד',
+        'בדד, כמה טוב לא לדעת',
+        'שידך כבר נוגעת',
+        'בידו של אחר'
+      ]},
+      { section: 'פזמון', lines: [
+        'בדד אלך גם תפילה אין לי',
+        'בדד בלי עתיד בלי תקווה בלי חלום'
+      ]},
+      { section: 'בית 3', lines: [
+        'בדד, כמו השמש אנדודה',
+        'בדד, במדבר הלוהט',
+        'בדד, גם דמעות הן רק הבל',
+        'שיר מזמור אין לסבל',
+        'שיר מזמור של אילמים'
+      ]}
+    ],
+    analysis: null
+  },
+  {
+    id: 'chandelier-cuckoo', title: 'Chandelier & Cuckoo', language: 'en',
+    cover: true,
+    originalArtist: 'Sia & Neta Barzilai',
+    coverCredits: 'Based on "Chandelier" by Sia and "Cuckoo" by Neta Barzilai',
+    sunoEmbedId: 'd1b1e4f0-dc07-4cc5-9b7b-10d9d3904e63',
+    chords: [],
+    lyrics: [
+      { section: 'Verse 1', lines: [
+        'I want to change the channel',
+        "But I keep losing my remote",
+        "It's like my favorite show's on",
+        "I can't predict your every joke",
+        'My friends think that I\'m lucky',
+        "But I guess that they don't know",
+        "That I don't really think so"
+      ]},
+      { section: 'Pre-Chorus', lines: [
+        'Cheap thrills and breath mints',
+        "No we don't have to say a thing",
+        "I like when you're holding my hand",
+        "But I don't feel nothing",
+        'Do I really love you?',
+        'I should really love you'
+      ]},
+      { section: 'Chorus', lines: [
+        "But I'm gonna swing",
+        'From the chandelier',
+        "I'm gonna live",
+        "Like tomorrow doesn't exist",
+        "And I'm gonna fly",
+        'Like a bird through the night',
+        'Feel my tears as they dry',
+        "I'm gonna swing",
+        'From the chandelier'
+      ]},
+      { section: 'Bridge', lines: [
+        "I'm like a bird in a cage and I'm going cuckoo",
+        "I know that I can escape but I don't want to hurt you",
+        'Do I really love you?',
+        'I should really love you'
+      ]},
+      { section: 'Outro', lines: [
+        "I'm like a bird in a cage and I'm going cuckoo"
+      ]}
+    ],
+    analysis: null
   },
   // ── English songs ─────────────────────────────────────────────────
   {
@@ -2428,16 +2546,16 @@ function renderHomePage() {
   const cinematicCards = SONGS.map((song, i) => {
     const isFav = favs.includes(song.id);
     const num = String(i + 1).padStart(2, '0');
-    const langLabel = song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית';
+    const langLabel = song.cover ? 'קאבר' : song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית';
     const excerpt = song.analysis?.abstract
       ? song.analysis.abstract.replace(/\s+/g,' ').trim().slice(0, 90) + '…'
-      : '';
+      : (song.cover && song.originalArtist ? `ביצוע מחודש של ${song.originalArtist}` : '');
     return `
     <div class="song-cine-card" data-id="${song.id}" data-title="${song.title}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}" data-has-file="${song.audio?.src ? '1' : '0'}">
       <div class="song-cine-img">${getCover(song.id)}<div class="song-cine-num">${num}</div></div>
       <div class="song-cine-text">
         <div class="song-cine-lang">${langLabel}</div>
-        <div class="song-cine-title">${song.title}</div>
+        <div class="song-cine-title">${song.title}${song.cover ? ' <span class="cover-badge-inline">♻</span>' : ''}</div>
         ${excerpt ? `<div class="song-cine-excerpt">${excerpt}</div>` : ''}
       </div>
       <div class="song-cine-btns">
@@ -2463,13 +2581,13 @@ function renderHomePage() {
   const spotItems = SONGS.map((song, i) => {
     const isFav = favs.includes(song.id);
     const num = String(i + 1).padStart(2, '0');
-    const langLabel = song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית';
+    const langLabel = song.cover ? 'קאבר' : song.language === 'en' ? 'English' : song.language === 'es' ? 'Español' : 'עברית';
     return `
     <div class="spot-item${i === 0 ? ' active' : ''}" data-id="${song.id}" data-title="${song.title}" data-idx="${i}" data-lang="${song.language || 'he'}" data-cover="${song.cover ? '1' : '0'}" data-has-file="${song.audio?.src ? '1' : '0'}">
       <div class="spot-item-cover">${getCover(song.id)}</div>
       <div class="spot-item-info">
         <div class="spot-item-num">${num}</div>
-        <div class="spot-item-title">${song.title}</div>
+        <div class="spot-item-title">${song.title}${song.cover ? ' <span class="cover-badge-inline">♻</span>' : ''}</div>
         <div class="spot-item-lang">${langLabel}</div>
       </div>
       <div class="spot-item-actions">
@@ -2580,6 +2698,10 @@ function renderHomePage() {
               <button class="songs-tab active" data-tab="all">הכל</button>
               <button class="songs-tab" data-tab="he">עברית</button>
               <button class="songs-tab" data-tab="en">English</button>
+              <button class="songs-tab" data-tab="cover">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.8"><path d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3zm0 16a7 7 0 1 1 0-14A7 7 0 0 1 12 19zm0-11a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+                קאברים
+              </button>
             </div>
             <div class="songs-chapter-controls">
               <button class="songs-view-btn${isCinematic ? ' active' : ''}" id="songsViewCinematic" title="תצוגה קולנועית">
@@ -2733,12 +2855,12 @@ function renderSongPage(id) {
     academic: 'ניתוח אקדמי'
   };
 
-  const analysisHTML = Object.entries(analysisLabels).map(([key, label]) => `
+  const analysisHTML = song.analysis ? Object.entries(analysisLabels).map(([key, label]) => `
     <div class="analysis-card">
       <div class="analysis-card-label">${label}</div>
       <p class="analysis-card-text">${song.analysis[key]}</p>
     </div>
-  `).join('');
+  `).join('') : '';
 
   // Prev/next navigation
   // Use navContext (from favorites/playlist) if available, otherwise fall back to SONGS order
@@ -2853,6 +2975,10 @@ function renderSongPage(id) {
           </div>
           <div class="song-hero-bottom">
             <div class="song-number">${num} / ${String(SONGS.length).padStart(2,'0')}</div>
+            ${song.cover ? `<div class="cover-hero-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3zm0 16a7 7 0 1 1 0-14A7 7 0 0 1 12 19zm0-11a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+              קאבר — ${song.originalArtist}
+            </div>` : ''}
             <h1 class="song-hero-title">${song.title}</h1>
             <div class="song-header-actions">
               <button class="btn-play-song" data-play-idx="${idx}">
@@ -2899,10 +3025,23 @@ function renderSongPage(id) {
           </aside>
         </div>
 
+        ${song.cover ? `
+        <section class="cover-credits-section">
+          <div class="cover-credits-card">
+            <div class="cover-credits-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            </div>
+            <div class="cover-credits-info">
+              <div class="cover-credits-label">ביצוע מחודש</div>
+              <div class="cover-credits-artist">${song.originalArtist}</div>
+              <div class="cover-credits-detail">${song.coverCredits}</div>
+            </div>
+          </div>
+        </section>` : `
         <section class="analysis-section">
           <h2 class="analysis-heading">ניתוח ספרותי</h2>
           <div class="analysis-grid">${analysisHTML}</div>
-        </section>
+        </section>`}
 
         <div class="song-credits">
           <div class="credits-inner">${creditsHTML}</div>
@@ -4744,6 +4883,7 @@ function bindPageEvents() {
   function getTabFilteredIds() {
     const tab = document.querySelector('.songs-tab.active')?.dataset.tab || 'all';
     if (tab === 'all') return SONGS.map(s => s.id);
+    if (tab === 'cover') return SONGS.filter(s => s.cover).map(s => s.id);
     return SONGS.filter(s => s.language === tab && !s.cover).map(s => s.id);
   }
 
@@ -4833,6 +4973,7 @@ function bindPageEvents() {
     let visibleCount = 0;
     const matches = el => {
       if (tab === 'all') return true;
+      if (tab === 'cover') return el.dataset.cover === '1';
       return el.dataset.lang === tab && el.dataset.cover !== '1';
     };
     cines.forEach(el => { const m = matches(el); el.style.display = m ? '' : 'none'; if (m) visibleCount++; });
