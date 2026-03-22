@@ -54,6 +54,11 @@ const COVERS = {
 };
 
 function getCover(id) {
+  // Prefer YouTube thumbnail if song has a video ID
+  const song = typeof SONGS !== 'undefined' ? SONGS.find(s => s.id === id) : null;
+  if (song?.youtubeVideoId) {
+    return `<img src="https://img.youtube.com/vi/${song.youtubeVideoId}/mqdefault.jpg" alt="${song.title}" style="width:100%;height:100%;object-fit:cover;display:block">`;
+  }
   return COVERS[id] || `<svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
     <rect width="280" height="280" fill="#0d1117"/>
     <circle cx="140" cy="140" r="60" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.5"/>
