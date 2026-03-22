@@ -2780,7 +2780,7 @@ function renderSongPage(id) {
   }
 
   return `
-    <div class="page-enter song-page">
+    <div class="page-enter song-page${song.language === 'en' ? ' lang-en' : ''}"${song.language === 'en' ? ' dir="ltr"' : ''}>
 
       <div class="song-hero">
         <div class="song-hero-cover">${getCover(song.id)}</div>

@@ -1272,6 +1272,23 @@ body {
   margin: 0;
   padding: 0;
 }
+/* LTR override for English songs */
+.song-page.lang-en .lyrics-line,
+.song-page.lang-en .lyrics-section-label,
+.song-page.lang-en .lyrics-title,
+.song-page.lang-en .analysis-card-text,
+.song-page.lang-en .song-hero-title,
+.song-page.lang-en .song-number,
+.song-page.lang-en .song-hero-bottom,
+.song-page.lang-en .song-credits,
+.song-page.lang-en .analysis-heading {
+  direction: ltr;
+  text-align: left;
+}
+.song-page.lang-en .song-hero-nav-btn[data-nav="prev"] svg { transform: scaleX(-1); }
+.song-page.lang-en .song-hero-nav-btn[data-nav="next"] svg { transform: scaleX(-1); }
+.song-page.lang-en .song-mobile-nav-arrow[data-nav="prev"] svg { transform: scaleX(-1); }
+.song-page.lang-en .song-mobile-nav-arrow[data-nav="next"] svg { transform: scaleX(-1); }
 .song-content {
   max-width: 1100px;
   margin: 0 auto;
