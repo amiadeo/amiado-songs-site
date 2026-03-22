@@ -3639,6 +3639,17 @@ body {
 
   .shma-btn:active { transform: scale(0.9); }
 
+  .shma-play-btn {
+    color: var(--gold) !important;
+    background: rgba(201,168,76,0.15) !important;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    justify-content: center;
+  }
+  .shma-play-btn span { color: var(--gold) !important; font-size: 0.6rem; }
+  .shma-play-btn svg { fill: var(--gold); }
+
   .shma-btn.track-fav-btn.active { color: var(--gold); }
   .shma-btn.track-fav-btn.active span { color: var(--gold); }
   .shma-btn.track-fav-btn.active svg { fill: var(--gold); stroke: var(--gold); }

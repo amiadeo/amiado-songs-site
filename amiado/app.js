@@ -41,6 +41,13 @@ const COVERS = {
   'chozer-elay':             `<img src="songs14.jpeg" alt="חוזר אליי"            style="width:100%;height:100%;object-fit:cover;display:block">`,
   'kimeat-shakuf':           `<img src="songs33.jpeg" alt="כמעט שקוף"            style="width:100%;height:100%;object-fit:cover;display:block">`,
   'at':                      `<img src="songs29.jpeg" alt="את"                   style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'long-way-down':           `<img src="songs35.jpeg" alt="Long Way Down"         style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'little-diamonds':         `<img src="songs36.jpeg" alt="Little Diamonds"       style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'lies':                    `<img src="songs37.jpeg" alt="Lies"                  style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'butterflies':             `<img src="songs38.jpeg" alt="Butterflies"           style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'give-up':                 `<img src="songs39.jpeg" alt="Give Up"               style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'hey':                     `<img src="songs40.jpeg" alt="Hey"                   style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'dusty-star':              `<img src="songs41.jpeg" alt="Dusty Star"            style="width:100%;height:100%;object-fit:cover;display:block">`,
 };
 
 function getCover(id) {
@@ -1219,6 +1226,270 @@ chords: {
       structural: 'השיר בנוי על מבנה של ניגוד חריף בין הבתים לפזמון. הבתים עמוסים בפרטים ריאליסטיים, לעיתים נוירוטיים, ומייצרים תחושת אי-נחת. הפזמון, לעומת זאת, הוא מרחב של שקט ומחילה.',
       psychological: 'השיר חושף דמות שחווה חרדות קטנות ושליטה עצמית גבוהה. האהובה בשיר אינה רק מושא לאהבה, היא פונקציה פסיכולוגית של "הכלה" – היא אוהבת את מה שהוא דוחה, ובכך מאפשרת לו לקבל את עצמו.',
       academic: 'היצירה משתמשת בזרם תודעה יומיומי כדי לבנות תמה של "גאולה דרך האחר". השימוש בפרטים בנאליים (אוטובוס, עיתון) הופך את השיר לנגיש ואנושי. המילה "למחול" מעידה שהדובר מרגיש אשם, והאהבה נתפסת כחסד המטהר אותו מהמועקות הקטנות.'
+    }
+  },
+  // ── English songs ─────────────────────────────────────────────────
+  {
+    id: 'long-way-down', title: 'Long Way Down', language: 'en',
+    sunoEmbedId: 'e88a3f55-67df-4551-9958-7e542b618a0f',
+    chords: [],
+    lyrics: [
+      { section: 'Verse 1', lines: [
+        "No way I'm gonna play this game",
+        "I'm losing, it's all the same",
+        'Empty skies and grounded planes',
+        'With nowhere left to break these chains'
+      ]},
+      { section: 'Chorus', lines: [
+        "It's a long way down",
+        'Falling all the way down',
+        "It's a long way down",
+        'The joke is on us',
+        "Now who's the clown?",
+        'The joke is on us'
+      ]},
+      { section: 'Verse 2', lines: [
+        'Cut the bullshit, cut the act',
+        'No sugar can mask the fact',
+        'Forget it, just leave it',
+        "Don't you know we're not supposed to feel it?"
+      ]},
+      { section: 'Outro', lines: [
+        "Well, I don't think it's funny at all."
+      ]}
+    ],
+    analysis: {
+      abstract: 'שיר על תחושת נפילה חופשית מתוך מציאות שכבר אין בה כיוון. בין ציניות לכאב אמיתי, הדובר מסרב לשחק את המשחק אבל כבר אינו יודע איך לצאת ממנו.',
+      structural: 'המבנה עובד בין בתים קצרים וישירים לפזמון חוזר שמאריך ומעמיק את תחושת הנפילה. ה-Outro הלקוני מסיים בהכרה שהכאב אינו מצחיק.',
+      psychological: 'הדובר חווה תחושת חוסר שליטה ואשמה קולקטיבית ("The joke is on us"). השימוש ב-"us" חושף שמדובר בכשל משותף, לא רק אישי.',
+      academic: 'השיר משתמש במטאפורת הנפילה כארכיטיפ של כישלון. "Long way down" מדגיש את המרחק בין הציפיות למציאות. הדימוי "grounded planes" ממזג חוסר תנועה עם כישלון פוטנציאל.'
+    }
+  },
+  {
+    id: 'little-diamonds', title: 'Little Diamonds', language: 'en',
+    sunoEmbedId: '4aad5ce2-7eba-4cb0-9b5d-c7e01bcd7251',
+    chords: [],
+    lyrics: [
+      { section: 'Verse 1', lines: [
+        "It doesn't really matter what your eyes can see",
+        "It's not me you want to blame, it's not real",
+        'Come home honey',
+        'Please stop all the games',
+        'You used to love to celebrate your birthdays',
+        "Now they tell you that you're old, so fuck them all",
+        'Kiss me honey',
+        'Before the rain starts to fall'
+      ]},
+      { section: 'Chorus', lines: [
+        'Like little diamonds falling slowly on the ground',
+        'Tiny stars in your eyes shining bright… Oh',
+        'Like little diamonds falling slowly on the ground',
+        'Tiny stars in your eyes shining bright'
+      ]},
+      { section: 'Verse 2', lines: [
+        "It doesn't really matter what your eyes can see",
+        "It's not me you want to blame, no it's not real",
+        'Come home honey',
+        'Please stop all the games',
+        'So you used to love to celebrate your birthdays',
+        "Now they tell you that you're old, so fuck them, fuck them all",
+        'Kiss me honey',
+        'Before the rain starts to fall'
+      ]}
+    ],
+    analysis: {
+      abstract: 'שיר על אהבה שמנסה להגן על אדם יקר מפני הזמן ומבטי החברה. הדובר מזמין חזרה הביתה, מרחק מהשיפוטיות החיצונית, ומציע נוכחות שקטה כמשמר.',
+      structural: 'מבנה קלאסי בית-פזמון-בית עם שינוי קל בבית השני ("fuck them, fuck them all") שמחמיר את הזעם ומעמיק את ההגנה. הפזמון שואל תמונת יהלומים נופלים — רגע של יופי באמצע כאב.',
+      psychological: 'יש כאן ניסיון להחזיר את האחר אל תחושת ערך עצמי. "It\'s not real" חוזר כמנטרה — ניסיון לפרק שיפוט חיצוני שנספג.',
+      academic: 'הדימוי "little diamonds" מתפקד כרגע של טרנספורמציה: הכאב הופך ליהלומים, הכוכבים בעיניים חוזרים. השיר ממסגר אהבה כמרחב של הגנה ושיחזור זהות.'
+    }
+  },
+  {
+    id: 'lies', title: 'Lies', language: 'en',
+    sunoEmbedId: '363e8817-d7aa-412f-80d3-ed1620047fb3',
+    chords: [],
+    lyrics: [
+      { section: 'Verse 1', lines: [
+        "Don't waste my time",
+        "I can hear you talking but not saying much",
+        'All in your eyes'
+      ]},
+      { section: 'Verse 2', lines: [
+        'You love to play games, well, so do I',
+        "But I'm not a child, I'm done with broken hearts",
+        'All in your eyes',
+        'All those lies'
+      ]},
+      { section: 'Chorus', lines: [
+        'You get what you came for,',
+        'now please go',
+        'I know better now.',
+        'What are your goals',
+        'Go ooo and there he goes',
+        'lie lie lie lies — we blow my mind',
+        'lie lie lie lies — with all your lies'
+      ]}
+    ],
+    analysis: {
+      abstract: 'שיר על הכרה ברגע שהאחר חשף את עצמו — ועכשיו הוא מסולק. לא בכאב, אלא בבהירות. הדובר כבר לא נלכד ולא זקוק לתירוצים.',
+      structural: 'שני בתים קצרים בונים מתח ומעמידים עמדה, הפזמון פורץ ישיר ומהיר. "Go ooo and there he goes" — אירוני ומשתחרר בו-זמנית.',
+      psychological: 'הדובר עבר מנקודת פגיעות לנקודת כוח. ה-"lie lie lie lies" החוזר מתפקד כרגע שחרור — תיוג מה שהיה ומעבר ממנו.',
+      academic: 'השיר עושה שימוש בכפל משמעות: "all in your eyes" מרמז גם ל"הכל גלוי בעיניך" וגם ל"הכל בדמיונך". המעבר לפזמון מדמה רגע של התפכחות אמיתית.'
+    }
+  },
+  {
+    id: 'butterflies', title: 'Butterflies', language: 'en',
+    sunoEmbedId: '066038ab-8400-4ea6-8ff3-0ecaecd1f805',
+    chords: [],
+    lyrics: [
+      { section: 'Verse 1', lines: [
+        'Locked down my heart',
+        "I'm gonna stand on top of the tower",
+        "Don't try to save me, no",
+        "I don't need any flowers",
+        "Well, I'm touched"
+      ]},
+      { section: 'Verse 2', lines: [
+        'Locked down my heart',
+        "I'm gonna push the button",
+        "Don't try to stop me, no",
+        "I don't need more trouble",
+        "Well, I'm torn"
+      ]},
+      { section: 'Chorus', lines: [
+        'We keep it silent, feelings',
+        'Looking up at the sky, singing',
+        'Lullabies, singing lullabies',
+        "I never said I want this dancing",
+        "I never thought you'd be chasing",
+        'Butterflies,',
+        'chasing butterflies'
+      ]},
+      { section: 'Verse 3', lines: [
+        'Locked down my heart',
+        'I pushed the button',
+        "Don't try to save me, no",
+        "I don't need any flowers",
+        "Well, I'm done"
+      ]}
+    ],
+    analysis: {
+      abstract: 'שיר על דיכוטומיה בין בידוד עצמי לבין תשוקה שנרדפת בכל זאת. הדובר נועל את עצמו אבל מישהו מרדף אחרי פרפרים — אחרי משהו שאי אפשר לתפוס.',
+      structural: 'שלושה בתים עם פתיחה זהה ("Locked down my heart") אבל שינוי מצב הולך ומחמיר: touched → torn → done. הפזמון פורץ לשמים בניגוד לסגירה של הבתים.',
+      psychological: 'הלב הנעול כלפי חוץ, והפרפרים הנרדפים פנימה — מייצגים קונפליקט בין הגנה עצמית לבין חיוניות שאינה יכולה לאטום עצמה לחלוטין.',
+      academic: 'הפרפר כסמל לנפש וטרנספורמציה. "Chasing butterflies" — מישהו מחפש את מה שהדובר מסרב לתת, ועצם הרדיפה היא סוג של שיר ערש.'
+    }
+  },
+  {
+    id: 'give-up', title: 'Give Up', language: 'en',
+    sunoEmbedId: '9bcd1ef5-2077-4337-aebb-2fa60a2792e4',
+    chords: [],
+    lyrics: [
+      { section: 'Verse 1', lines: [
+        "If something's broken, we can fix it",
+        "Do you really think I'm not scared to lose you?",
+        'When your eyes and your smile feel frozen',
+        "I just wanna hide",
+        "I'm broken without you",
+        'Without you'
+      ]},
+      { section: 'Chorus', lines: [
+        'My arms are wide open',
+        'Just follow me, follow me, follow me',
+        "My heart's as big as the ocean",
+        'Enough for both of us, both of us',
+        "So don't give up, give up, give up on us",
+        "Please don't give up, give up, give up on us"
+      ]}
+    ],
+    analysis: {
+      abstract: 'שיר תחינה — לא ייאוש אלא בחירה. הדובר מודה בשבריו, אבל מסרב להרים ידיים. הלב הפתוח הוא לא חולשה, הוא הצעה אמיצה.',
+      structural: 'מבנה פשוט ועוצמתי: בית של פגיעות ופזמון של בחירה. ה-"follow me" המשולש מעצים את הבקשה לכדי כמעט תפילה.',
+      psychological: 'הדובר חושף את הפחד מאובדן ("I\'m broken without you") מבלי להתכחש לו, ובכך מייצר אוטנטיות שמאפשרת חיבור אמיתי.',
+      academic: 'המטאפורה "heart as big as the ocean" מממשת מוטיב של אינסופיות. "Don\'t give up on us" — ה-"us" כישות נפרדת שצריכה הגנה משותפת.'
+    }
+  },
+  {
+    id: 'hey', title: 'Hey', language: 'en',
+    sunoEmbedId: '0e5de36a-3d51-4e09-b98b-c8e6c7d9c032',
+    chords: [],
+    lyrics: [
+      { section: 'Verse 1', lines: [
+        'Hey, are you stupid or what',
+        "What you're thinking about us",
+        'You and I',
+        'Hey, I just want to say',
+        'Please ask me to stay tonight'
+      ]},
+      { section: 'Chorus', lines: [
+        'Walking through walls',
+        'And you never ever never ever were fast enough',
+        'Oh-whoa',
+        "You're walking through walls",
+        'And I never ever ever ever asked for too much',
+        'As you know',
+        "If that's what it takes",
+        'To bring you back home',
+        "If that's what it takes"
+      ]},
+      { section: 'Verse 2', lines: [
+        'Hey, way over my head',
+        'What should I do instead',
+        'Of loving you?',
+        'Hey, I just want to say',
+        'Please ask me to stay tonight'
+      ]},
+      { section: 'Bridge', lines: [
+        'Out of my mind',
+        'Leaving it all behind',
+        "Let's find a way back",
+        "We're off the track",
+        "If that's what it takes"
+      ]}
+    ],
+    analysis: {
+      abstract: 'שיר על ניסיון להחזיר מישהו שכבר לא שם — בין ישירות גסה לבין רגישות כמוסה. הדובר עצמו לא בטוח אם הוא כועס או נכסף.',
+      structural: 'הפניות הישירות ("Hey, are you stupid or what") מנוגדות לפזמון האינטנסיבי על "walking through walls". הניגוד בין ישירות קשה לבין אידיאליזציה הוא מנוע השיר.',
+      psychological: 'הכותרת הפשוטה "Hey" מייצגת פניה שכבר אינה יודעת איך להתחיל. הדובר מנסה להחזיר מישהו על ידי חשיפת עצמו לגמרי ("out of my mind").',
+      academic: 'המוטיב "walking through walls" — מטאפורה של חציית גבולות בלתי אפשריים. "Off the track" — האובדן אינו כישלון אלא סטייה שניתן לתקן אם רק שניהם ירצו.'
+    }
+  },
+  {
+    id: 'dusty-star', title: 'Dusty Star', language: 'en',
+    audio: { type: 'file', src: 'songs/dusty-star/dusty_star.mp3' },
+    sunoEmbedId: '07b5623b-2d5e-44b7-bbd5-a76d1678b123',
+    chords: [],
+    lyrics: [
+      { section: 'Verse 1', lines: [
+        "It's so quiet now, can you feel it?",
+        'Swear I can hear my heart beating, slowly dripping',
+        'Not a single word, not a sneaky look',
+        'Just lying on the sofa and reading your book'
+      ]},
+      { section: 'Chorus', lines: [
+        "It's not real, I must be dreaming",
+        'Not a fairytale and you are not the prince',
+        'Is it me Bleeding',
+        'Dusty star lonely on your shelf',
+        '(lonely on your shelf)'
+      ]},
+      { section: 'Verse 2', lines: [
+        'Winter is here, you get used to it',
+        "Sorry babe, our fireworks not shooting. slowly diving",
+        "Melt my heart, I can't struggle",
+        'Just laying on the sofa go on drink all the bottle'
+      ]},
+      { section: 'Bridge', lines: [
+        'Once upon a time',
+        'We were young, we were lovers',
+        '(lonely on your shelf)'
+      ]}
+    ],
+    analysis: {
+      abstract: 'שיר על מערכת יחסים שקפאה — לא בפרידה רעשנית אלא בשקט מחניק. "כוכב מאובק על המדף" מסמל את האהבה שהפכה לדקורציה.',
+      structural: 'השיר בנוי על ניגוד בין "עכשיו" שקט לבין "פעם" שמשמע רק ב-Bridge. הפזמון חוזר כשאלה ("Is it me Bleeding") — חוסר ודאות על מקור הכאב.',
+      psychological: 'הדובר מתבונן במציאות מבחוץ ("I must be dreaming") כסוג של הגנה. ה"כוכב המאובק" — תחושה של כבוד ללא חיות, נוכחות ללא ממשות.',
+      academic: 'דימוי "dusty star" מטמיע סמל של יוקרה מתכלה. "Slowly dripping / slowly diving" — תנועה של שקיעה הדרגתית. "Once upon a time" מסמן שהסיפור נגמר אבל לא הוסקה מסקנה.'
     }
   }
 ];
@@ -2516,6 +2787,10 @@ function renderSongPage(id) {
         <div class="song-hero-overlay"></div>
         <!-- Mobile floating action buttons -->
         <div class="song-hero-mobile-actions">
+          ${(song.audio?.src || song.sunoEmbedId || song.youtubeVideoId) ? `<button class="shma-btn shma-play-btn" data-play-idx="${idx}" title="נגן">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+            <span>נגן</span>
+          </button>` : ''}
           <button class="shma-btn track-fav-btn${isFav ? ' active' : ''}" data-song-id="${song.id}" title="מועדפים">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             <span>מועדף</span>
