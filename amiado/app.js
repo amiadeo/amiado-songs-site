@@ -3043,9 +3043,6 @@ function renderSongPage(id) {
           <div class="analysis-grid">${analysisHTML}</div>
         </section>`}
 
-        <div class="song-credits">
-          <div class="credits-inner">${creditsHTML}</div>
-        </div>
       </div>
 
       ${nextNavSong ? `<div class="next-song-strip">
@@ -3059,6 +3056,10 @@ function renderSongPage(id) {
           <svg class="nss-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
         </a>
       </div>` : ''}
+
+      <div class="song-credits">
+        <div class="credits-inner">${creditsHTML}</div>
+      </div>
 
     </div>
 
