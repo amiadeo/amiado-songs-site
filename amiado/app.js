@@ -51,6 +51,7 @@ const COVERS = {
   'isha-livyatan':           `<img src="songs44.jpeg" alt="אישה לויתן"            style="width:100%;height:100%;object-fit:cover;display:block">`,
   'badad':                   `<img src="songs42.jpeg" alt="בדד"                   style="width:100%;height:100%;object-fit:cover;display:block">`,
   'chandelier-cuckoo':       `<img src="songs43.jpeg" alt="Chandelier & Cuckoo"  style="width:100%;height:100%;object-fit:cover;display:block">`,
+  'ltzat-lchvpshy':          `<img src="songs45.jpg"  alt="לצאת לחופשי"          style="width:100%;height:100%;object-fit:cover;display:block">`,
 };
 
 function getCover(id) {
