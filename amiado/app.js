@@ -1709,6 +1709,20 @@ function getPrevSongIdx() {
 }
 
 
+// Switch audio switcher to the Suno tab (if switcher exists in the page)
+function switchToSunoTab(iframeEl) {
+  const panel = iframeEl.closest('[data-ast-panel]');
+  if (!panel) return;
+  const switcher = panel.closest('.audio-switcher');
+  if (!switcher) return;
+  switcher.querySelectorAll('.ast-tab').forEach(t =>
+    t.classList.toggle('active', t.dataset.ast === 'suno')
+  );
+  switcher.querySelectorAll('.ast-panel').forEach(p =>
+    p.classList.toggle('ast-hidden', p.dataset.astPanel !== 'suno')
+  );
+}
+
 function playSong(idx) {
   const song = SONGS[idx];
   if (!song) return;
@@ -1752,6 +1766,7 @@ function playSong(idx) {
 
     if (existingIframe) {
       existingIframe.src = embedUrl;
+      switchToSunoTab(existingIframe);
       state.playing = true;
       updatePlayPauseIcon();
       return;
@@ -1768,6 +1783,7 @@ function playSong(idx) {
       iframe.referrerPolicy = 'no-referrer-when-downgrade';
       iframe.className = 'suno-iframe';
       ph.replaceWith(iframe);
+      switchToSunoTab(iframe);
       state.playing = true;
       updatePlayPauseIcon();
       return;
